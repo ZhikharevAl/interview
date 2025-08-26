@@ -1,7 +1,6 @@
-from sqlalchemy.orm import Session
-
 from app.db.models.category import Category as CategoryModel
 from app.schemas.category import CategoryCreate
+from sqlalchemy.orm import Session
 
 
 def get_categories(db: Session, skip: int = 0, limit: int = 100) -> list[CategoryModel]:

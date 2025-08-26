@@ -1,7 +1,6 @@
+from app.db.database import Base
 from sqlalchemy import Column, ForeignKey, Integer, Text
 from sqlalchemy.orm import relationship
-
-from app.db.database import Base
 
 
 class Question(Base):

@@ -1,7 +1,6 @@
-from sqlalchemy.orm import Session
-
 from app.db.models.question import Question as QuestionModel
 from app.schemas.question import QuestionCreate
+from sqlalchemy.orm import Session
 
 
 def get_all_questions(db: Session) -> list[QuestionModel]:
