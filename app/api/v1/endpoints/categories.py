@@ -12,12 +12,13 @@ router = APIRouter()
 
 @router.get("/categories")
 def read_categories(
-    db: Annotated[Session, Depends(get_db)], skip: int = 0, limit: int = 100
+    db: Annotated[Session, Depends(get_db)],
+    skip: int = 0,
+    limit: int = 100,
 ) -> list[Category]:
-    """Get categories with pagination."""
+    """Get categories."""
     db_categories = category_service.get_categories(db, skip=skip, limit=limit)
-
-    return [Category.model_config(db_cat) for db_cat in db_categories]  # pyright: ignore[reportCallIssue]
+    return [Category.model_validate(db_cat) for db_cat in db_categories]
 
 
 @router.post("/", response_model=Category)
