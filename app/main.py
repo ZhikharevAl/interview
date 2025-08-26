@@ -2,14 +2,52 @@ from fastapi import FastAPI
 
 app = FastAPI(title="Interview Prep App")
 
+categories_db = [
+    {"id": 1, "name": "Python"},
+    {"id": 2, "name": "JavaScript"},
+    {"id": 3, "name": "Алгоритмы"},
+]
+
+questions_db = [
+    {
+        "id": 1,
+        "question_text": "Что такое список в Python?",
+        "answer_text": "Список - это изменяемая структура данных...",
+        "category_id": 1,
+    },
+    {
+        "id": 2,
+        "question_text": "Что такое замыкание в JavaScript?",
+        "answer_text": "Замыкание - это функция, которая имеет доступ...",
+        "category_id": 2,
+    },
+]
+
 
 @app.get("/")
 def read_root() -> dict[str, str]:
-    """Return a greeting message."""
-    return {"message": "Hello World!"}
+    """Welcome message."""
+    return {"message": "Welcome to Interview Prep App!"}
 
 
-@app.get("/health")
-def health_check() -> dict[str, str]:
-    """Return the health status of the application."""
-    return {"status": "ok"}
+@app.get("/categories")
+def get_categories() -> list[dict[str, int]]:
+    """Get all categories."""
+    return categories_db
+
+
+@app.get("/questions")
+def get_questions(category_id: int | None) -> list[dict[str, int]]:
+    """Get questions for a specific category."""
+    if category_id:
+        return [q for q in questions_db if q["category_id"] == category_id]
+    return questions_db
+
+
+@app.post("/categories")
+def create_category(name: str) -> dict[str, int]:
+    """Create a new category."""
+    new_id = max([c["id"] for c in categories_db]) + 1
+    new_category = {"id": new_id, "name": name}
+    categories_db.append(new_category)
+    return new_category
