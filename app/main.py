@@ -1,5 +1,8 @@
 from fastapi import FastAPI
 
+from app.schemas.category import Category, CategoryCreate
+from app.schemas.question import Question
+
 app = FastAPI(title="Interview Prep App")
 
 categories_db = [
@@ -30,13 +33,13 @@ def read_root() -> dict[str, str]:
     return {"message": "Welcome to Interview Prep App!"}
 
 
-@app.get("/categories")
+@app.get("/categories", response_model=list[Category])
 def get_categories() -> list[dict[str, int]]:
     """Get all categories."""
     return categories_db
 
 
-@app.get("/questions")
+@app.get("/questions", response_model=list[Question])
 def get_questions(category_id: int | None) -> list[dict[str, int]]:
     """Get questions for a specific category."""
     if category_id:
@@ -44,10 +47,10 @@ def get_questions(category_id: int | None) -> list[dict[str, int]]:
     return questions_db
 
 
-@app.post("/categories")
-def create_category(name: str) -> dict[str, int]:
+@app.post("/categories", response_model=Category)
+def create_category(category: CategoryCreate) -> dict[str, int]:
     """Create a new category."""
     new_id = max([c["id"] for c in categories_db]) + 1
-    new_category = {"id": new_id, "name": name}
+    new_category = {"id": new_id, "name": category.name}
     categories_db.append(new_category)
     return new_category
