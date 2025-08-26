@@ -12,6 +12,7 @@ dev = [
     "pre-commit>=4.3.0",
     "psycopg2-binary>=2.9.10",
     "pydantic>=2.11.7",
+    "pylint>=3.3.8",
     "pyright>=1.1.404",
     "python-dotenv>=1.1.1",
     "ruff>=0.12.10",
@@ -59,3 +60,12 @@ exclude = [".venv", "**/__pycache__"]
 pythonVersion = "3.13"
 venvPath = "."
 venv = ".venv"
+
+[tool.pylint.MASTER]
+init-hook = 'import sys; sys.path.append("backend")'
+
+[tool.pylint."MESSAGES CONTROL"]
+disable = ["missing-docstring", "too-few-public-methods"]
+
+[tool.pylint.FORMAT]
+max-line-length = 100
