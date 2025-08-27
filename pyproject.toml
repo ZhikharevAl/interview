@@ -12,6 +12,7 @@ dev = [
     "pre-commit>=4.3.0",
     "psycopg2-binary>=2.9.10",
     "pydantic>=2.11.7",
+    "pydantic-settings>=2.10.1",
     "pylint>=3.3.8",
     "pyright>=1.1.404",
     "python-dotenv>=1.1.1",
@@ -34,6 +35,50 @@ ignore = [
     "ISC001", # single-line-implicit-string-concatenation
     "S105",   # hard-coded password (если используете)
 ]
+
+[tool.logging]
+version = 1
+disable_existing_loggers = false
+
+[tool.logging.formatters.default]
+format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+datefmt = "%Y-%m-%d %H:%M:%S"
+
+[tool.logging.formatters.detailed]
+format = "%(asctime)s [%(levelname)s] %(name)s:%(lineno)d - %(message)s"
+datefmt = "%Y-%m-%d %H:%M:%S"
+
+[tool.logging.handlers.console]
+class = "logging.StreamHandler"
+level = "INFO"
+formatter = "default"
+stream = "ext://sys.stdout"
+
+[tool.logging.handlers.file]
+class = "logging.FileHandler"
+filename = "app.log"
+level = "DEBUG"
+formatter = "detailed"
+
+[tool.logging.loggers.app]
+handlers = ["console", "file"]
+level = "DEBUG"
+propagate = false
+
+[tool.logging.loggers.uvicorn]
+handlers = ["console"]
+level = "INFO"
+propagate = false
+
+[tool.logging.loggers."sqlalchemy.engine"]
+handlers = ["console", "file"]
+level = "WARNING"
+propagate = false
+
+[tool.logging.root]
+handlers = ["console"]
+level = "INFO"
+
 fixable = ["ALL"]
 
 [tool.ruff.lint.mccabe]
