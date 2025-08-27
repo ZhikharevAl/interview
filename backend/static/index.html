@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Подготовка к собеседованию</title>
+    <!-- Tailwind CSS for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for a cleaner look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Custom styles for the card flip animation and other details */
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8fafc; /* A lighter gray from Tailwind's palette */
+        }
+
+        .card {
+            perspective: 1000px;
+            min-height: 300px;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s;
+            transform-style: preserve-3d;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 0.75rem; /* Corresponds to rounded-xl */
+            display: flex;
+            overflow: hidden;
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Custom scrollbar for better aesthetics in cards */
+        .card-content::-webkit-scrollbar {
+            width: 6px;
+        }
+        .card-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+        .card-content::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 3px;
+        }
+        .card-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Simple fade-in animation for cards */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .fade-in-card {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800">
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900">Карточки для подготовки к собеседованию</h1>
+            <p class="text-slate-500 mt-2">Выберите тему и проверьте свои знания</p>
+        </header>
+
+        <!-- Tabs -->
+        <div class="mb-6">
+            <div class="border-b border-slate-200">
+                <nav class="-mb-px flex space-x-6" aria-label="Tabs">
+                    <button class="tab-button active shrink-0 border-b-2 border-indigo-500 px-1 pb-4 text-sm font-medium text-indigo-600" onclick="switchTab('study', event)">
+                        Изучение
+                    </button>
+                    <button class="tab-button shrink-0 border-b-2 border-transparent px-1 pb-4 text-sm font-medium text-slate-500 hover:border-slate-300 hover:text-slate-700" onclick="switchTab('manage', event)">
+                        Управление
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Tab Content -->
+        <main>
+            <!-- Study Tab -->
+            <div id="study-tab" class="tab-pane active">
+                <div id="stats-container" class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                    <!-- Stats will be loaded here -->
+                </div>
+
+                <div class="controls flex flex-col md:flex-row items-center gap-4 mb-8 p-4 bg-white rounded-lg shadow-sm border border-slate-200">
+                    <label for="category-select" class="font-medium text-slate-700 whitespace-nowrap">Выберите тему:</label>
+                    <select id="category-select" class="w-full md:w-auto flex-grow bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2.5">
+                        <option value="">Все вопросы</option>
+                    </select>
+                    <button onclick="shuffleCards()" class="w-full md:w-auto inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium text-center text-white bg-slate-700 rounded-lg hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
+                        Перемешать
+                    </button>
+                </div>
+
+                <div id="loading" class="text-center py-12 text-slate-500" style="display: none;">
+                    <div role="status">
+                        <svg aria-hidden="true" class="inline w-8 h-8 text-slate-200 animate-spin fill-indigo-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
+                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0492C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+                        </svg>
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Cards will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Manage Tab -->
+            <div id="manage-tab" class="tab-pane hidden">
+                <div id="message-container" class="mb-6"></div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Add Category Form -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
+                        <h3 class="text-lg font-semibold mb-4 text-slate-900">Добавить новую категорию</h3>
+                        <form id="category-form">
+                            <div class="flex items-end gap-3">
+                                <div class="flex-grow">
+                                    <label for="category-name" class="block mb-2 text-sm font-medium text-slate-700">Название категории</label>
+                                    <input type="text" id="category-name" required placeholder="Например: JavaScript" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5">
+                                </div>
+                                <button type="submit" class="px-5 py-2.5 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 transition-colors">Добавить</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Add Question Form -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 row-span-2">
+                        <h3 class="text-lg font-semibold mb-4 text-slate-900">Добавить новый вопрос</h3>
+                        <form id="question-form" class="space-y-4">
+                            <div>
+                                <label for="question-category" class="block mb-2 text-sm font-medium text-slate-700">Категория</label>
+                                <select id="question-category" required class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5">
+                                    <option value="">Выберите категорию</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="question-text" class="block mb-2 text-sm font-medium text-slate-700">Вопрос</label>
+                                <textarea id="question-text" rows="4" required placeholder="Введите текст вопроса..." class="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                            </div>
+                            <div>
+                                <label for="answer-text" class="block mb-2 text-sm font-medium text-slate-700">Ответ</label>
+                                <textarea id="answer-text" rows="6" required placeholder="Введите ответ на вопрос. Используйте Markdown для форматирования." class="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                            </div>
+                            <button type="submit" class="w-full px-5 py-3 text-sm font-medium text-center text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 transition-colors">Добавить вопрос</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8000/api/v1';
+        let currentQuestions = [];
+
+        // DOM Elements
+        const categorySelect = document.getElementById('category-select');
+        const questionCategorySelect = document.getElementById('question-category');
+        const cardsContainer = document.getElementById('cards-container');
+        const loadingDiv = document.getElementById('loading');
+        const messageContainer = document.getElementById('message-container');
+        const statsContainer = document.getElementById('stats-container');
+
+        // --- Tab Management ---
+        function switchTab(tabName, event) {
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active', 'border-indigo-500', 'text-indigo-600');
+                btn.classList.add('border-transparent', 'text-slate-500', 'hover:border-slate-300', 'hover:text-slate-700');
+            });
+            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.add('hidden'));
+
+            event.target.classList.add('active', 'border-indigo-500', 'text-indigo-600');
+            event.target.classList.remove('border-transparent', 'text-slate-500');
+            document.getElementById(tabName + '-tab').classList.remove('hidden');
+
+            if (tabName === 'manage') {
+                loadCategoriesForForm();
+            }
+        }
+
+        // --- UI Feedback ---
+        function showMessage(text, type = 'success') {
+            const bgColor = type === 'success' ? 'bg-green-100 border-green-400 text-green-700' : 'bg-red-100 border-red-400 text-red-700';
+            messageContainer.innerHTML = `<div class="border ${bgColor} px-4 py-3 rounded relative" role="alert">${text}</div>`;
+            setTimeout(() => {
+                messageContainer.innerHTML = '';
+            }, 5000);
+        }
+
+        // --- Data Fetching & Rendering ---
+        async function fetchData(endpoint) {
+            try {
+                const response = await fetch(`${API_URL}${endpoint}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return await response.json();
+            } catch (error) {
+                console.error(`Error fetching ${endpoint}:`, error);
+                throw error;
+            }
+        }
+
+        async function loadStats() {
+            try {
+                const [categories, questions] = await Promise.all([
+                    fetchData('/categories/'),
+                    fetchData('/questions/')
+                ]);
+
+                statsContainer.innerHTML = `
+                    <div class="stat-card bg-white p-6 rounded-lg shadow-sm border border-slate-200 text-center">
+                        <div class="stat-number text-4xl font-bold text-indigo-600">${categories.length}</div>
+                        <div class="stat-label text-sm font-medium text-slate-500 mt-1">Категорий</div>
+                    </div>
+                    <div class="stat-card bg-white p-6 rounded-lg shadow-sm border border-slate-200 text-center">
+                        <div class="stat-number text-4xl font-bold text-indigo-600">${questions.length}</div>
+                        <div class="stat-label text-sm font-medium text-slate-500 mt-1">Всего вопросов</div>
+                    </div>
+                `;
+            } catch (error) {
+                statsContainer.innerHTML = '<p class="text-red-500">Не удалось загрузить статистику.</p>';
+            }
+        }
+
+        async function loadCategories() {
+            try {
+                const categories = await fetchData('/categories/');
+                categorySelect.innerHTML = '<option value="">Все вопросы</option>';
+                categories.forEach(category => {
+                    const option = new Option(category.name, category.id);
+                    categorySelect.add(option);
+                });
+            } catch (error) {
+                cardsContainer.innerHTML = '<p class="text-center text-red-500 col-span-full">Не удалось загрузить категории. Убедитесь, что бэкенд запущен.</p>';
+            }
+        }
+
+        async function loadCategoriesForForm() {
+            try {
+                const categories = await fetchData('/categories/');
+                questionCategorySelect.innerHTML = '<option value="">Выберите категорию</option>';
+                categories.forEach(category => {
+                    const option = new Option(category.name, category.id);
+                    questionCategorySelect.add(option);
+                });
+            } catch (error) {
+                 console.error('Ошибка при загрузке категорий для формы:', error);
+            }
+        }
+
+        async function loadQuestions(categoryId = '') {
+            loadingDiv.style.display = 'block';
+            cardsContainer.innerHTML = '';
+            const url = categoryId ? `/questions/?category_id=${categoryId}` : '/questions/';
+
+            try {
+                const questions = await fetchData(url);
+                currentQuestions = questions;
+                displayQuestions(questions);
+            } catch (error) {
+                cardsContainer.innerHTML = '<p class="text-center text-red-500 col-span-full">Не удалось загрузить вопросы. Проверьте подключение к серверу.</p>';
+            } finally {
+                loadingDiv.style.display = 'none';
+            }
+        }
+
+        // --- Improved Text Formatting ---
+        function formatText(text) {
+            // 1. Sanitize HTML to prevent XSS
+            const sanitizer = new DOMParser();
+            let sanitizedText = sanitizer.parseFromString(text, 'text/html').body.textContent || "";
+
+            // 2. Process multi-line code blocks first
+            sanitizedText = sanitizedText.replace(/```([\s\S]*?)```/g, (match, code) => {
+                const encodedCode = code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+                return `<pre class="bg-slate-800 text-slate-200 p-4 rounded-md text-sm overflow-x-auto">${encodedCode.trim()}</pre>`;
+            });
+
+            // 3. Process inline code
+            sanitizedText = sanitizedText.replace(/`([^`]+)`/g, '<code class="bg-slate-200 text-slate-800 font-mono text-sm px-1.5 py-0.5 rounded-md">$1</code>');
+
+            // 4. Process bold text
+            sanitizedText = sanitizedText.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>');
+
+            // 5. Process newlines into paragraphs, but ignore those inside <pre>
+            let result = '';
+            const parts = sanitizedText.split(/(<pre[\s\S]*?<\/pre>)/);
+            parts.forEach(part => {
+                if (part.startsWith('<pre')) {
+                    result += part;
+                } else {
+                    result += '<p>' + part.trim().replace(/\n\s*\n/g, '</p><p>').replace(/\n/g, '<br>') + '</p>';
+                }
+            });
+
+            // Cleanup empty paragraphs
+            return result.replace(/<p><\/p>/g, '');
+        }
+
+
+        function displayQuestions(questions) {
+            cardsContainer.innerHTML = '';
+            if (questions.length === 0) {
+                cardsContainer.innerHTML = '<p class="text-center text-slate-500 col-span-full py-10">В этой категории пока нет вопросов. Добавьте их во вкладке "Управление"!</p>';
+                return;
+            }
+
+            questions.forEach((q, index) => {
+                const cardWrapper = document.createElement('div');
+                cardWrapper.className = 'card fade-in-card';
+                cardWrapper.style.animationDelay = `${index * 100}ms`;
+
+                const formattedQuestion = formatText(q.question_text);
+                const formattedAnswer = formatText(q.answer_text);
+
+                cardWrapper.innerHTML = `
+                    <div class="card-inner shadow-lg rounded-xl">
+                        <div class="card-front bg-gradient-to-br from-indigo-500 to-purple-600 text-white p-6 flex items-center justify-center">
+                            <div class="card-content text-center text-lg font-semibold">${formattedQuestion}</div>
+                        </div>
+                        <div class="card-back bg-slate-700 text-white p-1 flex items-start justify-start">
+                            <div class="card-content w-full h-full p-5 overflow-y-auto text-left text-base leading-relaxed">${formattedAnswer}</div>
+                        </div>
+                    </div>
+                `;
+                cardWrapper.addEventListener('click', () => cardWrapper.classList.toggle('flipped'));
+                cardsContainer.appendChild(cardWrapper);
+            });
+        }
+
+        function shuffleCards() {
+            const shuffled = [...currentQuestions].sort(() => Math.random() - 0.5);
+            displayQuestions(shuffled);
+        }
+
+        // --- Form Submissions ---
+        async function handleFormSubmit(url, body, formElement, successMessage) {
+            try {
+                const response = await fetch(`${API_URL}${url}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body),
+                });
+
+                if (response.ok) {
+                    showMessage(successMessage);
+                    formElement.reset();
+                    // Refresh data
+                    loadStats();
+                    loadCategories();
+                    if(formElement.id === 'question-form') loadQuestions(categorySelect.value);
+                } else {
+                    const errorData = await response.json();
+                    showMessage(errorData.detail || 'Произошла ошибка', 'error');
+                }
+            } catch (error) {
+                console.error('Ошибка при отправке формы:', error);
+                showMessage('Сетевая ошибка. Не удалось отправить данные.', 'error');
+            }
+        }
+
+        document.getElementById('category-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('category-name').value.trim();
+            if (!name) return showMessage('Введите название категории', 'error');
+            handleFormSubmit('/categories/', { name }, e.target, 'Категория успешно добавлена!');
+        });
+
+        document.getElementById('question-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const categoryId = document.getElementById('question-category').value;
+            const questionText = document.getElementById('question-text').value.trim();
+            const answerText = document.getElementById('answer-text').value.trim();
+
+            if (!categoryId || !questionText || !answerText) {
+                return showMessage('Заполните все поля', 'error');
+            }
+
+            const body = {
+                category_id: parseInt(categoryId),
+                question_text: questionText,
+                answer_text: answerText,
+            };
+            handleFormSubmit('/questions/', body, e.target, 'Вопрос успешно добавлен!');
+        });
+
+        // --- Event Listeners & Initialization ---
+        categorySelect.addEventListener('change', (event) => {
+            loadQuestions(event.target.value);
+        });
+
+        async function init() {
+            await loadCategories();
+            loadQuestions();
+            loadStats();
+        }
+
+        init();
+    </script>
+</body>
+</html>

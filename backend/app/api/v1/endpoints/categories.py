@@ -9,7 +9,7 @@ from sqlalchemy.orm import Session
 router = APIRouter()
 
 
-@router.get("/categories")
+@router.get("/")
 def read_categories(
     db: Annotated[Session, Depends(get_db)],
     skip: int = 0,
