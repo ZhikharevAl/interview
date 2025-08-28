@@ -25,7 +25,7 @@ A modern web application for creating and studying interview questions using int
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone https://github.com/ZhikharevAl/interview.git
 cd interview-prep-app
 
 # Start the application
