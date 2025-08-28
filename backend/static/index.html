@@ -13,59 +13,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Custom styles for the card flip animation and other details */
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f8fafc; /* A lighter gray from Tailwind's palette */
+            background-color: #f8fafc;
         }
 
-        .card {
-            perspective: 1000px;
-            min-height: 300px;
+        /* Custom scrollbar for the modal content */
+        #modal-answer::-webkit-scrollbar {
+            width: 8px;
         }
 
-        .card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.7s;
-            transform-style: preserve-3d;
+        #modal-answer::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 4px;
         }
 
-        .card.flipped .card-inner {
-            transform: rotateY(180deg);
+        #modal-answer::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
         }
 
-        .card-front,
-        .card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: 0.75rem; /* Corresponds to rounded-xl */
-            display: flex;
-            overflow: hidden;
-        }
-
-        .card-back {
-            transform: rotateY(180deg);
-        }
-
-        /* Custom scrollbar for better aesthetics in cards */
-        .card-content::-webkit-scrollbar {
-            width: 6px;
-        }
-        .card-content::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
-        }
-        .card-content::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 3px;
-        }
-        .card-content::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.4);
+        #modal-answer::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
         }
 
         /* Simple fade-in animation for cards */
@@ -74,11 +43,13 @@
                 opacity: 0;
                 transform: translateY(10px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
+
         .fade-in-card {
             animation: fadeIn 0.5s ease-out forwards;
         }
@@ -96,10 +67,14 @@
         <div class="mb-6">
             <div class="border-b border-slate-200">
                 <nav class="-mb-px flex space-x-6" aria-label="Tabs">
-                    <button class="tab-button active shrink-0 border-b-2 border-indigo-500 px-1 pb-4 text-sm font-medium text-indigo-600" onclick="switchTab('study', event)">
+                    <button
+                        class="tab-button active shrink-0 border-b-2 border-indigo-500 px-1 pb-4 text-sm font-medium text-indigo-600"
+                        onclick="switchTab('study', event)">
                         Изучение
                     </button>
-                    <button class="tab-button shrink-0 border-b-2 border-transparent px-1 pb-4 text-sm font-medium text-slate-500 hover:border-slate-300 hover:text-slate-700" onclick="switchTab('manage', event)">
+                    <button
+                        class="tab-button shrink-0 border-b-2 border-transparent px-1 pb-4 text-sm font-medium text-slate-500 hover:border-slate-300 hover:text-slate-700"
+                        onclick="switchTab('manage', event)">
                         Управление
                     </button>
                 </nav>
@@ -114,22 +89,39 @@
                     <!-- Stats will be loaded here -->
                 </div>
 
-                <div class="controls flex flex-col md:flex-row items-center gap-4 mb-8 p-4 bg-white rounded-lg shadow-sm border border-slate-200">
-                    <label for="category-select" class="font-medium text-slate-700 whitespace-nowrap">Выберите тему:</label>
-                    <select id="category-select" class="w-full md:w-auto flex-grow bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2.5">
+                <div
+                    class="controls flex flex-col md:flex-row items-center gap-4 mb-8 p-4 bg-white rounded-lg shadow-sm border border-slate-200">
+                    <label for="category-select" class="font-medium text-slate-700 whitespace-nowrap">Выберите
+                        тему:</label>
+                    <select id="category-select"
+                        class="w-full md:w-auto flex-grow bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2.5">
                         <option value="">Все вопросы</option>
                     </select>
-                    <button onclick="shuffleCards()" class="w-full md:w-auto inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium text-center text-white bg-slate-700 rounded-lg hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
+                    <button onclick="shuffleCards()"
+                        class="w-full md:w-auto inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium text-center text-white bg-slate-700 rounded-lg hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="mr-2">
+                            <polyline points="16 3 21 3 21 8"></polyline>
+                            <line x1="4" y1="20" x2="21" y2="3"></line>
+                            <polyline points="21 16 21 21 16 21"></polyline>
+                            <line x1="15" y1="15" x2="21" y2="21"></line>
+                            <line x1="4" y1="4" x2="9" y2="9"></line>
+                        </svg>
                         Перемешать
                     </button>
                 </div>
 
                 <div id="loading" class="text-center py-12 text-slate-500" style="display: none;">
                     <div role="status">
-                        <svg aria-hidden="true" class="inline w-8 h-8 text-slate-200 animate-spin fill-indigo-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0492C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+                        <svg aria-hidden="true" class="inline w-8 h-8 text-slate-200 animate-spin fill-indigo-600"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0492C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
                         </svg>
                         <span class="sr-only">Loading...</span>
                     </div>
@@ -149,10 +141,13 @@
                         <form id="category-form">
                             <div class="flex items-end gap-3">
                                 <div class="flex-grow">
-                                    <label for="category-name" class="block mb-2 text-sm font-medium text-slate-700">Название категории</label>
-                                    <input type="text" id="category-name" required placeholder="Например: JavaScript" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5">
+                                    <label for="category-name"
+                                        class="block mb-2 text-sm font-medium text-slate-700">Название категории</label>
+                                    <input type="text" id="category-name" required placeholder="Например: JavaScript"
+                                        class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5">
                                 </div>
-                                <button type="submit" class="px-5 py-2.5 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 transition-colors">Добавить</button>
+                                <button type="submit"
+                                    class="px-5 py-2.5 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 transition-colors">Добавить</button>
                             </div>
                         </form>
                     </div>
@@ -162,26 +157,62 @@
                         <h3 class="text-lg font-semibold mb-4 text-slate-900">Добавить новый вопрос</h3>
                         <form id="question-form" class="space-y-4">
                             <div>
-                                <label for="question-category" class="block mb-2 text-sm font-medium text-slate-700">Категория</label>
-                                <select id="question-category" required class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5">
+                                <label for="question-category"
+                                    class="block mb-2 text-sm font-medium text-slate-700">Категория</label>
+                                <select id="question-category" required
+                                    class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5">
                                     <option value="">Выберите категорию</option>
                                 </select>
                             </div>
                             <div>
-                                <label for="question-text" class="block mb-2 text-sm font-medium text-slate-700">Вопрос</label>
-                                <textarea id="question-text" rows="4" required placeholder="Введите текст вопроса..." class="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                                <label for="question-text"
+                                    class="block mb-2 text-sm font-medium text-slate-700">Вопрос</label>
+                                <textarea id="question-text" rows="4" required placeholder="Введите текст вопроса..."
+                                    class="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
                             </div>
                             <div>
-                                <label for="answer-text" class="block mb-2 text-sm font-medium text-slate-700">Ответ</label>
-                                <textarea id="answer-text" rows="6" required placeholder="Введите ответ на вопрос. Используйте Markdown для форматирования." class="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                                <label for="answer-text"
+                                    class="block mb-2 text-sm font-medium text-slate-700">Ответ</label>
+                                <textarea id="answer-text" rows="6" required
+                                    placeholder="Введите ответ на вопрос. Используйте Markdown для форматирования."
+                                    class="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
                             </div>
-                            <button type="submit" class="w-full px-5 py-3 text-sm font-medium text-center text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 transition-colors">Добавить вопрос</button>
+                            <button type="submit"
+                                class="w-full px-5 py-3 text-sm font-medium text-center text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 transition-colors">Добавить
+                                вопрос</button>
                         </form>
                     </div>
                 </div>
             </div>
         </main>
     </div>
+
+    <!-- Answer Modal -->
+    <div id="answer-modal"
+        class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-60 p-4 transition-opacity duration-300">
+        <div id="modal-content"
+            class="relative w-full max-w-4xl max-h-[90vh] bg-white rounded-lg shadow-xl flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex items-start justify-between p-5 border-b rounded-t">
+                <div id="modal-question" class="text-xl font-semibold text-slate-900 leading-relaxed">
+                    <!-- Question text goes here -->
+                </div>
+                <button type="button" id="modal-close-btn"
+                    class="text-slate-400 bg-transparent hover:bg-slate-200 hover:text-slate-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+            <!-- Modal Body -->
+            <div id="modal-answer" class="p-6 space-y-4 overflow-y-auto text-slate-600 leading-relaxed">
+                <!-- Answer content goes here -->
+            </div>
+        </div>
+    </div>
+
 
     <script>
         const API_URL = 'http://localhost:8000/api/v1';
@@ -194,6 +225,10 @@
         const loadingDiv = document.getElementById('loading');
         const messageContainer = document.getElementById('message-container');
         const statsContainer = document.getElementById('stats-container');
+        const modal = document.getElementById('answer-modal');
+        const modalQuestion = document.getElementById('modal-question');
+        const modalAnswer = document.getElementById('modal-answer');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
 
         // --- Tab Management ---
         function switchTab(tabName, event) {
@@ -210,6 +245,21 @@
             if (tabName === 'manage') {
                 loadCategoriesForForm();
             }
+        }
+
+        // --- Modal Management ---
+        function openModal(questionHTML, answerHTML) {
+            modalQuestion.innerHTML = questionHTML;
+            modalAnswer.innerHTML = answerHTML;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            modalQuestion.innerHTML = '';
+            modalAnswer.innerHTML = '';
         }
 
         // --- UI Feedback ---
@@ -279,7 +329,7 @@
                     questionCategorySelect.add(option);
                 });
             } catch (error) {
-                 console.error('Ошибка при загрузке категорий для формы:', error);
+                console.error('Ошибка при загрузке категорий для формы:', error);
             }
         }
 
@@ -299,25 +349,18 @@
             }
         }
 
-        // --- Improved Text Formatting ---
         function formatText(text) {
-            // 1. Sanitize HTML to prevent XSS
             const sanitizer = new DOMParser();
             let sanitizedText = sanitizer.parseFromString(text, 'text/html').body.textContent || "";
 
-            // 2. Process multi-line code blocks first
             sanitizedText = sanitizedText.replace(/```([\s\S]*?)```/g, (match, code) => {
                 const encodedCode = code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                return `<pre class="bg-slate-800 text-slate-200 p-4 rounded-md text-sm overflow-x-auto">${encodedCode.trim()}</pre>`;
+                return `<pre class="bg-slate-800 text-slate-200 p-4 rounded-md text-sm overflow-x-auto my-4">${encodedCode.trim()}</pre>`;
             });
 
-            // 3. Process inline code
             sanitizedText = sanitizedText.replace(/`([^`]+)`/g, '<code class="bg-slate-200 text-slate-800 font-mono text-sm px-1.5 py-0.5 rounded-md">$1</code>');
+            sanitizedText = sanitizedText.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-slate-800">$1</strong>');
 
-            // 4. Process bold text
-            sanitizedText = sanitizedText.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>');
-
-            // 5. Process newlines into paragraphs, but ignore those inside <pre>
             let result = '';
             const parts = sanitizedText.split(/(<pre[\s\S]*?<\/pre>)/);
             parts.forEach(part => {
@@ -328,10 +371,8 @@
                 }
             });
 
-            // Cleanup empty paragraphs
-            return result.replace(/<p><\/p>/g, '');
+            return result.replace(/<p><\/p>|(<p><br><\/p>)/g, '');
         }
-
 
         function displayQuestions(questions) {
             cardsContainer.innerHTML = '';
@@ -341,25 +382,21 @@
             }
 
             questions.forEach((q, index) => {
-                const cardWrapper = document.createElement('div');
-                cardWrapper.className = 'card fade-in-card';
-                cardWrapper.style.animationDelay = `${index * 100}ms`;
+                const card = document.createElement('div');
+                card.className = 'fade-in-card bg-gradient-to-br from-indigo-500 to-purple-600 text-white p-6 flex items-center justify-center rounded-xl shadow-lg cursor-pointer hover:scale-105 hover:shadow-xl transition-all duration-300';
+                card.style.minHeight = '300px';
+                card.style.animationDelay = `${index * 100}ms`;
 
                 const formattedQuestion = formatText(q.question_text);
                 const formattedAnswer = formatText(q.answer_text);
 
-                cardWrapper.innerHTML = `
-                    <div class="card-inner shadow-lg rounded-xl">
-                        <div class="card-front bg-gradient-to-br from-indigo-500 to-purple-600 text-white p-6 flex items-center justify-center">
-                            <div class="card-content text-center text-lg font-semibold">${formattedQuestion}</div>
-                        </div>
-                        <div class="card-back bg-slate-700 text-white p-1 flex items-start justify-start">
-                            <div class="card-content w-full h-full p-5 overflow-y-auto text-left text-base leading-relaxed">${formattedAnswer}</div>
-                        </div>
-                    </div>
-                `;
-                cardWrapper.addEventListener('click', () => cardWrapper.classList.toggle('flipped'));
-                cardsContainer.appendChild(cardWrapper);
+                card.innerHTML = `<div class="text-center text-lg font-semibold">${formattedQuestion}</div>`;
+
+                card.addEventListener('click', () => {
+                    openModal(formattedQuestion, formattedAnswer);
+                });
+
+                cardsContainer.appendChild(card);
             });
         }
 
@@ -380,10 +417,9 @@
                 if (response.ok) {
                     showMessage(successMessage);
                     formElement.reset();
-                    // Refresh data
                     loadStats();
                     loadCategories();
-                    if(formElement.id === 'question-form') loadQuestions(categorySelect.value);
+                    if (formElement.id === 'question-form') loadQuestions(categorySelect.value);
                 } else {
                     const errorData = await response.json();
                     showMessage(errorData.detail || 'Произошла ошибка', 'error');
@@ -424,6 +460,13 @@
             loadQuestions(event.target.value);
         });
 
+        modalCloseBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
         async function init() {
             await loadCategories();
             loadQuestions();
@@ -433,4 +476,5 @@
         init();
     </script>
 </body>
+
 </html>
