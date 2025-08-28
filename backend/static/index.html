@@ -13,93 +13,175 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
-        /* Custom styles for the card flip animation and other details */
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f8fafc; /* A lighter gray from Tailwind's palette */
+            background-color: #fafafa;
+            /* Очень светло-серый фон */
+            color: #2e2e2e;
+            /* Темно-серый текст для хорошей читаемости */
         }
 
-        .card {
-            perspective: 1000px;
-            min-height: 300px;
-        }
-
-        .card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transition: transform 0.7s;
-            transform-style: preserve-3d;
-        }
-
-        .card.flipped .card-inner {
-            transform: rotateY(180deg);
-        }
-
-        .card-front,
-        .card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: 0.75rem; /* Corresponds to rounded-xl */
-            display: flex;
-            overflow: hidden;
-        }
-
-        .card-back {
-            transform: rotateY(180deg);
-        }
-
-        /* Custom scrollbar for better aesthetics in cards */
-        .card-content::-webkit-scrollbar {
+        /* Custom scrollbar for the modal content */
+        #modal-answer::-webkit-scrollbar {
             width: 6px;
         }
-        .card-content::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
+
+        #modal-answer::-webkit-scrollbar-track {
+            background: #f0f0f0;
             border-radius: 3px;
         }
-        .card-content::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
+
+        #modal-answer::-webkit-scrollbar-thumb {
+            background: #c0c0c0;
             border-radius: 3px;
         }
-        .card-content::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.4);
+
+        #modal-answer::-webkit-scrollbar-thumb:hover {
+            background: #a0a0a0;
         }
 
         /* Simple fade-in animation for cards */
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(5px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
+
         .fade-in-card {
-            animation: fadeIn 0.5s ease-out forwards;
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+
+        /* Active tab style - минимальные акценты */
+        .tab-button.active {
+            color: #4a5568;
+            /* Спокойный серо-синий */
+            border-color: #e2e8f0;
+            background-color: #f7fafc;
+        }
+
+        .tab-button:hover {
+            color: #2d3748;
+            background-color: #edf2f7;
+            transition: all 0.2s ease;
+        }
+
+        /* Card styles - чистые и простые */
+        .question-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            /* Очень мягкая граница */
+            transition: all 0.2s ease-in-out;
+            color: #2e2e2e;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .question-card:hover {
+            border-color: #cbd5e0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            transform: translateY(-1px);
+        }
+
+        /* Кнопки для учебы - без ярких цветов */
+        .button-primary {
+            background-color: #4a5568;
+            color: #ffffff;
+            border: 1px solid #4a5568;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .button-primary:hover {
+            background-color: #2d3748;
+            border-color: #2d3748;
+            box-shadow: 0 2px 4px rgba(45, 55, 72, 0.2);
+        }
+
+        .button-secondary {
+            background-color: transparent;
+            color: #4a5568;
+            border: 1px solid #e2e8f0;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .button-secondary:hover {
+            background-color: #f7fafc;
+            border-color: #cbd5e0;
+        }
+
+        /* Утилитарные классы для учебного контента */
+        .text-primary {
+            color: #2d3748;
+        }
+
+        .text-secondary {
+            color: #718096;
+        }
+
+        .text-muted {
+            color: #a0aec0;
+        }
+
+        .bg-subtle {
+            background-color: #f7fafc;
+            border: 1px solid #edf2f7;
+        }
+
+        /* Фокус на важном контенте */
+        .highlight {
+            background-color: #fff5f5;
+            border-left: 3px solid #fc8181;
+            padding: 12px 16px;
+            margin: 8px 0;
+        }
+
+        /* Разделители */
+        .divider {
+            border-color: #edf2f7;
+            margin: 16px 0;
+        }
+
+        /* Убираем все отвлекающие эффекты */
+        * {
+            outline: none;
+        }
+
+        *:focus {
+            box-shadow: 0 0 0 2px rgba(74, 85, 104, 0.2);
         }
     </style>
+
+
 </head>
 
-<body class="bg-slate-50 text-slate-800">
+<body class="text-[#111111]">
     <div class="container mx-auto p-4 md:p-8 max-w-7xl">
         <header class="text-center mb-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-slate-900">Карточки для подготовки к собеседованию</h1>
-            <p class="text-slate-500 mt-2">Выберите тему и проверьте свои знания</p>
+            <h1 class="text-3xl md:text-4xl font-bold text-[#74070c]">Карточки для подготовки к собеседованию</h1>
+            <p class="text-gray-600 mt-2">Выберите тему и проверьте свои знания</p>
         </header>
 
         <!-- Tabs -->
         <div class="mb-6">
-            <div class="border-b border-slate-200">
+            <div class="border-b border-gray-300">
                 <nav class="-mb-px flex space-x-6" aria-label="Tabs">
-                    <button class="tab-button active shrink-0 border-b-2 border-indigo-500 px-1 pb-4 text-sm font-medium text-indigo-600" onclick="switchTab('study', event)">
+                    <button class="tab-button active shrink-0 border-b-2 px-1 pb-4 text-sm font-medium"
+                        onclick="switchTab('study', event)">
                         Изучение
                     </button>
-                    <button class="tab-button shrink-0 border-b-2 border-transparent px-1 pb-4 text-sm font-medium text-slate-500 hover:border-slate-300 hover:text-slate-700" onclick="switchTab('manage', event)">
+                    <button
+                        class="tab-button shrink-0 border-b-2 border-transparent px-1 pb-4 text-sm font-medium text-gray-500 hover:border-gray-400 hover:text-gray-700"
+                        onclick="switchTab('manage', event)">
                         Управление
                     </button>
                 </nav>
@@ -114,22 +196,39 @@
                     <!-- Stats will be loaded here -->
                 </div>
 
-                <div class="controls flex flex-col md:flex-row items-center gap-4 mb-8 p-4 bg-white rounded-lg shadow-sm border border-slate-200">
-                    <label for="category-select" class="font-medium text-slate-700 whitespace-nowrap">Выберите тему:</label>
-                    <select id="category-select" class="w-full md:w-auto flex-grow bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block p-2.5">
+                <div
+                    class="controls flex flex-col md:flex-row items-center gap-4 mb-8 p-4 bg-white/60 rounded-lg shadow-md border border-gray-200">
+                    <label for="category-select" class="font-medium text-[#111111] whitespace-nowrap">Выберите
+                        тему:</label>
+                    <select id="category-select"
+                        class="w-full md:w-auto flex-grow bg-white border border-gray-300 text-[#111111] text-sm rounded-lg focus:ring-[#74070c] focus:border-[#74070c] block p-2.5 placeholder-gray-500">
                         <option value="">Все вопросы</option>
                     </select>
-                    <button onclick="shuffleCards()" class="w-full md:w-auto inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium text-center text-white bg-slate-700 rounded-lg hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><polyline points="16 3 21 3 21 8"></polyline><line x1="4" y1="20" x2="21" y2="3"></line><polyline points="21 16 21 21 16 21"></polyline><line x1="15" y1="15" x2="21" y2="21"></line><line x1="4" y1="4" x2="9" y2="9"></line></svg>
+                    <button onclick="shuffleCards()"
+                        class="w-full md:w-auto inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium text-center bg-white border border-[#B0ADF2] text-[#111111] rounded-lg hover:bg-[#B0ADF2] hover:text-white focus:ring-4 focus:outline-none focus:ring-[#B0ADF2]/50 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="mr-2">
+                            <polyline points="16 3 21 3 21 8"></polyline>
+                            <line x1="4" y1="20" x2="21" y2="3"></line>
+                            <polyline points="21 16 21 21 16 21"></polyline>
+                            <line x1="15" y1="15" x2="21" y2="21"></line>
+                            <line x1="4" y1="4" x2="9" y2="9"></line>
+                        </svg>
                         Перемешать
                     </button>
                 </div>
 
-                <div id="loading" class="text-center py-12 text-slate-500" style="display: none;">
+                <div id="loading" class="text-center py-12 text-gray-500" style="display: none;">
                     <div role="status">
-                        <svg aria-hidden="true" class="inline w-8 h-8 text-slate-200 animate-spin fill-indigo-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-                            <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0492C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+                        <svg aria-hidden="true" class="inline w-8 h-8 text-gray-300 animate-spin fill-[#74070c]"
+                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                                fill="currentColor" />
+                            <path
+                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0492C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                                fill="currentFill" />
                         </svg>
                         <span class="sr-only">Loading...</span>
                     </div>
@@ -144,44 +243,83 @@
                 <div id="message-container" class="mb-6"></div>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <!-- Add Category Form -->
-                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200">
-                        <h3 class="text-lg font-semibold mb-4 text-slate-900">Добавить новую категорию</h3>
+                    <div class="bg-white/60 p-6 rounded-lg shadow-md border border-gray-200">
+                        <h3 class="text-lg font-semibold mb-4 text-[#111111]">Добавить новую категорию</h3>
                         <form id="category-form">
                             <div class="flex items-end gap-3">
                                 <div class="flex-grow">
-                                    <label for="category-name" class="block mb-2 text-sm font-medium text-slate-700">Название категории</label>
-                                    <input type="text" id="category-name" required placeholder="Например: JavaScript" class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5">
+                                    <label for="category-name"
+                                        class="block mb-2 text-sm font-medium text-gray-700">Название категории</label>
+                                    <input type="text" id="category-name" required placeholder="Например: JavaScript"
+                                        class="bg-white border border-gray-300 text-[#111111] text-sm rounded-lg focus:ring-[#74070c] focus:border-[#74070c] block w-full p-2.5 placeholder-gray-500">
                                 </div>
-                                <button type="submit" class="px-5 py-2.5 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 transition-colors">Добавить</button>
+                                <button type="submit"
+                                    class="px-5 py-2.5 text-sm font-medium text-white bg-[#74070c] rounded-lg hover:bg-opacity-90 focus:ring-4 focus:outline-none focus:ring-[#74070c]/50 transition-colors">Добавить</button>
                             </div>
                         </form>
                     </div>
 
                     <!-- Add Question Form -->
-                    <div class="bg-white p-6 rounded-lg shadow-sm border border-slate-200 row-span-2">
-                        <h3 class="text-lg font-semibold mb-4 text-slate-900">Добавить новый вопрос</h3>
+                    <div class="bg-white/60 p-6 rounded-lg shadow-md border border-gray-200 row-span-2">
+                        <h3 class="text-lg font-semibold mb-4 text-[#111111]">Добавить новый вопрос</h3>
                         <form id="question-form" class="space-y-4">
                             <div>
-                                <label for="question-category" class="block mb-2 text-sm font-medium text-slate-700">Категория</label>
-                                <select id="question-category" required class="bg-slate-50 border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 block w-full p-2.5">
+                                <label for="question-category"
+                                    class="block mb-2 text-sm font-medium text-gray-700">Категория</label>
+                                <select id="question-category" required
+                                    class="bg-white border border-gray-300 text-[#111111] text-sm rounded-lg focus:ring-[#74070c] focus:border-[#74070c] block w-full p-2.5 placeholder-gray-500">
                                     <option value="">Выберите категорию</option>
                                 </select>
                             </div>
                             <div>
-                                <label for="question-text" class="block mb-2 text-sm font-medium text-slate-700">Вопрос</label>
-                                <textarea id="question-text" rows="4" required placeholder="Введите текст вопроса..." class="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                                <label for="question-text"
+                                    class="block mb-2 text-sm font-medium text-gray-700">Вопрос</label>
+                                <textarea id="question-text" rows="4" required placeholder="Введите текст вопроса..."
+                                    class="block p-2.5 w-full text-sm text-[#111111] bg-white rounded-lg border border-gray-300 focus:ring-[#74070c] focus:border-[#74070c] placeholder-gray-500"></textarea>
                             </div>
                             <div>
-                                <label for="answer-text" class="block mb-2 text-sm font-medium text-slate-700">Ответ</label>
-                                <textarea id="answer-text" rows="6" required placeholder="Введите ответ на вопрос. Используйте Markdown для форматирования." class="block p-2.5 w-full text-sm text-slate-900 bg-slate-50 rounded-lg border border-slate-300 focus:ring-indigo-500 focus:border-indigo-500"></textarea>
+                                <label for="answer-text"
+                                    class="block mb-2 text-sm font-medium text-gray-700">Ответ</label>
+                                <textarea id="answer-text" rows="6" required
+                                    placeholder="Введите ответ на вопрос. Используйте Markdown для форматирования."
+                                    class="block p-2.5 w-full text-sm text-[#111111] bg-white rounded-lg border border-gray-300 focus:ring-[#74070c] focus:border-[#74070c] placeholder-gray-500"></textarea>
                             </div>
-                            <button type="submit" class="w-full px-5 py-3 text-sm font-medium text-center text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:outline-none focus:ring-indigo-300 transition-colors">Добавить вопрос</button>
+                            <button type="submit"
+                                class="w-full px-5 py-3 text-sm font-medium text-center text-white bg-[#74070c] rounded-lg hover:bg-opacity-90 focus:ring-4 focus:outline-none focus:ring-[#74070c]/50 transition-colors">Добавить
+                                вопрос</button>
                         </form>
                     </div>
                 </div>
             </div>
         </main>
     </div>
+
+    <!-- Answer Modal -->
+    <div id="answer-modal"
+        class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-60 p-4 transition-opacity duration-300">
+        <div id="modal-content"
+            class="relative w-full max-w-4xl max-h-[90vh] bg-[#f0f0da] border border-gray-300 rounded-lg shadow-2xl flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex items-start justify-between p-5 border-b border-gray-300 rounded-t">
+                <div id="modal-question" class="text-xl font-semibold text-[#74070c] leading-relaxed">
+                    <!-- Question text goes here -->
+                </div>
+                <button type="button" id="modal-close-btn"
+                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+            <!-- Modal Body -->
+            <div id="modal-answer" class="p-6 space-y-4 overflow-y-auto text-gray-800 leading-relaxed">
+                <!-- Answer content goes here -->
+            </div>
+        </div>
+    </div>
+
 
     <script>
         const API_URL = 'http://localhost:8000/api/v1';
@@ -194,17 +332,19 @@
         const loadingDiv = document.getElementById('loading');
         const messageContainer = document.getElementById('message-container');
         const statsContainer = document.getElementById('stats-container');
+        const modal = document.getElementById('answer-modal');
+        const modalQuestion = document.getElementById('modal-question');
+        const modalAnswer = document.getElementById('modal-answer');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
 
         // --- Tab Management ---
         function switchTab(tabName, event) {
             document.querySelectorAll('.tab-button').forEach(btn => {
-                btn.classList.remove('active', 'border-indigo-500', 'text-indigo-600');
-                btn.classList.add('border-transparent', 'text-slate-500', 'hover:border-slate-300', 'hover:text-slate-700');
+                btn.classList.remove('active');
             });
             document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.add('hidden'));
 
-            event.target.classList.add('active', 'border-indigo-500', 'text-indigo-600');
-            event.target.classList.remove('border-transparent', 'text-slate-500');
+            event.target.classList.add('active');
             document.getElementById(tabName + '-tab').classList.remove('hidden');
 
             if (tabName === 'manage') {
@@ -212,10 +352,27 @@
             }
         }
 
+        // --- Modal Management ---
+        function openModal(questionHTML, answerHTML) {
+            modalQuestion.innerHTML = questionHTML;
+            modalAnswer.innerHTML = answerHTML;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            modalQuestion.innerHTML = '';
+            modalAnswer.innerHTML = '';
+        }
+
         // --- UI Feedback ---
         function showMessage(text, type = 'success') {
-            const bgColor = type === 'success' ? 'bg-green-100 border-green-400 text-green-700' : 'bg-red-100 border-red-400 text-red-700';
-            messageContainer.innerHTML = `<div class="border ${bgColor} px-4 py-3 rounded relative" role="alert">${text}</div>`;
+            const styles = type === 'success'
+                ? 'bg-green-100 border-green-400 text-green-800'
+                : 'bg-red-100 border-red-400 text-red-800';
+            messageContainer.innerHTML = `<div class="border ${styles} px-4 py-3 rounded relative" role="alert">${text}</div>`;
             setTimeout(() => {
                 messageContainer.innerHTML = '';
             }, 5000);
@@ -243,17 +400,17 @@
                 ]);
 
                 statsContainer.innerHTML = `
-                    <div class="stat-card bg-white p-6 rounded-lg shadow-sm border border-slate-200 text-center">
-                        <div class="stat-number text-4xl font-bold text-indigo-600">${categories.length}</div>
-                        <div class="stat-label text-sm font-medium text-slate-500 mt-1">Категорий</div>
+                    <div class="stat-card bg-white/60 p-6 rounded-lg shadow-md border border-gray-200 text-center">
+                        <div class="stat-number text-4xl font-bold text-[#111111]">${categories.length}</div>
+                        <div class="stat-label text-sm font-medium text-gray-600 mt-1">Категорий</div>
                     </div>
-                    <div class="stat-card bg-white p-6 rounded-lg shadow-sm border border-slate-200 text-center">
-                        <div class="stat-number text-4xl font-bold text-indigo-600">${questions.length}</div>
-                        <div class="stat-label text-sm font-medium text-slate-500 mt-1">Всего вопросов</div>
+                    <div class="stat-card bg-white/60 p-6 rounded-lg shadow-md border border-gray-200 text-center">
+                        <div class="stat-number text-4xl font-bold text-[#111111]">${questions.length}</div>
+                        <div class="stat-label text-sm font-medium text-gray-600 mt-1">Всего вопросов</div>
                     </div>
                 `;
             } catch (error) {
-                statsContainer.innerHTML = '<p class="text-red-500">Не удалось загрузить статистику.</p>';
+                statsContainer.innerHTML = '<p class="text-red-600">Не удалось загрузить статистику.</p>';
             }
         }
 
@@ -266,7 +423,7 @@
                     categorySelect.add(option);
                 });
             } catch (error) {
-                cardsContainer.innerHTML = '<p class="text-center text-red-500 col-span-full">Не удалось загрузить категории. Убедитесь, что бэкенд запущен.</p>';
+                cardsContainer.innerHTML = '<p class="text-center text-red-600 col-span-full">Не удалось загрузить категории. Убедитесь, что бэкенд запущен.</p>';
             }
         }
 
@@ -279,7 +436,7 @@
                     questionCategorySelect.add(option);
                 });
             } catch (error) {
-                 console.error('Ошибка при загрузке категорий для формы:', error);
+                console.error('Ошибка при загрузке категорий для формы:', error);
             }
         }
 
@@ -293,31 +450,24 @@
                 currentQuestions = questions;
                 displayQuestions(questions);
             } catch (error) {
-                cardsContainer.innerHTML = '<p class="text-center text-red-500 col-span-full">Не удалось загрузить вопросы. Проверьте подключение к серверу.</p>';
+                cardsContainer.innerHTML = '<p class="text-center text-red-600 col-span-full">Не удалось загрузить вопросы. Проверьте подключение к серверу.</p>';
             } finally {
                 loadingDiv.style.display = 'none';
             }
         }
 
-        // --- Improved Text Formatting ---
         function formatText(text) {
-            // 1. Sanitize HTML to prevent XSS
             const sanitizer = new DOMParser();
             let sanitizedText = sanitizer.parseFromString(text, 'text/html').body.textContent || "";
 
-            // 2. Process multi-line code blocks first
             sanitizedText = sanitizedText.replace(/```([\s\S]*?)```/g, (match, code) => {
                 const encodedCode = code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                return `<pre class="bg-slate-800 text-slate-200 p-4 rounded-md text-sm overflow-x-auto">${encodedCode.trim()}</pre>`;
+                return `<pre class="bg-white text-[#111111] p-4 rounded-md text-sm overflow-x-auto my-4 border border-gray-200">${encodedCode.trim()}</pre>`;
             });
 
-            // 3. Process inline code
-            sanitizedText = sanitizedText.replace(/`([^`]+)`/g, '<code class="bg-slate-200 text-slate-800 font-mono text-sm px-1.5 py-0.5 rounded-md">$1</code>');
+            sanitizedText = sanitizedText.replace(/`([^`]+)`/g, '<code class="bg-gray-200 text-[#111111] font-mono text-sm px-1.5 py-0.5 rounded-md">$1</code>');
+            sanitizedText = sanitizedText.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-inherit">$1</strong>');
 
-            // 4. Process bold text
-            sanitizedText = sanitizedText.replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>');
-
-            // 5. Process newlines into paragraphs, but ignore those inside <pre>
             let result = '';
             const parts = sanitizedText.split(/(<pre[\s\S]*?<\/pre>)/);
             parts.forEach(part => {
@@ -328,38 +478,32 @@
                 }
             });
 
-            // Cleanup empty paragraphs
-            return result.replace(/<p><\/p>/g, '');
+            return result.replace(/<p><\/p>|(<p><br><\/p>)/g, '');
         }
-
 
         function displayQuestions(questions) {
             cardsContainer.innerHTML = '';
             if (questions.length === 0) {
-                cardsContainer.innerHTML = '<p class="text-center text-slate-500 col-span-full py-10">В этой категории пока нет вопросов. Добавьте их во вкладке "Управление"!</p>';
+                cardsContainer.innerHTML = '<p class="text-center text-gray-500 col-span-full py-10">В этой категории пока нет вопросов. Добавьте их во вкладке "Управление"!</p>';
                 return;
             }
 
             questions.forEach((q, index) => {
-                const cardWrapper = document.createElement('div');
-                cardWrapper.className = 'card fade-in-card';
-                cardWrapper.style.animationDelay = `${index * 100}ms`;
+                const card = document.createElement('div');
+                card.className = `fade-in-card question-card text-[#111111] p-6 flex items-center justify-center rounded-xl shadow-lg cursor-pointer`;
+                card.style.minHeight = '300px';
+                card.style.animationDelay = `${index * 100}ms`;
 
                 const formattedQuestion = formatText(q.question_text);
                 const formattedAnswer = formatText(q.answer_text);
 
-                cardWrapper.innerHTML = `
-                    <div class="card-inner shadow-lg rounded-xl">
-                        <div class="card-front bg-gradient-to-br from-indigo-500 to-purple-600 text-white p-6 flex items-center justify-center">
-                            <div class="card-content text-center text-lg font-semibold">${formattedQuestion}</div>
-                        </div>
-                        <div class="card-back bg-slate-700 text-white p-1 flex items-start justify-start">
-                            <div class="card-content w-full h-full p-5 overflow-y-auto text-left text-base leading-relaxed">${formattedAnswer}</div>
-                        </div>
-                    </div>
-                `;
-                cardWrapper.addEventListener('click', () => cardWrapper.classList.toggle('flipped'));
-                cardsContainer.appendChild(cardWrapper);
+                card.innerHTML = `<div class="text-center text-lg font-semibold">${formattedQuestion}</div>`;
+
+                card.addEventListener('click', () => {
+                    openModal(formattedQuestion, formattedAnswer);
+                });
+
+                cardsContainer.appendChild(card);
             });
         }
 
@@ -380,10 +524,9 @@
                 if (response.ok) {
                     showMessage(successMessage);
                     formElement.reset();
-                    // Refresh data
                     loadStats();
                     loadCategories();
-                    if(formElement.id === 'question-form') loadQuestions(categorySelect.value);
+                    if (formElement.id === 'question-form') loadQuestions(categorySelect.value);
                 } else {
                     const errorData = await response.json();
                     showMessage(errorData.detail || 'Произошла ошибка', 'error');
@@ -424,6 +567,13 @@
             loadQuestions(event.target.value);
         });
 
+        modalCloseBtn.addEventListener('click', closeModal);
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
         async function init() {
             await loadCategories();
             loadQuestions();
@@ -433,4 +583,5 @@
         init();
     </script>
 </body>
+
 </html>
