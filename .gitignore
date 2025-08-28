@@ -3,3 +3,5 @@
 *.pyc
 
 interview_app.db
+
+logs

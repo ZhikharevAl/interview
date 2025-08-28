@@ -1,13 +1,30 @@
-import os
+from pydantic import Field
+from pydantic_settings import BaseSettings
 
 
-class Settings:
+class Settings(BaseSettings):
     """Application settings."""
 
-    DATABASE_URL: str = os.getenv("DATABASE_URL", "sqlite:///./interview_app.db")
+    DATABASE_URL: str = Field(
+        default="sqlite:///./interview_app.db", description="Database connection URL"
+    )
+    DEBUG: bool = Field(default=False, description="Debug mode")
+    SECRET_KEY: str = Field(
+        default="your-secret-key-here", description="Secret key for authentication"
+    )
 
-    DEBUG: bool = os.getenv("DEBUG", "False").lower() == "true"
-    SECRET_KEY: str = os.getenv("SECRET_KEY", "your-secret-key-here")
+    LOG_LEVEL: str = Field(default="INFO", description="Logging level")
+    LOG_FILE: str = Field(default="logs/app.log", description="Log file path")
+
+    APP_NAME: str = Field(default="Interview Prep App", description="Application name")
+    APP_VERSION: str = Field(default="0.1.0", description="Application version")
+
+    class Config:
+        """Pydantic configuration."""
+
+        env_file = ".env"
+        env_file_encoding = "utf-8"
+        case_sensitive = True
 
 
 settings = Settings()
