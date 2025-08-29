@@ -8,6 +8,11 @@ def get_categories(db: Session, skip: int = 0, limit: int = 100) -> list[Categor
     return db.query(CategoryModel).offset(skip).limit(limit).all()
 
 
+def get_category(db: Session, category_id: int) -> CategoryModel | None:
+    """Get category by ID."""
+    return db.query(CategoryModel).filter(CategoryModel.id == category_id).first()
+
+
 def get_category_by_name(db: Session, name: str) -> CategoryModel | None:
     """Get category by name."""
     return db.query(CategoryModel).filter(CategoryModel.name == name).first()
