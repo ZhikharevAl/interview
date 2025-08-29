@@ -1,7 +1,15 @@
-.venv
+# Python environment
+.venv/
 .python-version
+
+# Compiled Python files
 *.pyc
 
+# Database
 interview_app.db
 
-logs
+# Application logs
+logs/
+
+# IDE configuration
+.vscode/
