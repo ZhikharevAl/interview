@@ -20,6 +20,15 @@ def read_categories(
     return [Category.model_validate(db_cat) for db_cat in db_categories]
 
 
+@router.get("/{category_id}")
+def read_category(category_id: int, db: Annotated[Session, Depends(get_db)]) -> Category:
+    """Get category by ID."""
+    db_category = category_service.get_category(db, category_id=category_id)
+    if db_category is None:
+        raise HTTPException(status_code=404, detail="Category not found")
+    return Category.model_validate(db_category)
+
+
 @router.post("/", response_model=Category)
 def create_category(
     category: CategoryCreate, db: Annotated[Session, Depends(get_db)]
