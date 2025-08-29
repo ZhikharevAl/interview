@@ -4,12 +4,13 @@
 
 # Compiled Python files
 *.pyc
+__pycache__/
 
 # Database
 interview_app.db
 
-# Application logs
+# Logs
 logs/
 
-# IDE configuration
+# IDE settings
 .vscode/
