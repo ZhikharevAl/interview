@@ -1,7 +1,7 @@
 [project]
 name = "interview"
 version = "0.1.0"
-description = "Add your description here"
+description = ""
 readme = "README.md"
 requires-python = ">=3.13.5"
 dependencies = []
@@ -19,6 +19,14 @@ dev = [
     "ruff>=0.12.10",
     "sqlalchemy>=2.0.43",
     "uvicorn>=0.35.0",
+]
+test = [
+    "allure-pytest>=2.15.0",
+    "httpx>=0.28.1",
+    "pytest>=8.4.1",
+    "pytest-asyncio>=1.1.0",
+    "pytest-cov>=6.2.1",
+    "pytest-playwright>=0.7.0",
 ]
 
 [tool.ruff]
@@ -114,3 +122,7 @@ disable = ["missing-docstring", "too-few-public-methods"]
 
 [tool.pylint.FORMAT]
 max-line-length = 100
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+pythonpath = ["backend"]
