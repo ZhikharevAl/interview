@@ -14,3 +14,6 @@ logs/
 
 # IDE settings
 .vscode/
+
+# Test results
+allure-results
