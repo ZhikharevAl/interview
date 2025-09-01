@@ -34,7 +34,7 @@ jobs:
 
   tests:
     runs-on: ubuntu-22.04
-    needs: [linters]
+    needs: [lock_file]
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
