@@ -3,9 +3,8 @@ from typing import Any
 
 from playwright.sync_api import APIRequestContext, APIResponse
 
+from tests.config.config import ConfigTests
 from tests.utils.allure_utils import AllureUtils
-
-TIMEOUT = 30000
 
 
 class HTTPClient:
@@ -25,7 +24,7 @@ class HTTPClient:
         """Sends a GET request."""
         self.logger.info("Sending GET to %s with params: %s", endpoint, params)
         response: APIResponse = self.api_request_context.get(
-            endpoint, headers=headers, params=params, timeout=TIMEOUT
+            endpoint, headers=headers, params=params, timeout=ConfigTests.TIMEOUT
         )
         self.logger.info("Received response %s from %s", response.status, response.url)
         AllureUtils.attach_response(response)
@@ -45,7 +44,7 @@ class HTTPClient:
             headers=headers,
             data=json,
             form=data,
-            timeout=TIMEOUT,
+            timeout=ConfigTests.TIMEOUT,
         )
         self.logger.info("Received response %s from %s", response.status, response.url)
         AllureUtils.attach_response(response)
@@ -65,7 +64,7 @@ class HTTPClient:
             headers=headers,
             data=json,
             form=data,
-            timeout=TIMEOUT,
+            timeout=ConfigTests.TIMEOUT,
         )
         self.logger.info("Received response %s from %s", response.status, response.url)
         AllureUtils.attach_response(response)
@@ -80,7 +79,7 @@ class HTTPClient:
         """Sends a DELETE request."""
         self.logger.info("Sending DELETE to %s", endpoint)
         response: APIResponse = self.api_request_context.delete(
-            endpoint, headers=headers, params=params, timeout=TIMEOUT
+            endpoint, headers=headers, params=params, timeout=ConfigTests.TIMEOUT
         )
         self.logger.info("Received response %s from %s", response.status, response.url)
         AllureUtils.attach_response(response)
@@ -100,7 +99,7 @@ class HTTPClient:
             headers=headers,
             data=json,
             form=data,
-            timeout=TIMEOUT,
+            timeout=ConfigTests.TIMEOUT,
         )
         self.logger.info("Received response %s from %s", response.status, response.url)
         AllureUtils.attach_response(response)
