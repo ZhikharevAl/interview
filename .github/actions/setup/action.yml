@@ -7,3 +7,6 @@ runs:
       uses: astral-sh/setup-uv@v6.4.3
       with:
         version: "0.8.5"
+    - name: Install dependencies
+      run: uv pip install -e ".[dev,test]"
+      shell: bash
