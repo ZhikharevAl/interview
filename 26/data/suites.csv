@@ -1,0 +1,6 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"
+Test for successful retrieval of a category by ID.
+
+The `managed_category` fixture provides the ID of an already created category.
+","50","test_read_category_by_id","tests.api","Mon Sep 01 18:57:30 GMT 2025","passed","Mon Sep 01 18:57:30 GMT 2025","TestCategoriesAPI","test_categories_api","",""

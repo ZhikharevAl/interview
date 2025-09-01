@@ -1,0 +1,16 @@
+URL: http://localhost:8000/api/v1/categories/
+Status: 200 OK
+
+Headers:
+{
+    "date": "Mon, 01 Sep 2025 18:57:29 GMT",
+    "server": "uvicorn",
+    "content-length": "43",
+    "content-type": "application/json"
+}
+
+Body:
+{
+    "name": "Test Category for Cleanup",
+    "id": 1
+}
