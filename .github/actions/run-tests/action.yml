@@ -1,0 +1,33 @@
+name: "Run Tests"
+description: "Starts services, runs Pytest with Allure, and uploads results"
+runs:
+  using: composite
+  steps:
+    - name: Setup Python and UV
+      uses: ./.github/actions/setup
+
+    - name: Start services with Docker Compose
+      run: docker-compose up -d --build
+      shell: bash
+
+    - name: Wait for backend to be healthy
+      run: |
+        timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:8000/health)" != "200" ]]; do echo "Waiting for backend..."; sleep 5; done'
+        echo "Backend is healthy!"
+      shell: bash
+
+    - name: Install Playwright Browsers
+      run: uvx playwright install --with-deps
+      shell: bash
+
+    - name: Run Pytest
+      run: uvx pytest --alluredir=allure-results
+      shell: bash
+
+    - name: Store Test Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: allure-results
+        path: allure-results
+        retention-days: 7
