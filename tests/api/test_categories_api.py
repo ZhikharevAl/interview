@@ -3,6 +3,7 @@ from http import HTTPStatus
 import allure
 
 from tests.api.clients.categories import CategoriesClient
+from tests.utils.category_model import CategoryData
 
 
 @allure.feature("Categories API")
@@ -33,7 +34,9 @@ class TestCategoriesAPI:
         """A test for the successful deletion of a category."""
         category_name = "Category to be deleted"
         with allure.step(f"Creating category '{category_name}' for deletion"):
-            create_response = categories_client.create(name=category_name)
+            create_response = categories_client.create(
+                name=category_name, description="To be deleted"
+            )
             assert create_response.ok
             category_id = create_response.json()["id"]
 
@@ -49,3 +52,13 @@ class TestCategoriesAPI:
         ):
             get_response = categories_client.get_by_id(category_id)
             assert get_response.status == HTTPStatus.NOT_FOUND
+
+    @allure.story("Get Category by ID")
+    def test_read_nonexistent_category(self, categories_client: CategoriesClient) -> None:
+        """Test for getting 404 errors when requesting a non-existent category."""
+        non_existent_id = CategoryData.random_number()
+        with allure.step(f"Requesting a non-existent software category ID: {non_existent_id}"):
+            response = categories_client.get_by_id(non_existent_id)
+
+        with allure.step("Checking that the API returned a 404 Not Found error"):
+            assert response.status == HTTPStatus.NOT_FOUND
