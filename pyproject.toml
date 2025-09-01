@@ -8,25 +8,23 @@ dependencies = []
 
 [dependency-groups]
 dev = [
+    "allure-pytest>=2.15.0",
     "fastapi>=0.116.1",
+    "httpx>=0.28.1",
     "pre-commit>=4.3.0",
     "psycopg2-binary>=2.9.10",
     "pydantic>=2.11.7",
     "pydantic-settings>=2.10.1",
     "pylint>=3.3.8",
     "pyright>=1.1.404",
-    "python-dotenv>=1.1.1",
-    "ruff>=0.12.10",
-    "sqlalchemy>=2.0.43",
-    "uvicorn>=0.35.0",
-]
-test = [
-    "allure-pytest>=2.15.0",
-    "httpx>=0.28.1",
     "pytest>=8.4.1",
     "pytest-asyncio>=1.1.0",
     "pytest-cov>=6.2.1",
     "pytest-playwright>=0.7.0",
+    "python-dotenv>=1.1.1",
+    "ruff>=0.12.10",
+    "sqlalchemy>=2.0.43",
+    "uvicorn>=0.35.0",
 ]
 
 [tool.ruff]
@@ -114,6 +112,8 @@ exclude = [".venv", "**/__pycache__"]
 pythonVersion = "3.13"
 venvPath = "."
 venv = ".venv"
+reportMissingImports = "warning"
+reportMissingTypeStubs = false
 
 [tool.pylint.MASTER]
 init-hook = 'import sys; sys.path.append("backend")'
@@ -127,3 +127,4 @@ max-line-length = 100
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 pythonpath = ["backend"]
+testpaths = ["tests"]

@@ -327,50 +327,46 @@ source = { virtual = "." }
 
 [package.dev-dependencies]
 dev = [
+    { name = "allure-pytest" },
     { name = "fastapi" },
+    { name = "httpx" },
     { name = "pre-commit" },
     { name = "psycopg2-binary" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
     { name = "pylint" },
     { name = "pyright" },
-    { name = "python-dotenv" },
-    { name = "ruff" },
-    { name = "sqlalchemy" },
-    { name = "uvicorn" },
-]
-test = [
-    { name = "allure-pytest" },
-    { name = "httpx" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "pytest-cov" },
     { name = "pytest-playwright" },
+    { name = "python-dotenv" },
+    { name = "ruff" },
+    { name = "sqlalchemy" },
+    { name = "uvicorn" },
 ]
 
 [package.metadata]
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "allure-pytest", specifier = ">=2.15.0" },
     { name = "fastapi", specifier = ">=0.116.1" },
+    { name = "httpx", specifier = ">=0.28.1" },
     { name = "pre-commit", specifier = ">=4.3.0" },
     { name = "psycopg2-binary", specifier = ">=2.9.10" },
     { name = "pydantic", specifier = ">=2.11.7" },
     { name = "pydantic-settings", specifier = ">=2.10.1" },
     { name = "pylint", specifier = ">=3.3.8" },
     { name = "pyright", specifier = ">=1.1.404" },
-    { name = "python-dotenv", specifier = ">=1.1.1" },
-    { name = "ruff", specifier = ">=0.12.10" },
-    { name = "sqlalchemy", specifier = ">=2.0.43" },
-    { name = "uvicorn", specifier = ">=0.35.0" },
-]
-test = [
-    { name = "allure-pytest", specifier = ">=2.15.0" },
-    { name = "httpx", specifier = ">=0.28.1" },
     { name = "pytest", specifier = ">=8.4.1" },
     { name = "pytest-asyncio", specifier = ">=1.1.0" },
     { name = "pytest-cov", specifier = ">=6.2.1" },
     { name = "pytest-playwright", specifier = ">=0.7.0" },
+    { name = "python-dotenv", specifier = ">=1.1.1" },
+    { name = "ruff", specifier = ">=0.12.10" },
+    { name = "sqlalchemy", specifier = ">=2.0.43" },
+    { name = "uvicorn", specifier = ">=0.35.0" },
 ]
 
 [[package]]
