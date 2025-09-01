@@ -25,3 +25,12 @@ def create_category(db: Session, category: CategoryCreate) -> CategoryModel:
     db.commit()
     db.refresh(db_category)
     return db_category
+
+
+def delete_category(db: Session, category_id: int) -> CategoryModel | None:
+    """Delete a category by ID."""
+    db_category = db.query(CategoryModel).filter(CategoryModel.id == category_id).first()
+    if db_category:
+        db.delete(db_category)
+        db.commit()
+    return db_category

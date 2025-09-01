@@ -9,24 +9,68 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@v4
       - name: Cache UV dependencies
-        uses: actions/cache@v4.2.4
+        uses: actions/cache@v4
         with:
           path: .venv
           key: ${{ runner.os }}-uv-${{ hashFiles('uv.lock') }}
           restore-keys: |
             ${{ runner.os }}-uv-
-
       - name: Setup Python and UV
         uses: ./.github/actions/setup
       - name: Generate/Check Lockfile
         run: uv lock --locked
+        shell: bash
 
   linters:
     runs-on: ubuntu-22.04
     needs: [lock_file]
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4.2.2
-      - uses: ./.github/actions/run-linters
+        uses: actions/checkout@v4
+      - name: Run Linters Composite Action
+        uses: ./.github/actions/run-linters
+
+  tests:
+    runs-on: ubuntu-22.04
+    needs: [lock_file]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+      - name: Run Tests Composite Action
+        uses: ./.github/actions/run-tests
+
+  allure-report:
+    runs-on: ubuntu-22.04
+    needs: [tests]
+    if: always()
+    permissions:
+      contents: write
+    steps:
+      - name: Download Allure Results
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
+
+      - name: Get Allure history
+        uses: actions/checkout@v4
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Allure Report action
+        uses: simple-elf/allure-report-action@v1.12
+        with:
+          allure_results: allure-results
+          allure_history: allure-history
+          keep_reports: 20
+
+      - name: Deploy report to Github Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history

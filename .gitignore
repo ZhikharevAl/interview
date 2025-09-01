@@ -1,7 +1,19 @@
-.venv
+# Python environment
+.venv/
 .python-version
-*.pyc
 
+# Compiled Python files
+*.pyc
+__pycache__/
+
+# Database
 interview_app.db
 
-logs
+# Logs
+logs/
+
+# IDE settings
+.vscode/
+
+# Test results
+allure-results
