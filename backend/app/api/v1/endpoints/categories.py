@@ -1,7 +1,7 @@
-from typing import Annotated
+from typing import Annotated, Any
 
 from app.db.database import get_db
-from app.schemas.category import Category, CategoryCreate
+from app.schemas.category import Category, CategoryCreate, CategoryDelete
 from app.services import category as category_service
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -38,3 +38,12 @@ def create_category(
     if existing:
         raise HTTPException(status_code=400, detail="Category already exists")
     return category_service.create_category(db=db, category=category)
+
+
+@router.delete("/{category_id}", response_model=CategoryDelete)
+def delete_category(category_id: int, db: Annotated[Session, Depends(get_db)]) -> dict[str, Any]:
+    """Delete a category by ID."""
+    deleted = category_service.delete_category(db, category_id=category_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Category not found")
+    return {"id": category_id, "deleted": True}
