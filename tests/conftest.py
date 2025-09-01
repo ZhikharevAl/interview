@@ -4,9 +4,9 @@ import pytest
 from playwright.sync_api import APIRequestContext, Playwright
 
 from tests.api.clients.categories import CategoriesClient
+from tests.config.config import ConfigTests
+from tests.utils.category_model import CategoryData
 from tests.utils.http_client import HTTPClient
-
-APP_URL = "http://localhost:8000"
 
 
 @pytest.fixture(scope="session", name="api_request_context")
@@ -14,7 +14,7 @@ def api_request_context_fixture(
     playwright: Playwright,
 ) -> Generator[APIRequestContext]:
     """Session-scoped fixture to create a Playwright APIRequestContext."""
-    context = playwright.request.new_context(base_url=APP_URL)
+    context = playwright.request.new_context(base_url=ConfigTests.APP_URL)
     yield context
     context.dispose()
 
@@ -38,9 +38,8 @@ def managed_category(categories_client: CategoriesClient) -> Generator[int]:
 
     `yields` ID the created category.
     """
-    category_name = "Test Category for Cleanup"
-    response = categories_client.create(name=category_name)
-    assert response.ok, "Failed to create category in test setup"
+    category = CategoryData.random()
+    response = categories_client.create(name=category.name, description=category.description)
     category_id = response.json()["id"]
 
     yield category_id
