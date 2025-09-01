@@ -16,5 +16,5 @@ runs:
       shell: bash
 
     - name: Install dependencies
-      run: uv pip install -e ".[dev,test]"
+      run: uv sync --dev
       shell: bash
