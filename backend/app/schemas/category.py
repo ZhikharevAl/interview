@@ -17,3 +17,10 @@ class Category(CategoryBase):
     id: int
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class CategoryDelete(BaseModel):
+    """Schema for delete confirmation."""
+
+    id: int
+    deleted: bool
