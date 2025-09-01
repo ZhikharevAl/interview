@@ -17,11 +17,11 @@ runs:
       shell: bash
 
     - name: Install Playwright Browsers
-      run: uvx playwright install --with-deps
+      run: uv run playwright install --with-deps
       shell: bash
 
     - name: Run Pytest
-      run: uvx pytest --alluredir=allure-results
+      run: uv run pytest --alluredir=allure-results
       shell: bash
 
     - name: Store Test Results
@@ -30,4 +30,4 @@ runs:
       with:
         name: allure-results
         path: allure-results
-        retention-days: 7
+        retention-days: 30
