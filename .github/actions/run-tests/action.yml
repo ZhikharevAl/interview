@@ -7,7 +7,7 @@ runs:
       uses: ./.github/actions/setup
 
     - name: Start services with Docker Compose
-      run: docker-compose up -d --build
+      run: docker compose up -d --build
       shell: bash
 
     - name: Wait for backend to be healthy
