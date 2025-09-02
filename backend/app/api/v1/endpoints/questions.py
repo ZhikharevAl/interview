@@ -1,7 +1,7 @@
-from typing import Annotated
+from typing import Annotated, Any
 
 from app.db.database import get_db
-from app.schemas.question import Question, QuestionCreate
+from app.schemas.question import Question, QuestionCreate, QuestionDelete, QuestionUpdate
 from app.services import question as question_service
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -38,3 +38,25 @@ def create_question(question: QuestionCreate, db: Annotated[Session, Depends(get
     """Create a new question."""
     db_question = question_service.create_question(db=db, question=question)
     return Question.model_validate(db_question)
+
+
+@router.put("/{question_id}", response_model=Question)
+def update_question(
+    question_id: int, question: QuestionUpdate, db: Annotated[Session, Depends(get_db)]
+) -> question_service.QuestionModel:
+    """Update a question by ID."""
+    updated_question = question_service.update_question(
+        db=db, question_id=question_id, question=question
+    )
+    if not updated_question:
+        raise HTTPException(status_code=404, detail="Question not found")
+    return updated_question
+
+
+@router.delete("/{question_id}", response_model=QuestionDelete)
+def delete_question(question_id: int, db: Annotated[Session, Depends(get_db)]) -> dict[str, Any]:
+    """Delete a question by ID."""
+    deleted = question_service.delete_question(db, question_id=question_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Question not found")
+    return {"id": question_id, "deleted": True}
