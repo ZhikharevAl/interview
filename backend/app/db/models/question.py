@@ -1,6 +1,6 @@
 from app.db.database import Base
-from sqlalchemy import Column, ForeignKey, Integer, Text
-from sqlalchemy.orm import relationship
+from sqlalchemy import ForeignKey, Text
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 
 class Question(Base):
@@ -8,9 +8,9 @@ class Question(Base):
 
     __tablename__ = "questions"
 
-    id = Column(Integer, primary_key=True, index=True)
-    question_text = Column(Text, nullable=False)
-    answer_text = Column(Text, nullable=False)
-    category_id = Column(Integer, ForeignKey("categories.id"))
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    question_text: Mapped[str] = mapped_column(Text, nullable=False)
+    answer_text: Mapped[str] = mapped_column(Text, nullable=False)
+    category_id: Mapped[int | None] = mapped_column(ForeignKey("categories.id"))
 
     category = relationship("Category", back_populates="questions")
