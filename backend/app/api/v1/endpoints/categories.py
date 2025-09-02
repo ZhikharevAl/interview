@@ -45,12 +45,10 @@ def update_category(
     category_id: int, category: CategoryUpdate, db: Annotated[Session, Depends(get_db)]
 ) -> category_service.CategoryModel:
     """Update a category by ID."""
-    # Check if category exists
     existing_category = category_service.get_category(db, category_id=category_id)
     if not existing_category:
         raise HTTPException(status_code=404, detail="Category not found")
 
-    # Check if new name already exists (if name is being changed)
     if category.name and category.name != existing_category.name:
         existing_name = category_service.get_category_by_name(db, category.name)
         if existing_name:
