@@ -1,7 +1,7 @@
 from typing import Annotated, Any
 
 from app.db.database import get_db
-from app.schemas.category import Category, CategoryCreate, CategoryDelete
+from app.schemas.category import Category, CategoryCreate, CategoryDelete, CategoryUpdate
 from app.services import category as category_service
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
@@ -38,6 +38,31 @@ def create_category(
     if existing:
         raise HTTPException(status_code=400, detail="Category already exists")
     return category_service.create_category(db=db, category=category)
+
+
+@router.put("/{category_id}", response_model=Category)
+def update_category(
+    category_id: int, category: CategoryUpdate, db: Annotated[Session, Depends(get_db)]
+) -> category_service.CategoryModel:
+    """Update a category by ID."""
+    # Check if category exists
+    existing_category = category_service.get_category(db, category_id=category_id)
+    if not existing_category:
+        raise HTTPException(status_code=404, detail="Category not found")
+
+    # Check if new name already exists (if name is being changed)
+    if category.name and category.name != existing_category.name:
+        existing_name = category_service.get_category_by_name(db, category.name)
+        if existing_name:
+            raise HTTPException(status_code=400, detail="Category name already exists")
+
+    updated_category = category_service.update_category(
+        db=db, category_id=category_id, category=category
+    )
+    if not updated_category:
+        raise HTTPException(status_code=404, detail="Category not found")
+
+    return updated_category
 
 
 @router.delete("/{category_id}", response_model=CategoryDelete)
