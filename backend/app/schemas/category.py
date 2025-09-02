@@ -19,6 +19,12 @@ class Category(CategoryBase):
     model_config = ConfigDict(from_attributes=True)
 
 
+class CategoryUpdate(BaseModel):
+    """Category update schema."""
+
+    name: str | None = None
+
+
 class CategoryDelete(BaseModel):
     """Schema for delete confirmation."""
 

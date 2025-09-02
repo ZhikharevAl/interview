@@ -1,5 +1,5 @@
 from app.db.models.category import Category as CategoryModel
-from app.schemas.category import CategoryCreate
+from app.schemas.category import CategoryCreate, CategoryUpdate
 from sqlalchemy.orm import Session
 
 
@@ -22,6 +22,22 @@ def create_category(db: Session, category: CategoryCreate) -> CategoryModel:
     """Create a new category."""
     db_category = CategoryModel(name=category.name)
     db.add(db_category)
+    db.commit()
+    db.refresh(db_category)
+    return db_category
+
+
+def update_category(
+    db: Session, category_id: int, category: CategoryUpdate
+) -> CategoryModel | None:
+    """Update a category by ID."""
+    db_category = db.query(CategoryModel).filter(CategoryModel.id == category_id).first()
+    if not db_category:
+        return None
+
+    if category.name is not None:
+        db_category.name = category.name
+
     db.commit()
     db.refresh(db_category)
     return db_category
