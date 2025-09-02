@@ -1,0 +1,15 @@
+URL: http://localhost:8000/api/v1/categories/2
+Status: 404 Not Found
+
+Headers:
+{
+    "date": "Tue, 02 Sep 2025 13:55:18 GMT",
+    "server": "uvicorn",
+    "content-length": "31",
+    "content-type": "application/json"
+}
+
+Body:
+{
+    "detail": "Category not found"
+}
