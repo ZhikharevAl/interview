@@ -1,187 +1,226 @@
 const App = {
+    allCategories: [],
+    allQuestions: [],
     currentQuestions: [],
+    currentPage: 1,
 
-    /**
-     * Initialize the application
-     */
     async init() {
-        UI.initElements();
-        UI.initEventListeners();
-        this.initFormHandlers();
-
-        try {
-            await Promise.all([
-                this.loadCategories(),
-                this.loadQuestions(),
-                this.loadStats()
-            ]);
-        } catch (error) {
-            console.error('Error during app initialization:', error);
-        }
+        UI.init();
+        this.initEventListeners();
+        await this.loadInitialData();
     },
 
-    /**
-     * Load and display statistics
-     */
-    async loadStats() {
-        try {
-            const [categories, questions] = await Promise.all([
-                API.categories.getAll(),
-                API.questions.getAll()
-            ]);
-
-            UI.renderStats(categories.length, questions.length);
-        } catch (error) {
-            console.error('Error loading stats:', error);
-            UI.renderStatsError();
-        }
-    },
-
-    /**
-     * Load categories for the main select
-     */
-    async loadCategories() {
-        try {
-            const categories = await API.categories.getAll();
-            UI.populateSelect(UI.elements.categorySelect, categories, 'Все вопросы');
-        } catch (error) {
-            console.error('Error loading categories:', error);
-            UI.renderCardsError('Не удалось загрузить категории. Убедитесь, что бэкенд запущен.');
-        }
-    },
-
-    /**
-     * Load categories for the form select
-     */
-    async loadCategoriesForForm() {
-        try {
-            const categories = await API.categories.getAll();
-            UI.populateSelect(UI.elements.questionCategorySelect, categories, 'Выберите категорию');
-        } catch (error) {
-            console.error('Error loading categories for form:', error);
-        }
-    },
-
-    /**
-     * Load and display questions
-     * @param {string} categoryId - Category ID to filter by
-     */
-    async loadQuestions(categoryId = '') {
+    async loadInitialData() {
         UI.toggleLoading(true);
-
         try {
-            const questions = await API.questions.getAll(categoryId || null);
-            this.currentQuestions = questions;
-            UI.renderQuestions(questions);
-        } catch (error) {
-            console.error('Error loading questions:', error);
-            UI.renderCardsError();
+            const [cats, quests] = await Promise.all([API.categories.getAll(), API.questions.getAll()]);
+            this.allCategories = cats;
+            this.allQuestions = quests;
+            this.currentQuestions = quests;
+
+            UI.populateSelect(UI.elements.categorySelect, cats, 'Все вопросы');
+            UI.populateSelect(UI.elements.questionCategorySelect, cats, 'Выберите категорию');
+            UI.renderStats(cats.length, quests.length, this.currentPage);
+            UI.renderQuestions(this.currentQuestions, 1);
+            this.currentPage = 1;
+
+            if (UI.elements.manageTab.classList.contains('active')) {
+                UI.renderManagementList(this.allCategories, this.allQuestions);
+            }
+        } catch (e) {
+            UI.elements.cardsContainer.innerHTML = `
+                <div class="col-span-full text-center py-16">
+                    <div class="text-6xl mb-4">❌</div>
+                    <p class="text-red-400 text-xl mb-2">Ошибка загрузки данных</p>
+                    <p class="text-gray-500">Убедитесь, что сервер запущен</p>
+                </div>`;
         } finally {
             UI.toggleLoading(false);
         }
     },
 
-    /**
-     * Shuffle current questions and re-render
-     */
-    shuffleQuestions() {
-        const shuffled = Utils.shuffleArray(this.currentQuestions);
-        UI.renderQuestions(shuffled);
+    filterAndDisplayCards() {
+        const catId = UI.elements.categorySelect.value;
+        this.currentQuestions = catId
+            ? this.allQuestions.filter(q => q.category_id == catId)
+            : this.allQuestions;
+        this.currentPage = 1;
+        UI.renderQuestions(this.currentQuestions, 1);
+        UI.renderStats(this.allCategories.length, this.allQuestions.length, this.currentPage);
     },
 
-    /**
-     * Handle form submissions
-     * @param {string} endpoint - API endpoint
-     * @param {Object} data - Form data
-     * @param {HTMLFormElement} form - Form element
-     * @param {string} successMessage - Success message
-     */
-    async handleFormSubmit(endpoint, data, form, successMessage) {
+    shuffleQuestions() {
+        this.currentQuestions = Utils.shuffleArray(this.currentQuestions);
+        this.goToPage(1); // Go to first page after shuffling
+    },
+
+    goToPage(page) {
+        this.currentPage = page;
+        UI.renderQuestions(this.currentQuestions, page);
+        UI.renderStats(this.allCategories.length, this.allQuestions.length, this.currentPage);
+        window.scrollTo({ top: UI.elements.cardsContainer.offsetTop - 100, behavior: 'smooth' });
+    },
+
+    renderManagementList() {
+        UI.renderManagementList(this.allCategories, this.allQuestions);
+    },
+
+    initEventListeners() {
+        // Tabs
+        UI.elements.studyTabBtn.addEventListener('click', (e) => UI.switchTab('study'));
+        UI.elements.manageTabBtn.addEventListener('click', (e) => UI.switchTab('manage'));
+
+        // Study Tab
+        UI.elements.categorySelect.addEventListener('change', () => this.filterAndDisplayCards());
+        UI.elements.shuffleBtn.addEventListener('click', () => this.shuffleQuestions());
+        UI.elements.prevPageBtn.addEventListener('click', () => {
+            if (this.currentPage > 1) this.goToPage(this.currentPage - 1);
+        });
+        UI.elements.nextPageBtn.addEventListener('click', () => {
+            const totalPages = Math.ceil(this.currentQuestions.length / CONFIG.UI.CARDS_PER_PAGE);
+            if (this.currentPage < totalPages) this.goToPage(this.currentPage + 1);
+        });
+
+        // Management Tab Forms
+        UI.elements.categoryForm.addEventListener('submit', e => this.handleAddCategory(e));
+        UI.elements.questionForm.addEventListener('submit', e => this.handleAddQuestion(e));
+
+        // Modals Listeners (delegated to modals container)
+        UI.elements.modalsContainer.addEventListener('click', (e) => {
+            const target = e.target.closest('.modal-close-btn');
+            if (target) {
+                const modal = target.closest('.fixed');
+                UI.closeModal(modal.id);
+            }
+            if (e.target.id === 'confirm-modal-no') {
+                UI.closeModal('confirm-modal');
+            }
+        });
+
+        // Edit Forms
+        const editCategoryForm = UI.elements.modalsContainer.querySelector('#edit-category-form');
+        const editQuestionForm = UI.elements.modalsContainer.querySelector('#edit-question-form');
+
+        editCategoryForm.addEventListener('submit', e => this.handleEditCategory(e));
+        editQuestionForm.addEventListener('submit', e => this.handleEditQuestion(e));
+    },
+
+    // --- Action Handlers ---
+    async handleAddCategory(event) {
+        event.preventDefault();
+        const form = event.target;
+        const name = form.querySelector('#category-name').value.trim();
+        if (!name) return UI.showMessage('Название категории не может быть пустым.', 'error');
+
         try {
-            let response;
-
-            if (endpoint === '/categories/') {
-                response = await API.categories.create(data);
-            } else if (endpoint === '/questions/') {
-                response = await API.questions.create(data);
-            }
-
-            UI.showMessage(successMessage);
+            await API.categories.create({ name });
+            UI.showMessage('Категория успешно добавлена!', 'success');
             form.reset();
-
-            // Reload data
-            await Promise.all([
-                this.loadStats(),
-                this.loadCategories()
-            ]);
-
-            if (endpoint === '/questions/') {
-                await this.loadQuestions(UI.elements.categorySelect.value);
-            }
-
+            await this.loadInitialData();
         } catch (error) {
-            console.error('Form submission error:', error);
-            UI.showMessage(error.message || 'Произошла ошибка', 'error');
+            UI.showMessage(`Ошибка: ${error.message}`, 'error');
         }
     },
 
-    /**
-     * Initialize form event handlers
-     */
-    initFormHandlers() {
-        // Category form
-        document.getElementById('category-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
+    async handleAddQuestion(event) {
+        event.preventDefault();
+        const form = event.target;
+        const data = {
+            category_id: parseInt(form.querySelector('#question-category').value),
+            question_text: form.querySelector('#question-text').value.trim(),
+            answer_text: form.querySelector('#answer-text').value.trim(),
+        };
 
-            const name = document.getElementById('category-name').value.trim();
-            if (!name) {
-                UI.showMessage('Введите название категории', 'error');
-                return;
+        if (!data.category_id || !data.question_text || !data.answer_text) {
+            return UI.showMessage('Все поля должны быть заполнены.', 'error');
+        }
+
+        try {
+            await API.questions.create(data);
+            UI.showMessage('Вопрос успешно добавлен!', 'success');
+            form.reset();
+            await this.loadInitialData();
+        } catch (error) {
+            UI.showMessage(`Ошибка: ${error.message}`, 'error');
+        }
+    },
+
+    async handleEditCategory(event) {
+        event.preventDefault();
+        const form = event.target;
+        const id = parseInt(form.querySelector('#edit-category-id').value);
+        const name = form.querySelector('#edit-category-name').value.trim();
+        if (!name) return UI.showMessage('Название не может быть пустым.', 'error');
+
+        try {
+            await API.categories.update(id, { name });
+            UI.showMessage('Категория успешно обновлена!', 'success');
+            UI.closeModal('edit-category-modal');
+            await this.loadInitialData();
+        } catch (error) {
+            UI.showMessage(`Ошибка: ${error.message}`, 'error');
+        }
+    },
+
+    async handleEditQuestion(event) {
+        event.preventDefault();
+        const form = event.target;
+        const id = parseInt(form.querySelector('#edit-question-id').value);
+        const data = {
+            category_id: parseInt(form.querySelector('#edit-question-category').value),
+            question_text: form.querySelector('#edit-question-text').value.trim(),
+            answer_text: form.querySelector('#edit-answer-text').value.trim(),
+        };
+
+        if (!data.category_id || !data.question_text || !data.answer_text) {
+            return UI.showMessage('Все поля должны быть заполнены.', 'error');
+        }
+
+        try {
+            await API.questions.update(id, data);
+            UI.showMessage('Вопрос успешно обновлен!', 'success');
+            UI.closeModal('edit-question-modal');
+            await this.loadInitialData();
+        } catch (error) {
+            UI.showMessage(`Ошибка: ${error.message}`, 'error');
+        }
+    },
+
+    openEditQuestionModal(questionId) {
+        UI.openModal('edit-question-modal', { id: questionId });
+    },
+
+    handleDeleteCategory(id) {
+        UI.openModal('confirm-modal', {
+            message: 'Вы уверены, что хотите удалить эту категорию и все ее вопросы?',
+            onConfirm: async () => {
+                try {
+                    await API.categories.delete(id);
+                    UI.showMessage('Категория успешно удалена.', 'success');
+                    await this.loadInitialData();
+                } catch (error) {
+                    UI.showMessage(`Ошибка: ${error.message}`, 'error');
+                }
             }
-
-            await this.handleFormSubmit('/categories/', { name }, e.target, 'Категория успешно добавлена!');
         });
+    },
 
-        // Question form
-        document.getElementById('question-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const formData = {
-                category_id: document.getElementById('question-category').value,
-                question_text: document.getElementById('question-text').value.trim(),
-                answer_text: document.getElementById('answer-text').value.trim()
-            };
-
-            const validation = Utils.validateFormData(formData, ['category_id', 'question_text', 'answer_text']);
-
-            if (!validation.isValid) {
-                UI.showMessage('Заполните все поля', 'error');
-                return;
+    handleDeleteQuestion(id) {
+        UI.openModal('confirm-modal', {
+            message: 'Вы уверены, что хотите удалить этот вопрос?',
+            onConfirm: async () => {
+                try {
+                    await API.questions.delete(id);
+                    UI.showMessage('Вопрос успешно удален.', 'success');
+                    await this.loadInitialData();
+                } catch (error) {
+                    UI.showMessage(`Ошибка: ${error.message}`, 'error');
+                }
             }
-
-            // Convert category_id to integer
-            formData.category_id = parseInt(formData.category_id);
-
-            await this.handleFormSubmit('/questions/', formData, e.target, 'Вопрос успешно добавлен!');
         });
     }
 };
 
-// Global functions for backward compatibility
-function switchTab(tabName, event) {
-    UI.switchTab(tabName, event);
-
-    // Load categories for form when switching to manage tab
-    if (tabName === 'manage') {
-        App.loadCategoriesForForm();
-    }
-}
-
-function shuffleCards() {
-    App.shuffleQuestions();
-}
-
-// Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     App.init();
 });
