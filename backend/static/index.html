@@ -5,183 +5,156 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Подготовка к собеседованию</title>
-    <!-- Tailwind CSS for modern styling -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts for a cleaner look -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Custom styles -->
     <link rel="stylesheet" href="static/css/styles.css">
 </head>
 
-<body class="text-[#111111]">
-    <!-- Header Component -->
-    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
-        <header class="text-center mb-8">
-            <h1 class="text-3xl md:text-4xl font-bold text-[#74070c]">Карточки для подготовки к собеседованию</h1>
-            <p class="text-gray-600 mt-2">Выберите тему и проверьте свои знания</p>
-        </header>
+<body>
+    <div class="min-h-screen">
+        <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+            <!-- Header -->
+            <header class="text-center mb-8 slide-in">
+                <div class="glass rounded-2xl p-8 mb-6">
+                    <h1
+                        class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
+                        FUTURE
+                    </h1>
+                    <h2 class="text-2xl md:text-3xl font-semibold text-gray-300 mt-2">
+                        Карточки для подготовки к собеседованию
+                    </h2>
+                    <p class="text-gray-400 mt-4 text-lg">Выберите тему и проверьте свои знания</p>
+                </div>
+            </header>
 
-        <!-- Navigation Tabs Component -->
-        <div class="mb-6">
-            <div class="border-b border-gray-300">
-                <nav class="-mb-px flex space-x-6" aria-label="Tabs">
-                    <button class="tab-button active shrink-0 border-b-2 px-1 pb-4 text-sm font-medium"
-                        onclick="switchTab('study', event)">
-                        Изучение
-                    </button>
-                    <button
-                        class="tab-button shrink-0 border-b-2 border-transparent px-1 pb-4 text-sm font-medium text-gray-500 hover:border-gray-400 hover:text-gray-700"
-                        onclick="switchTab('manage', event)">
-                        Управление
-                    </button>
-                </nav>
+            <!-- Navigation Tabs -->
+            <div class="mb-6 slide-in">
+                <div class="glass rounded-xl p-2">
+                    <nav class="flex space-x-2" aria-label="Tabs">
+                        <button id="study-tab-btn"
+                            class="tab-button active flex-1 py-3 px-6 text-sm font-medium rounded-lg transition-all">
+                            Изучение
+                        </button>
+                        <button id="manage-tab-btn"
+                            class="tab-button flex-1 py-3 px-6 text-sm font-medium text-gray-400 rounded-lg hover:bg-slate-700 hover:bg-opacity-50 transition-all">
+                            Управление
+                        </button>
+                    </nav>
+                </div>
             </div>
-        </div>
 
-        <!-- Tab Content -->
-        <main>
-            <!-- Study Tab Content -->
-            <div id="study-tab" class="tab-pane active">
-                <!-- Stats Component -->
-                <div id="stats-container" class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-                    <!-- Stats will be loaded here -->
-                </div>
+            <!-- Tab Content -->
+            <main>
+                <!-- Study Tab -->
+                <div id="study-tab" class="tab-pane active">
+                    <!-- Stats -->
+                    <div id="stats-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    </div>
 
-                <!-- Controls Component -->
-                <div
-                    class="controls flex flex-col md:flex-row items-center gap-4 mb-8 p-4 bg-white/60 rounded-lg shadow-md border border-gray-200">
-                    <label for="category-select" class="font-medium text-[#111111] whitespace-nowrap">Выберите
-                        тему:</label>
-                    <select id="category-select"
-                        class="w-full md:w-auto flex-grow bg-white border border-gray-300 text-[#111111] text-sm rounded-lg focus:ring-[#74070c] focus:border-[#74070c] block p-2.5 placeholder-gray-500">
-                        <option value="">Все вопросы</option>
-                    </select>
-                    <button onclick="shuffleCards()"
-                        class="w-full md:w-auto inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium text-center bg-white border border-[#B0ADF2] text-[#111111] rounded-lg hover:bg-[#B0ADF2] hover:text-white focus:ring-4 focus:outline-none focus:ring-[#B0ADF2]/50 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="mr-2">
-                            <polyline points="16 3 21 3 21 8"></polyline>
-                            <line x1="4" y1="20" x2="21" y2="3"></line>
-                            <polyline points="21 16 21 21 16 21"></polyline>
-                            <line x1="15" y1="15" x2="21" y2="21"></line>
-                            <line x1="4" y1="4" x2="9" y2="9"></line>
-                        </svg>
-                        Перемешать
-                    </button>
-                </div>
+                    <!-- Controls -->
+                    <div class="glass rounded-xl p-6 mb-8 slide-in">
+                        <div class="flex flex-col lg:flex-row items-center gap-4">
+                            <label for="category-select" class="font-medium text-gray-300 whitespace-nowrap text-lg">
+                                Выберите тему:
+                            </label>
+                            <select id="category-select" class="flex-grow form-input text-sm rounded-lg p-3 shadow-lg">
+                                <option value="">Все вопросы</option>
+                            </select>
+                            <button id="shuffle-btn"
+                                class="btn-primary px-6 py-3 text-sm font-medium rounded-lg transition-all transform hover:scale-105 shadow-lg">
+                                Перемешать
+                            </button>
+                        </div>
+                    </div>
 
-                <!-- Loading Component -->
-                <div id="loading" class="text-center py-12 text-gray-500" style="display: none;">
-                    <div role="status">
-                        <svg aria-hidden="true" class="inline w-8 h-8 text-gray-300 animate-spin fill-[#74070c]"
-                            viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                                fill="currentColor" />
-                            <path
-                                d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0492C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                                fill="currentFill" />
-                        </svg>
-                        <span class="sr-only">Loading...</span>
+                    <!-- Loading -->
+                    <div id="loading" class="text-center py-12 text-gray-400 hidden">
+                    </div>
+
+                    <!-- Cards Container -->
+                    <div id="cards-container"
+                        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-8">
+                    </div>
+
+                    <!-- Pagination -->
+                    <div id="pagination-container" class="flex justify-center items-center space-x-2 mb-8 hidden">
+                        <button id="prev-page" class="pagination-button px-4 py-2 rounded-lg shadow-md font-medium">
+                            ← Назад
+                        </button>
+                        <div id="page-numbers" class="flex space-x-1">
+                        </div>
+                        <button id="next-page" class="pagination-button px-4 py-2 rounded-lg shadow-md font-medium">
+                            Вперёд →
+                        </button>
                     </div>
                 </div>
 
-                <!-- Cards Container -->
-                <div id="cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Cards will be inserted here -->
-                </div>
-            </div>
+                <!-- Management Tab -->
+                <div id="manage-tab" class="tab-pane">
+                    <div id="message-container" class="mb-6"></div>
 
-            <!-- Management Tab Content -->
-            <div id="manage-tab" class="tab-pane hidden">
-                <div id="message-container" class="mb-6"></div>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <!-- Add Category Form Component -->
-                    <div class="bg-white/60 p-6 rounded-lg shadow-md border border-gray-200">
-                        <h3 class="text-lg font-semibold mb-4 text-[#111111]">Добавить новую категорию</h3>
-                        <form id="category-form">
-                            <div class="flex items-end gap-3">
-                                <div class="flex-grow">
-                                    <label for="category-name"
-                                        class="block mb-2 text-sm font-medium text-gray-700">Название категории</label>
-                                    <input type="text" id="category-name" required placeholder="Например: JavaScript"
-                                        class="bg-white border border-gray-300 text-[#111111] text-sm rounded-lg focus:ring-[#74070c] focus:border-[#74070c] block w-full p-2.5 placeholder-gray-500">
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                        <!-- Add Category Form -->
+                        <div class="glass rounded-xl p-6 slide-in">
+                            <h3 class="text-xl font-semibold mb-6 text-gray-200 flex items-center">
+                                Добавить новую категорию
+                            </h3>
+                            <form id="category-form">
+                                <div class="space-y-4">
+                                    <input type="text" id="category-name" required
+                                        placeholder="Например: JavaScript, Python, SQL..."
+                                        class="w-full form-input rounded-lg p-4 shadow-lg">
+                                    <button type="submit"
+                                        class="w-full btn-success px-6 py-3 font-medium rounded-lg transition-all transform hover:scale-105 shadow-lg">
+                                        Добавить категорию
+                                    </button>
                                 </div>
-                                <button type="submit"
-                                    class="px-5 py-2.5 text-sm font-medium text-white bg-[#74070c] rounded-lg hover:bg-opacity-90 focus:ring-4 focus:outline-none focus:ring-[#74070c]/50 transition-colors">Добавить</button>
-                            </div>
-                        </form>
-                    </div>
+                            </form>
+                        </div>
 
-                    <!-- Add Question Form Component -->
-                    <div class="bg-white/60 p-6 rounded-lg shadow-md border border-gray-200 row-span-2">
-                        <h3 class="text-lg font-semibold mb-4 text-[#111111]">Добавить новый вопрос</h3>
-                        <form id="question-form" class="space-y-4">
-                            <div>
-                                <label for="question-category"
-                                    class="block mb-2 text-sm font-medium text-gray-700">Категория</label>
+                        <!-- Add Question Form -->
+                        <div class="glass rounded-xl p-6 slide-in">
+                            <h3 class="text-xl font-semibold mb-6 text-gray-200 flex items-center">
+                                Добавить новый вопрос
+                            </h3>
+                            <form id="question-form" class="space-y-4">
                                 <select id="question-category" required
-                                    class="bg-white border border-gray-300 text-[#111111] text-sm rounded-lg focus:ring-[#74070c] focus:border-[#74070c] block w-full p-2.5 placeholder-gray-500">
+                                    class="w-full form-input rounded-lg p-4 shadow-lg">
                                     <option value="">Выберите категорию</option>
                                 </select>
-                            </div>
-                            <div>
-                                <label for="question-text"
-                                    class="block mb-2 text-sm font-medium text-gray-700">Вопрос</label>
-                                <textarea id="question-text" rows="4" required placeholder="Введите текст вопроса..."
-                                    class="block p-2.5 w-full text-sm text-[#111111] bg-white rounded-lg border border-gray-300 focus:ring-[#74070c] focus:border-[#74070c] placeholder-gray-500"></textarea>
-                            </div>
-                            <div>
-                                <label for="answer-text"
-                                    class="block mb-2 text-sm font-medium text-gray-700">Ответ</label>
+                                <textarea id="question-text" rows="3" required placeholder="Введите текст вопроса..."
+                                    class="w-full form-input rounded-lg p-4 shadow-lg resize-none"></textarea>
                                 <textarea id="answer-text" rows="6" required
-                                    placeholder="Введите ответ на вопрос. Используйте Markdown для форматирования."
-                                    class="block p-2.5 w-full text-sm text-[#111111] bg-white rounded-lg border border-gray-300 focus:ring-[#74070c] focus:border-[#74070c] placeholder-gray-500"></textarea>
+                                    placeholder="Введите ответ на вопрос. Поддерживается Markdown форматирование."
+                                    class="w-full form-input rounded-lg p-4 shadow-lg resize-none"></textarea>
+                                <button type="submit"
+                                    class="w-full btn-primary px-6 py-3 font-medium rounded-lg transition-all transform hover:scale-105 shadow-lg">
+                                    Добавить вопрос
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Manage Content -->
+                        <div class="xl:col-span-2 glass rounded-xl p-6 slide-in">
+                            <h3 class="text-xl font-semibold mb-6 text-gray-200 flex items-center">
+                                Управление контентом
+                            </h3>
+                            <div id="management-list" class="space-y-4">
                             </div>
-                            <button type="submit"
-                                class="w-full px-5 py-3 text-sm font-medium text-center text-white bg-[#74070c] rounded-lg hover:bg-opacity-90 focus:ring-4 focus:outline-none focus:ring-[#74070c]/50 transition-colors">Добавить
-                                вопрос</button>
-                        </form>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </main>
-    </div>
-
-    <!-- Answer Modal Component -->
-    <div id="answer-modal"
-        class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-60 p-4 transition-opacity duration-300">
-        <div id="modal-content"
-            class="relative w-full max-w-4xl max-h-[90vh] bg-[#f0f0da] border border-gray-300 rounded-lg shadow-2xl flex flex-col">
-            <!-- Modal Header -->
-            <div class="flex items-start justify-between p-5 border-b border-gray-300 rounded-t">
-                <div id="modal-question" class="text-xl font-semibold text-[#74070c] leading-relaxed">
-                    <!-- Question text goes here -->
-                </div>
-                <button type="button" id="modal-close-btn"
-                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clip-rule="evenodd"></path>
-                    </svg>
-                </button>
-            </div>
-            <!-- Modal Body -->
-            <div id="modal-answer" class="p-6 space-y-4 overflow-y-auto text-gray-800 leading-relaxed">
-                <!-- Answer content goes here -->
-            </div>
+            </main>
         </div>
     </div>
 
-    <!-- JavaScript modules -->
+    <!-- Modals -->
+    <div id="modals-container"></div>
+
     <script src="static/js/config.js"></script>
     <script src="static/js/utils.js"></script>
-    <script src="static/js/components.js"></script>
     <script src="static/js/api.js"></script>
     <script src="static/js/ui.js"></script>
     <script src="static/js/app.js"></script>

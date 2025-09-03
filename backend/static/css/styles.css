@@ -1,0 +1,722 @@
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background:
+        radial-gradient(2px 2px at 20px 30px, #ffffff, transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.8), transparent),
+        radial-gradient(1px 1px at 90px 40px, #ffffff, transparent),
+        radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.6), transparent),
+        radial-gradient(2px 2px at 160px 30px, #ffffff, transparent),
+        radial-gradient(circle at 30% 20%, rgba(16, 185, 129, 0.4) 0%, transparent 60%),
+        radial-gradient(circle at 70% 80%, rgba(251, 191, 36, 0.3) 0%, transparent 60%),
+        radial-gradient(ellipse at 20% 70%, rgba(147, 51, 234, 0.2) 0%, transparent 70%),
+        linear-gradient(135deg, #0c0a1e 0%, #1a1230 25%, #2d1b4e 35%, #1a1230 65%, #0c0a1e 100%);
+    min-height: 100vh;
+    color: #f8fafc;
+    position: relative;
+    overflow-x: hidden;
+    animation: cosmicShimmer 20s ease-in-out infinite;
+}
+
+@keyframes cosmicShimmer {
+
+    0%,
+    100% {
+        background-size: 200px 100px, 400px 200px, 300px 150px, 250px 125px, 350px 175px, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+    }
+
+    50% {
+        background-size: 250px 125px, 450px 225px, 350px 175px, 300px 150px, 400px 200px, 120% 120%, 120% 120%, 120% 120%, 100% 100%;
+    }
+}
+
+/* Космические частицы */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        radial-gradient(circle at 15% 25%, rgba(59, 130, 246, 0.3) 0%, transparent 2%),
+        radial-gradient(circle at 85% 15%, rgba(251, 191, 36, 0.4) 0%, transparent 2%),
+        radial-gradient(circle at 35% 85%, rgba(168, 85, 247, 0.3) 0%, transparent 2%),
+        radial-gradient(circle at 75% 65%, rgba(16, 185, 129, 0.3) 0%, transparent 2%),
+        linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.03) 50%, transparent 60%);
+    background-size: 100px 100px, 150px 150px, 120px 120px, 180px 180px, 50px 50px;
+    pointer-events: none;
+    z-index: 1;
+    animation: starField 30s linear infinite;
+}
+
+@keyframes starField {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+
+    100% {
+        transform: rotate(360deg) scale(1.1);
+    }
+}
+
+/* Галактическая спираль */
+body::after {
+    content: '';
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background:
+        radial-gradient(ellipse 40% 30% at 60% 40%,
+            rgba(147, 51, 234, 0.1) 0%,
+            rgba(59, 130, 246, 0.05) 30%,
+            transparent 70%);
+    pointer-events: none;
+    z-index: 1;
+    animation: galaxyRotation 60s linear infinite;
+    transform-origin: center center;
+}
+
+@keyframes galaxyRotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.glass {
+    backdrop-filter: blur(20px);
+    background:
+        linear-gradient(135deg,
+            rgba(15, 23, 42, 0.85) 0%,
+            rgba(30, 27, 75, 0.8) 50%,
+            rgba(15, 23, 42, 0.85) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    position: relative;
+    overflow: hidden;
+    box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.glass::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(circle at 30% 30%, rgba(16, 185, 129, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(147, 51, 234, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    animation: cosmicPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes cosmicPulse {
+    0% {
+        opacity: 0.3;
+    }
+
+    100% {
+        opacity: 0.8;
+    }
+}
+
+.glass-light {
+    backdrop-filter: blur(15px);
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(147, 51, 234, 0.1);
+}
+
+/* Контейнер аккордеона */
+.accordion {
+    background: transparent;
+    border: none;
+}
+
+.accordion-item {
+    background:
+        linear-gradient(135deg,
+            rgba(15, 23, 42, 0.7) 0%,
+            rgba(30, 27, 75, 0.5) 50%,
+            rgba(15, 23, 42, 0.7) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px !important;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.accordion-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background:
+        linear-gradient(90deg,
+            transparent,
+            rgba(16, 185, 129, 0.1) 25%,
+            rgba(147, 51, 234, 0.1) 75%,
+            transparent);
+    transition: left 0.8s ease;
+    z-index: 1;
+}
+
+.accordion-item:hover::before {
+    left: 100%;
+}
+
+.accordion-item:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(16, 185, 129, 0.1),
+        0 0 50px rgba(147, 51, 234, 0.05);
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+/* Заголовок вопроса (кнопка) */
+.accordion-header {
+    margin-bottom: 0;
+    position: relative;
+    z-index: 2;
+}
+
+.accordion-button {
+    background: transparent !important;
+    border: none !important;
+    color: #f8fafc !important;
+    font-weight: 500 !important;
+    font-size: 1.1rem !important;
+    padding: 20px 24px !important;
+    text-align: left !important;
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease !important;
+    text-transform: none !important;
+    letter-spacing: 0.3px;
+    box-shadow: none !important;
+}
+
+.accordion-button:not(.collapsed) {
+    background:
+        linear-gradient(135deg,
+            rgba(16, 185, 129, 0.15) 0%,
+            rgba(59, 130, 246, 0.1) 50%,
+            rgba(147, 51, 234, 0.05) 100%) !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.accordion-button:focus {
+    box-shadow:
+        0 0 0 3px rgba(16, 185, 129, 0.2),
+        0 0 20px rgba(16, 185, 129, 0.1) !important;
+    border-color: transparent !important;
+}
+
+.accordion-button:hover {
+    background:
+        linear-gradient(135deg,
+            rgba(16, 185, 129, 0.1) 0%,
+            rgba(59, 130, 246, 0.08) 50%,
+            rgba(147, 51, 234, 0.05) 100%) !important;
+    color: #ffffff !important;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Стрелочка аккордеона */
+.accordion-button::after {
+    background-image: none !important;
+    content: '▼' !important;
+    color: #10b981 !important;
+    font-size: 14px !important;
+    transition: all 0.3s ease !important;
+    transform: rotate(0deg) !important;
+    text-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+}
+
+.accordion-button:not(.collapsed)::after {
+    transform: rotate(180deg) !important;
+    color: #3b82f6 !important;
+    text-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+}
+
+/* Тело аккордеона (свернутое содержимое) */
+.accordion-collapse {
+    transition: height 0.5s ease !important;
+}
+
+.accordion-body {
+    padding: 0 24px 24px 24px !important;
+    background:
+        linear-gradient(135deg,
+            rgba(15, 23, 42, 0.4) 0%,
+            rgba(30, 27, 75, 0.3) 100%);
+    color: #cbd5e1 !important;
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+    position: relative;
+    z-index: 2;
+}
+
+/* Космические эффекты для активного аккордеона */
+.accordion-item:not(.collapsed) {
+    animation: accordionGlow 3s ease-in-out infinite;
+}
+
+@keyframes accordionGlow {
+
+    0%,
+    100% {
+        box-shadow:
+            0 20px 40px rgba(0, 0, 0, 0.3),
+            0 0 30px rgba(16, 185, 129, 0.1),
+            0 0 50px rgba(147, 51, 234, 0.05);
+    }
+
+    50% {
+        box-shadow:
+            0 20px 40px rgba(0, 0, 0, 0.3),
+            0 0 40px rgba(59, 130, 246, 0.15),
+            0 0 60px rgba(251, 191, 36, 0.08);
+    }
+}
+
+.form-input {
+    background: rgba(15, 23, 42, 0.95) !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    color: #ffffff !important;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 10;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+.form-input:focus {
+    border-color: #10b981 !important;
+    background: rgba(15, 23, 42, 0.98) !important;
+    box-shadow:
+        0 0 0 3px rgba(16, 185, 129, 0.3),
+        0 0 20px rgba(16, 185, 129, 0.2),
+        inset 0 0 10px rgba(0, 0, 0, 0.3) !important;
+    outline: none !important;
+    color: #ffffff !important;
+}
+
+.form-input::placeholder {
+    color: #94a3b8 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 14px !important;
+    opacity: 1 !important;
+}
+
+input.form-input,
+textarea.form-input,
+select.form-input {
+    background: rgba(15, 23, 42, 0.95) !important;
+    color: #ffffff !important;
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    padding: 12px 16px !important;
+    border-radius: 8px !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+.form-input::selection {
+    background: rgba(16, 185, 129, 0.3) !important;
+    color: #ffffff !important;
+}
+
+.form-input::-moz-selection {
+    background: rgba(16, 185, 129, 0.3) !important;
+    color: #ffffff !important;
+}
+
+/* Геометрические акценты */
+.geometric-accent {
+    position: relative;
+}
+
+.geometric-accent::before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: -15px;
+    width: 50px;
+    height: 50px;
+    background:
+        radial-gradient(circle at center,
+            rgba(16, 185, 129, 0.8) 0%,
+            rgba(59, 130, 246, 0.6) 50%,
+            transparent 100%);
+    transform: rotate(45deg);
+    z-index: -1;
+    animation: orbitRotation 8s linear infinite;
+}
+
+.geometric-accent::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    right: -8px;
+    width: 25px;
+    height: 25px;
+    background:
+        linear-gradient(45deg,
+            #fbbf24 0%,
+            #f59e0b 50%,
+            #d97706 100%);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    z-index: -1;
+    animation: stellarPulse 2s ease-in-out infinite;
+}
+
+@keyframes orbitRotation {
+    0% {
+        transform: rotate(45deg) scale(1);
+    }
+
+    50% {
+        transform: rotate(225deg) scale(1.1);
+    }
+
+    100% {
+        transform: rotate(405deg) scale(1);
+    }
+}
+
+@keyframes stellarPulse {
+
+    0%,
+    100% {
+        opacity: 0.8;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes cosmicFloat {
+
+    0%,
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    33% {
+        transform: translateY(-15px) rotate(120deg);
+    }
+
+    66% {
+        transform: translateY(-5px) rotate(240deg);
+    }
+}
+
+.fade-in-card {
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+.slide-in {
+    animation: slideIn 0.4s ease-out forwards;
+}
+
+.tab-button.active {
+    background:
+        linear-gradient(135deg,
+            rgba(16, 185, 129, 0.9) 0%,
+            rgba(59, 130, 246, 0.8) 50%,
+            rgba(147, 51, 234, 0.7) 100%);
+    color: #ffffff;
+    box-shadow:
+        0 8px 32px rgba(16, 185, 129, 0.3),
+        0 0 20px rgba(59, 130, 246, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.tab-button.active::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: linear-gradient(135deg, #10b981, #3b82f6, #9333ea);
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0.5;
+    animation: cosmicGlow 3s ease-in-out infinite;
+}
+
+@keyframes cosmicGlow {
+
+    0%,
+    100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.7;
+        transform: scale(1.05);
+    }
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+    animation: cosmicFadeIn 0.8s ease-out forwards;
+}
+
+@keyframes cosmicFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.question-card {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    background:
+        linear-gradient(135deg,
+            rgba(15, 23, 42, 0.85) 0%,
+            rgba(30, 27, 75, 0.7) 50%,
+            rgba(15, 23, 42, 0.85) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Космическая волна при наведении */
+.question-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background:
+        linear-gradient(90deg,
+            transparent,
+            rgba(16, 185, 129, 0.2) 25%,
+            rgba(147, 51, 234, 0.2) 75%,
+            transparent);
+    transition: left 0.8s ease;
+}
+
+.question-card:hover::before {
+    left: 100%;
+}
+
+.question-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow:
+        0 30px 60px rgba(0, 0, 0, 0.4),
+        0 0 40px rgba(16, 185, 129, 0.2),
+        0 0 80px rgba(147, 51, 234, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    border-color: rgba(16, 185, 129, 0.4);
+    animation: stellarVibes 2s ease-in-out infinite;
+}
+
+@keyframes stellarVibes {
+
+    0%,
+    100% {
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(16, 185, 129, 0.2), 0 0 80px rgba(147, 51, 234, 0.1);
+    }
+
+    50% {
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 50px rgba(59, 130, 246, 0.3), 0 0 90px rgba(251, 191, 36, 0.1);
+    }
+}
+
+/* Остальные элементы интерфейса */
+.btn-primary {
+    background:
+        linear-gradient(135deg,
+            rgba(16, 185, 129, 0.9) 0%,
+            rgba(59, 130, 246, 0.8) 50%,
+            rgba(147, 51, 234, 0.7) 100%);
+    color: #ffffff;
+    transition: all 0.4s ease;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background:
+        linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.3) 20%,
+            rgba(251, 191, 36, 0.4) 50%,
+            rgba(255, 255, 255, 0.3) 80%,
+            transparent);
+    transition: left 0.6s ease;
+}
+
+.btn-primary:hover::before {
+    left: 100%;
+}
+
+.btn-primary:hover {
+    background:
+        linear-gradient(135deg,
+            rgba(5, 150, 105, 0.95) 0%,
+            rgba(37, 99, 235, 0.9) 50%,
+            rgba(126, 34, 206, 0.8) 100%);
+    transform: translateY(-3px);
+    box-shadow:
+        0 15px 35px rgba(16, 185, 129, 0.4),
+        0 0 40px rgba(59, 130, 246, 0.3),
+        0 0 60px rgba(147, 51, 234, 0.2);
+    animation: cosmicPulse 1.5s ease-in-out infinite;
+}
+
+.pagination-button {
+    transition: all 0.4s ease;
+    background:
+        linear-gradient(135deg,
+            rgba(15, 23, 42, 0.8) 0%,
+            rgba(30, 27, 75, 0.6) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #cbd5e1;
+    position: relative;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.875rem;
+    overflow: hidden;
+}
+
+.pagination-button:hover:not(:disabled) {
+    background:
+        linear-gradient(135deg,
+            rgba(30, 41, 59, 0.9) 0%,
+            rgba(45, 27, 78, 0.7) 100%);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(16, 185, 129, 0.2);
+    border-color: rgba(16, 185, 129, 0.4);
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+/* Старые стили для совместимости */
+.question-list {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
+}
+
+.question-list.expanded {
+    max-height: 1000px;
+}
+
+.management-item {
+    background: rgba(15, 23, 42, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.management-item:hover {
+    border-color: rgba(16, 185, 129, 0.3);
+    background: rgba(15, 23, 42, 0.7);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(15, 23, 42, 0.5);
+    border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background:
+        linear-gradient(180deg,
+            rgba(16, 185, 129, 0.8) 0%,
+            rgba(59, 130, 246, 0.8) 50%,
+            rgba(147, 51, 234, 0.8) 100%);
+    border-radius: 4px;
+    box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.1);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background:
+        linear-gradient(180deg,
+            rgba(5, 150, 105, 0.9) 0%,
+            rgba(37, 99, 235, 0.9) 50%,
+            rgba(126, 34, 206, 0.9) 100%);
+}
