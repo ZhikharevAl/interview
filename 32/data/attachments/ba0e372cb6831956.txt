@@ -1,0 +1,16 @@
+URL: http://localhost:8000/api/v1/categories/
+Status: 200 OK
+
+Headers:
+{
+    "date": "Wed, 03 Sep 2025 17:31:51 GMT",
+    "server": "uvicorn",
+    "content-length": "40",
+    "content-type": "application/json"
+}
+
+Body:
+{
+    "name": "Category to be deleted",
+    "id": 2
+}
