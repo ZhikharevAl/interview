@@ -1,4 +1,3 @@
-# tests/utils/category_model.py
 from dataclasses import dataclass
 
 from faker import Faker
