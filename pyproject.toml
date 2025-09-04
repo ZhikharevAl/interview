@@ -8,6 +8,7 @@ dependencies = []
 
 [dependency-groups]
 dev = [
+    "alembic>=1.16.5",
     "allure-pytest>=2.15.0",
     "faker>=37.6.0",
     "fastapi>=0.116.1",
