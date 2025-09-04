@@ -34,9 +34,7 @@ class TestCategoriesAPI:
         """A test for the successful deletion of a category."""
         category_name = "Category to be deleted"
         with allure.step(f"Creating category '{category_name}' for deletion"):
-            create_response = categories_client.create(
-                name=category_name, description="To be deleted"
-            )
+            create_response = categories_client.create(name=category_name)
             assert create_response.ok
             category_id = create_response.json()["id"]
 
