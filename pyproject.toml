@@ -121,7 +121,11 @@ reportMissingTypeStubs = false
 init-hook = 'import sys; sys.path.append("backend")'
 
 [tool.pylint."MESSAGES CONTROL"]
-disable = ["missing-docstring", "too-few-public-methods", "redefined-outer-name"]
+disable = [
+    "missing-docstring",
+    "too-few-public-methods",
+    "redefined-outer-name",
+]
 
 [tool.pylint.FORMAT]
 max-line-length = 100
