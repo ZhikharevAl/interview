@@ -36,6 +36,11 @@ def read_question(question_id: int, db: Annotated[Session, Depends(get_db)]) -> 
 @router.post("/")
 def create_question(question: QuestionCreate, db: Annotated[Session, Depends(get_db)]) -> Question:
     """Create a new question."""
+    existing = question_service.get_question_by_text_case_insensitive(db, question.question_text)
+    if existing:
+        raise HTTPException(
+            status_code=400, detail=f"Question already exists: '{existing.question_text}'"
+        )
     db_question = question_service.create_question(db=db, question=question)
     return Question.model_validate(db_question)
 
@@ -45,6 +50,22 @@ def update_question(
     question_id: int, question: QuestionUpdate, db: Annotated[Session, Depends(get_db)]
 ) -> question_service.QuestionModel:
     """Update a question by ID."""
+    existing_question = question_service.get_question(db, question_id=question_id)
+    if not existing_question:
+        raise HTTPException(status_code=404, detail="Question not found")
+
+    if (
+        question.question_text
+        and question.question_text.lower() != existing_question.question_text.lower()
+    ):
+        existing_text = question_service.get_question_by_text_case_insensitive(
+            db, question.question_text
+        )
+        if existing_text:
+            raise HTTPException(
+                status_code=400, detail=f"Question already exists: '{existing_text.question_text}'"
+            )
+
     updated_question = question_service.update_question(
         db=db, question_id=question_id, question=question
     )
