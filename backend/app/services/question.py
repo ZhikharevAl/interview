@@ -1,5 +1,6 @@
 from app.db.models.question import Question as QuestionModel
 from app.schemas.question import QuestionCreate, QuestionUpdate
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 
@@ -11,6 +12,15 @@ def get_all_questions(db: Session) -> list[QuestionModel]:
 def get_question(db: Session, question_id: int) -> QuestionModel | None:
     """Get question by ID."""
     return db.query(QuestionModel).filter(QuestionModel.id == question_id).first()
+
+
+def get_question_by_text_case_insensitive(db: Session, question_text: str) -> QuestionModel | None:
+    """Get question by text (case insensitive)."""
+    return (
+        db.query(QuestionModel)
+        .filter(func.lower(QuestionModel.question_text) == func.lower(question_text))
+        .first()
+    )
 
 
 def get_questions_by_category(db: Session, category_id: int) -> list[QuestionModel]:
