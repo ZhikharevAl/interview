@@ -36,7 +36,10 @@ def create_category(
     """Create a new category."""
     existing = category_service.get_category_by_name(db, category.name)
     if existing:
-        raise HTTPException(status_code=400, detail="Category already exists")
+        raise HTTPException(
+            status_code=400,
+            detail=f"Category '{category.name}' already exists (found '{existing.name}')",
+        )
     return category_service.create_category(db=db, category=category)
 
 
@@ -49,10 +52,13 @@ def update_category(
     if not existing_category:
         raise HTTPException(status_code=404, detail="Category not found")
 
-    if category.name and category.name != existing_category.name:
+    if category.name and category.name.lower() != existing_category.name.lower():
         existing_name = category_service.get_category_by_name(db, category.name)
         if existing_name:
-            raise HTTPException(status_code=400, detail="Category name already exists")
+            raise HTTPException(
+                status_code=400,
+                detail=f"Category '{category.name}' already exists (found '{existing_name.name}')",
+            )
 
     updated_category = category_service.update_category(
         db=db, category_id=category_id, category=category
