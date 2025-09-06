@@ -40,7 +40,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Create monitoring network
-        run: docker network create monitoring-networ
+        run: docker network create monitoring-network
 
       - name: Run Tests Composite Action
         uses: ./.github/actions/run-tests
