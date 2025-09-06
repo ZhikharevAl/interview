@@ -1,0 +1,16 @@
+URL: http://localhost:8000/api/v1/categories/1
+Status: 200 OK
+
+Headers:
+{
+    "date": "Sat, 06 Sep 2025 22:06:31 GMT",
+    "server": "uvicorn",
+    "content-length": "23",
+    "content-type": "application/json"
+}
+
+Body:
+{
+    "id": 1,
+    "deleted": true
+}
