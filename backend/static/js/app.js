@@ -1,226 +1,314 @@
-const App = {
-    allCategories: [],
-    allQuestions: [],
-    currentQuestions: [],
+// App state
+let appState = {
+    categories: [],
+    questions: [],
+    filteredQuestions: [],
+    selectedCategory: null,
+    searchQuery: '',
     currentPage: 1,
-
-    async init() {
-        UI.init();
-        this.initEventListeners();
-        await this.loadInitialData();
-    },
-
-    async loadInitialData() {
-        UI.toggleLoading(true);
-        try {
-            const [cats, quests] = await Promise.all([API.categories.getAll(), API.questions.getAll()]);
-            this.allCategories = cats;
-            this.allQuestions = quests;
-            this.currentQuestions = quests;
-
-            UI.populateSelect(UI.elements.categorySelect, cats, 'Все вопросы');
-            UI.populateSelect(UI.elements.questionCategorySelect, cats, 'Выберите категорию');
-            UI.renderStats(cats.length, quests.length, this.currentPage);
-            UI.renderQuestions(this.currentQuestions, 1);
-            this.currentPage = 1;
-
-            if (UI.elements.manageTab.classList.contains('active')) {
-                UI.renderManagementList(this.allCategories, this.allQuestions);
-            }
-        } catch (e) {
-            UI.elements.cardsContainer.innerHTML = `
-                <div class="col-span-full text-center py-16">
-                    <div class="text-6xl mb-4">❌</div>
-                    <p class="text-red-400 text-xl mb-2">Ошибка загрузки данных</p>
-                    <p class="text-gray-500">Убедитесь, что сервер запущен</p>
-                </div>`;
-        } finally {
-            UI.toggleLoading(false);
-        }
-    },
-
-    filterAndDisplayCards() {
-        const catId = UI.elements.categorySelect.value;
-        this.currentQuestions = catId
-            ? this.allQuestions.filter(q => q.category_id == catId)
-            : this.allQuestions;
-        this.currentPage = 1;
-        UI.renderQuestions(this.currentQuestions, 1);
-        UI.renderStats(this.allCategories.length, this.allQuestions.length, this.currentPage);
-    },
-
-    shuffleQuestions() {
-        this.currentQuestions = Utils.shuffleArray(this.currentQuestions);
-        this.goToPage(1); // Go to first page after shuffling
-    },
-
-    goToPage(page) {
-        this.currentPage = page;
-        UI.renderQuestions(this.currentQuestions, page);
-        UI.renderStats(this.allCategories.length, this.allQuestions.length, this.currentPage);
-        window.scrollTo({ top: UI.elements.cardsContainer.offsetTop - 100, behavior: 'smooth' });
-    },
-
-    renderManagementList() {
-        UI.renderManagementList(this.allCategories, this.allQuestions);
-    },
-
-    initEventListeners() {
-        // Tabs
-        UI.elements.studyTabBtn.addEventListener('click', (e) => UI.switchTab('study'));
-        UI.elements.manageTabBtn.addEventListener('click', (e) => UI.switchTab('manage'));
-
-        // Study Tab
-        UI.elements.categorySelect.addEventListener('change', () => this.filterAndDisplayCards());
-        UI.elements.shuffleBtn.addEventListener('click', () => this.shuffleQuestions());
-        UI.elements.prevPageBtn.addEventListener('click', () => {
-            if (this.currentPage > 1) this.goToPage(this.currentPage - 1);
-        });
-        UI.elements.nextPageBtn.addEventListener('click', () => {
-            const totalPages = Math.ceil(this.currentQuestions.length / CONFIG.UI.CARDS_PER_PAGE);
-            if (this.currentPage < totalPages) this.goToPage(this.currentPage + 1);
-        });
-
-        // Management Tab Forms
-        UI.elements.categoryForm.addEventListener('submit', e => this.handleAddCategory(e));
-        UI.elements.questionForm.addEventListener('submit', e => this.handleAddQuestion(e));
-
-        // Modals Listeners (delegated to modals container)
-        UI.elements.modalsContainer.addEventListener('click', (e) => {
-            const target = e.target.closest('.modal-close-btn');
-            if (target) {
-                const modal = target.closest('.fixed');
-                UI.closeModal(modal.id);
-            }
-            if (e.target.id === 'confirm-modal-no') {
-                UI.closeModal('confirm-modal');
-            }
-        });
-
-        // Edit Forms
-        const editCategoryForm = UI.elements.modalsContainer.querySelector('#edit-category-form');
-        const editQuestionForm = UI.elements.modalsContainer.querySelector('#edit-question-form');
-
-        editCategoryForm.addEventListener('submit', e => this.handleEditCategory(e));
-        editQuestionForm.addEventListener('submit', e => this.handleEditQuestion(e));
-    },
-
-    // --- Action Handlers ---
-    async handleAddCategory(event) {
-        event.preventDefault();
-        const form = event.target;
-        const name = form.querySelector('#category-name').value.trim();
-        if (!name) return UI.showMessage('Название категории не может быть пустым.', 'error');
-
-        try {
-            await API.categories.create({ name });
-            UI.showMessage('Категория успешно добавлена!', 'success');
-            form.reset();
-            await this.loadInitialData();
-        } catch (error) {
-            UI.showMessage(`Ошибка: ${error.message}`, 'error');
-        }
-    },
-
-    async handleAddQuestion(event) {
-        event.preventDefault();
-        const form = event.target;
-        const data = {
-            category_id: parseInt(form.querySelector('#question-category').value),
-            question_text: form.querySelector('#question-text').value.trim(),
-            answer_text: form.querySelector('#answer-text').value.trim(),
-        };
-
-        if (!data.category_id || !data.question_text || !data.answer_text) {
-            return UI.showMessage('Все поля должны быть заполнены.', 'error');
-        }
-
-        try {
-            await API.questions.create(data);
-            UI.showMessage('Вопрос успешно добавлен!', 'success');
-            form.reset();
-            await this.loadInitialData();
-        } catch (error) {
-            UI.showMessage(`Ошибка: ${error.message}`, 'error');
-        }
-    },
-
-    async handleEditCategory(event) {
-        event.preventDefault();
-        const form = event.target;
-        const id = parseInt(form.querySelector('#edit-category-id').value);
-        const name = form.querySelector('#edit-category-name').value.trim();
-        if (!name) return UI.showMessage('Название не может быть пустым.', 'error');
-
-        try {
-            await API.categories.update(id, { name });
-            UI.showMessage('Категория успешно обновлена!', 'success');
-            UI.closeModal('edit-category-modal');
-            await this.loadInitialData();
-        } catch (error) {
-            UI.showMessage(`Ошибка: ${error.message}`, 'error');
-        }
-    },
-
-    async handleEditQuestion(event) {
-        event.preventDefault();
-        const form = event.target;
-        const id = parseInt(form.querySelector('#edit-question-id').value);
-        const data = {
-            category_id: parseInt(form.querySelector('#edit-question-category').value),
-            question_text: form.querySelector('#edit-question-text').value.trim(),
-            answer_text: form.querySelector('#edit-answer-text').value.trim(),
-        };
-
-        if (!data.category_id || !data.question_text || !data.answer_text) {
-            return UI.showMessage('Все поля должны быть заполнены.', 'error');
-        }
-
-        try {
-            await API.questions.update(id, data);
-            UI.showMessage('Вопрос успешно обновлен!', 'success');
-            UI.closeModal('edit-question-modal');
-            await this.loadInitialData();
-        } catch (error) {
-            UI.showMessage(`Ошибка: ${error.message}`, 'error');
-        }
-    },
-
-    openEditQuestionModal(questionId) {
-        UI.openModal('edit-question-modal', { id: questionId });
-    },
-
-    handleDeleteCategory(id) {
-        UI.openModal('confirm-modal', {
-            message: 'Вы уверены, что хотите удалить эту категорию и все ее вопросы?',
-            onConfirm: async () => {
-                try {
-                    await API.categories.delete(id);
-                    UI.showMessage('Категория успешно удалена.', 'success');
-                    await this.loadInitialData();
-                } catch (error) {
-                    UI.showMessage(`Ошибка: ${error.message}`, 'error');
-                }
-            }
-        });
-    },
-
-    handleDeleteQuestion(id) {
-        UI.openModal('confirm-modal', {
-            message: 'Вы уверены, что хотите удалить этот вопрос?',
-            onConfirm: async () => {
-                try {
-                    await API.questions.delete(id);
-                    UI.showMessage('Вопрос успешно удален.', 'success');
-                    await this.loadInitialData();
-                } catch (error) {
-                    UI.showMessage(`Ошибка: ${error.message}`, 'error');
-                }
-            }
-        });
-    }
+    questionsPerPage: CONFIG.questionsPerPage,
+    expandedCategories: new Set()
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-    App.init();
+// Initialize app
+document.addEventListener('DOMContentLoaded', function () {
+    createGeometricShapes();
+    loadData();
+    setupEventListeners();
+    setupDragAndDrop();
 });
+
+// Setup drag and drop for categories
+function setupDragAndDrop() {
+    new Sortable(document.getElementById('categories-container'), {
+        animation: 150,
+        ghostClass: 'sortable-placeholder',
+        onStart: function (evt) {
+            evt.item.classList.add('dragging');
+        },
+        onEnd: function (evt) {
+            evt.item.classList.remove('dragging');
+            console.log('New order:', Array.from(evt.to.children).map(el => el.dataset.id));
+        }
+    });
+}
+
+// Event listeners
+function setupEventListeners() {
+    document.getElementById('search-input').addEventListener('input', handleSearch);
+    document.getElementById('category-form').addEventListener('submit', handleAddCategory);
+    document.getElementById('question-form').addEventListener('submit', handleAddQuestion);
+    document.getElementById('edit-form').addEventListener('submit', handleEdit);
+}
+
+// Select category filter
+function selectCategory(categoryId) {
+    appState.selectedCategory = appState.selectedCategory === categoryId ? null : categoryId;
+    appState.currentPage = 1;
+    filterQuestions();
+    renderCategories();
+    renderQuestions();
+    updateStats();
+}
+
+// Handle search
+function handleSearch(event) {
+    appState.searchQuery = event.target.value.toLowerCase();
+    appState.currentPage = 1;
+    filterQuestions();
+    renderQuestions();
+    updateStats();
+}
+
+// Filter questions based on search and category
+function filterQuestions() {
+    appState.filteredQuestions = appState.questions.filter(question => {
+        const matchesSearch = !appState.searchQuery ||
+            question.question_text.toLowerCase().includes(appState.searchQuery) ||
+            question.answer_text.toLowerCase().includes(appState.searchQuery);
+
+        const matchesCategory = !appState.selectedCategory ||
+            question.category_id === appState.selectedCategory;
+
+        return matchesSearch && matchesCategory;
+    });
+}
+
+// Go to specific page
+function goToPage(page) {
+    const totalPages = Math.ceil(appState.filteredQuestions.length / appState.questionsPerPage);
+    if (page >= 1 && page <= totalPages && page !== appState.currentPage) {
+        appState.currentPage = page;
+        renderQuestions();
+        updateStats();
+
+        // Scroll to top of questions
+        document.getElementById('questions-container').scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+        });
+    }
+}
+
+// Show answer modal
+function showAnswer(questionId) {
+    const question = appState.questions.find(q => q.id === questionId);
+    if (!question) return;
+
+    document.getElementById('modal-question').innerHTML = question.question_text;
+    document.getElementById('modal-answer').innerHTML = formatAnswer(question.answer_text);
+    showModal('answer-modal');
+}
+
+// Add category
+async function handleAddCategory(event) {
+    event.preventDefault();
+    const name = document.getElementById('category-name').value.trim();
+
+    if (!name) {
+        showNotification('Введите название категории', 'warning');
+        return;
+    }
+
+    // Check for duplicates
+    if (appState.categories.some(c => c.name.toLowerCase() === name.toLowerCase())) {
+        showNotification('Категория с таким названием уже существует', 'error');
+        return;
+    }
+
+    try {
+        await addCategoryAPI(name);
+        showNotification('Категория добавлена', 'success');
+        document.getElementById('category-form').reset();
+        loadData();
+    } catch (error) {
+        showNotification('Ошибка добавления категории', 'error');
+    }
+}
+
+// Add question
+async function handleAddQuestion(event) {
+    event.preventDefault();
+    const categoryId = parseInt(document.getElementById('question-category').value);
+    const questionText = document.getElementById('question-text').value.trim();
+    const answerText = document.getElementById('answer-text').value.trim();
+
+    if (!categoryId || !questionText || !answerText) {
+        showNotification('Заполните все поля', 'warning');
+        return;
+    }
+
+    // Check for duplicate questions
+    if (appState.questions.some(q => q.question_text.toLowerCase() === questionText.toLowerCase())) {
+        showNotification('Вопрос с таким текстом уже существует', 'error');
+        return;
+    }
+
+    try {
+        await addQuestionAPI(categoryId, questionText, answerText);
+        showNotification('Вопрос добавлен', 'success');
+        document.getElementById('question-form').reset();
+        loadData();
+    } catch (error) {
+        showNotification('Ошибка добавления вопроса', 'error');
+    }
+}
+
+// Edit category
+function editCategory(categoryId) {
+    const category = appState.categories.find(c => c.id === categoryId);
+    if (!category) return;
+
+    document.getElementById('edit-id').value = categoryId;
+    document.getElementById('edit-type').value = 'category';
+    document.getElementById('edit-fields').innerHTML = `
+        <div class="form-group">
+            <label class="form-label">Название категории</label>
+            <input type="text" class="form-input" id="edit-name" value="${category.name}" required>
+        </div>
+    `;
+    showModal('edit-modal');
+}
+
+// Edit question
+function editQuestion(questionId) {
+    const question = appState.questions.find(q => q.id === questionId);
+    if (!question) return;
+
+    document.getElementById('edit-id').value = questionId;
+    document.getElementById('edit-type').value = 'question';
+
+    const categoriesOptions = appState.categories.map(c =>
+        `<option value="${c.id}" ${c.id === question.category_id ? 'selected' : ''}>${c.name}</option>`
+    ).join('');
+
+    document.getElementById('edit-fields').innerHTML = `
+        <div class="form-group">
+            <label class="form-label">Категория</label>
+            <select class="form-select" id="edit-category" required>
+                ${categoriesOptions}
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Вопрос</label>
+            <textarea class="form-textarea" id="edit-question-text" required>${question.question_text}</textarea>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Ответ</label>
+            <textarea class="form-textarea" id="edit-answer-text" required style="min-height: 150px;">${question.answer_text}</textarea>
+        </div>
+    `;
+    showModal('edit-modal');
+}
+
+// Handle edit form submission
+async function handleEdit(event) {
+    event.preventDefault();
+    const id = parseInt(document.getElementById('edit-id').value);
+    const type = document.getElementById('edit-type').value;
+
+    try {
+        if (type === 'category') {
+            const name = document.getElementById('edit-name').value.trim();
+
+            // Check for duplicates (excluding current)
+            if (appState.categories.some(c => c.id !== id && c.name.toLowerCase() === name.toLowerCase())) {
+                showNotification('Категория с таким названием уже существует', 'error');
+                return;
+            }
+
+            await updateCategoryAPI(id, name);
+            showNotification('Категория обновлена', 'success');
+            closeModal('edit-modal');
+            loadData();
+        } else if (type === 'question') {
+            const categoryId = parseInt(document.getElementById('edit-category').value);
+            const questionText = document.getElementById('edit-question-text').value.trim();
+            const answerText = document.getElementById('edit-answer-text').value.trim();
+
+            // Check for duplicate questions (excluding current)
+            if (appState.questions.some(q => q.id !== id && q.question_text.toLowerCase() === questionText.toLowerCase())) {
+                showNotification('Вопрос с таким текстом уже существует', 'error');
+                return;
+            }
+
+            await updateQuestionAPI(id, categoryId, questionText, answerText);
+            showNotification('Вопрос обновлен', 'success');
+            closeModal('edit-modal');
+            loadData();
+        }
+    } catch (error) {
+        showNotification('Ошибка сохранения', 'error');
+    }
+}
+
+// Delete category
+async function deleteCategory(categoryId) {
+    if (!confirm('Удалить категорию и все её вопросы?')) return;
+
+    try {
+        await deleteCategoryAPI(categoryId);
+        showNotification('Категория удалена', 'success');
+        if (appState.selectedCategory === categoryId) {
+            appState.selectedCategory = null;
+        }
+        loadData();
+    } catch (error) {
+        showNotification('Ошибка удаления', 'error');
+    }
+}
+
+// Delete question
+async function deleteQuestion(questionId) {
+    if (!confirm('Удалить вопрос?')) return;
+
+    try {
+        await deleteQuestionAPI(questionId);
+        showNotification('Вопрос удален', 'success');
+        loadData();
+    } catch (error) {
+        showNotification('Ошибка удаления', 'error');
+    }
+}
+
+// Toggle category expansion in management
+function toggleCategoryQuestions(categoryId) {
+    if (appState.expandedCategories.has(categoryId)) {
+        appState.expandedCategories.delete(categoryId);
+    } else {
+        appState.expandedCategories.add(categoryId);
+    }
+    renderManagement();
+}
+
+// Show all questions (clear filters)
+function showAllQuestions() {
+    appState.selectedCategory = null;
+    appState.searchQuery = '';
+    document.getElementById('search-input').value = '';
+    appState.currentPage = 1;
+    filterQuestions();
+    renderCategories();
+    renderQuestions();
+    updateStats();
+    showNotification('Показаны все вопросы', 'success');
+}
+
+// Shuffle questions
+function shuffleQuestions() {
+    appState.filteredQuestions = shuffleArray([...appState.filteredQuestions]);
+    appState.currentPage = 1;
+    renderQuestions();
+    updateStats();
+    showNotification('Вопросы перемешаны', 'success');
+}
+
+// Close modals when clicking outside
+window.onclick = function (event) {
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+}

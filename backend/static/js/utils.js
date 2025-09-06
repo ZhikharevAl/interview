@@ -1,22 +1,63 @@
-const Utils = {
-    formatText(text) {
-        if (!text) return '';
-        const tempDiv = document.createElement('div');
-        tempDiv.textContent = text;
-        let sanitizedText = tempDiv.innerHTML;
+// Create geometric background shapes
+function createGeometricShapes() {
+    const bg = document.querySelector('.geometric-bg');
+    const shapes = ['circle', 'square', 'triangle'];
+    const colors = ['var(--red)', 'var(--blue)', 'var(--yellow)', 'var(--black)'];
 
-        sanitizedText = sanitizedText
-            .replace(/```([\s\S]*?)```/g, (match, code) => {
-                const encodedCode = code.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-                return `<pre class="bg-gray-900 text-green-400 p-4 rounded-lg text-sm overflow-x-auto my-4 border border-blue-500 border-opacity-30 font-mono">${encodedCode.trim()}</pre>`;
-            })
-            .replace(/`([^`]+)`/g, '<code class="bg-blue-900 bg-opacity-50 text-blue-300 font-mono text-sm px-2 py-1 rounded-md">$1</code>')
-            .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold text-blue-300">$1</strong>')
-            .replace(/\n/g, '<br>');
+    for (let i = 0; i < CONFIG.geometricShapesCount; i++) {
+        const shape = document.createElement('div');
+        const shapeType = shapes[Math.floor(Math.random() * shapes.length)];
+        shape.className = `geometric-shape ${shapeType}`;
 
-        return `<div class="prose max-w-none text-gray-300">${sanitizedText}</div>`;
-    },
-    shuffleArray(array) {
-        return [...array].sort(() => Math.random() - 0.5);
-    },
-};
+        if (shapeType !== 'triangle') {
+            shape.style.width = `${20 + Math.random() * 40}px`;
+            shape.style.height = shape.style.width;
+            shape.style.background = colors[Math.floor(Math.random() * colors.length)];
+        }
+
+        shape.style.left = `${Math.random() * 100}%`;
+        shape.style.top = `${Math.random() * 100}vh`;
+        shape.style.animationDelay = `${Math.random() * 20}s`;
+        shape.style.animationDuration = `${20 + Math.random() * 20}s`;
+
+        bg.appendChild(shape);
+    }
+}
+
+// Format answer with code highlighting
+function formatAnswer(text) {
+    // Replace code blocks
+    text = text.replace(/```([\s\S]*?)```/g, '<div class="code-block">$1</div>');
+    // Replace inline code
+    text = text.replace(/`([^`]+)`/g, '<span class="inline-code">$1</span>');
+    // Replace line breaks
+    text = text.replace(/\n/g, '<br>');
+    // Bold text
+    text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+    return text;
+}
+
+// Show notification
+function showNotification(message, type = 'success') {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+        }
+    }, CONFIG.notificationDuration);
+}
+
+// Shuffle array
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
