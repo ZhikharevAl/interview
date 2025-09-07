@@ -19,3 +19,12 @@ class TestHealthCheck:
             assert data["status"] == "healthy"
             assert "version" in data
             assert "database_url" in data
+
+    @allure.story("Root Endpoint")
+    def test_root_endpoint(self, api_client: HTTPClient) -> None:
+        """Test that root endpoint is accessible."""
+        with allure.step("Requesting root endpoint"):
+            response = api_client.get("/")
+
+        with allure.step("Verifying root endpoint response"):
+            assert response.ok
