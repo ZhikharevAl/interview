@@ -207,7 +207,7 @@ function renderManagement() {
             <div class="category-header" onclick="toggleCategoryQuestions(${category.id})">
                 <div>
                     <strong>${category.name}</strong>
-                    <div style="font-size: 11px; opacity: 0.7;">${questionsCount} вопросов</div>
+                    <div style="font-size: 11px; opacity: 0.7;">Поводов для страдания: ${questionsCount}</div>
                 </div>
                 <div style="display: flex; align-items: center; gap: 10px;">
                     <div class="management-actions">

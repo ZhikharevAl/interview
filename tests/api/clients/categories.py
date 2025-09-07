@@ -7,9 +7,9 @@ from tests.config.config import ConfigTests
 class CategoriesClient(BaseAPI):
     """API client for interacting with category endpoints (/api/v1/categories)."""
 
-    def create(self, name: str, description: str) -> APIResponse:
+    def create(self, name: str) -> APIResponse:
         """Sends a request to create a new category."""
-        payload = {"name": name, "description": description}
+        payload = {"name": name}
         return self.http.post(ConfigTests.CATEGORIES_URL, json=payload)
 
     def get_all(self) -> APIResponse:

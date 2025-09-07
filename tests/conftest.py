@@ -39,7 +39,7 @@ def managed_category(categories_client: CategoriesClient) -> Generator[int]:
     `yields` ID the created category.
     """
     category = CategoryData.random()
-    response = categories_client.create(name=category.name, description=category.description)
+    response = categories_client.create(name=category.name)
     category_id = response.json()["id"]
 
     yield category_id
