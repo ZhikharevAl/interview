@@ -1,5 +1,6 @@
 from app.db.models.category import Category as CategoryModel
 from app.schemas.category import CategoryCreate, CategoryUpdate
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 
@@ -15,7 +16,9 @@ def get_category(db: Session, category_id: int) -> CategoryModel | None:
 
 def get_category_by_name(db: Session, name: str) -> CategoryModel | None:
     """Get category by name."""
-    return db.query(CategoryModel).filter(CategoryModel.name == name).first()
+    return (
+        db.query(CategoryModel).filter(func.lower(CategoryModel.name) == func.lower(name)).first()
+    )
 
 
 def create_category(db: Session, category: CategoryCreate) -> CategoryModel:
