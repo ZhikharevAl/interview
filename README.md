@@ -1,3 +1,5 @@
+[![Python Code Quality Checks](https://github.com/ZhikharevAl/interview/actions/workflows/code-quality.yaml/badge.svg)](https://github.com/ZhikharevAl/interview/actions/workflows/code-quality.yaml)
+
 # Interview Preparation App
 
 A modern web application for creating and studying interview questions using interactive flashcards.
