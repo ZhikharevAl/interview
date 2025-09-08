@@ -1,0 +1,18 @@
+URL: http://localhost:8000/health
+Status: 200 OK
+
+Headers:
+{
+    "date": "Mon, 08 Sep 2025 22:59:16 GMT",
+    "server": "uvicorn",
+    "content-length": "107",
+    "content-type": "application/json"
+}
+
+Body:
+{
+    "status": "healthy",
+    "database_url": "postgresql://***@db:5432/interview_app",
+    "debug": true,
+    "version": "0.1.0"
+}
