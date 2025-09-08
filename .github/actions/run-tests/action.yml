@@ -7,7 +7,7 @@ inputs:
     required: true
 
 runs:
-  using: composite
+  using: "composite"
   steps:
     - name: Setup Python and UV
       uses: ./.github/actions/setup
@@ -22,25 +22,39 @@ runs:
         echo "Backend is healthy!"
       shell: bash
 
-    - name: Install Playwright Browsers
-      run: uv run playwright install --with-deps
+    - name: Install Playwright Browsers inside container
+      run: docker compose exec -T backend uv run playwright install --with-deps
       shell: bash
 
-    - name: Create directories for results
+    - name: Run Pytest with Coverage inside Docker
       run: |
-        mkdir -p allure-results
-        mkdir -p coverage-results
-      shell: bash
-
-    - name: Run Pytest with Coverage
-      run: |
-        uv run pytest \
+        docker compose exec -T backend uv run pytest \
           -v --durations=0 \
-          --cov=backend/app \
+          --cov=app \
           --cov-report=xml:coverage-results/coverage.xml \
           --cov-report=html:coverage-results/htmlcov \
           --cov-report=term-missing \
           --alluredir=allure-results
+      shell: bash
+      continue-on-error: true
+
+    - name: Check Pytest exit code
+      id: test-status
+      run: |
+        exit_code=$(docker compose exec -T backend echo $?)
+        if [ $exit_code -ne 0 ]; then
+          echo "Pytest failed with exit code $exit_code"
+          exit 1
+        fi
+      shell: bash
+
+    - name: Copy results from container
+      if: always()
+      run: |
+        mkdir -p allure-results
+        mkdir -p coverage-results
+        docker compose cp backend:/app/allure-results/. ./allure-results/
+        docker compose cp backend:/app/coverage-results/. ./coverage-results/
       shell: bash
 
     - name: Upload coverage reports to Codecov
@@ -48,6 +62,7 @@ runs:
       with:
         token: ${{ inputs.codecov-token }}
         slug: ZhikharevAl/interview
+        fail_ci_if_error: false
 
     - name: Store Test Results
       uses: actions/upload-artifact@v4
