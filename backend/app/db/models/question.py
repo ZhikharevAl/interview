@@ -11,6 +11,6 @@ class Question(Base):
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     question_text: Mapped[str] = mapped_column(Text, nullable=False)
     answer_text: Mapped[str] = mapped_column(Text, nullable=False)
-    category_id: Mapped[int | None] = mapped_column(ForeignKey("categories.id"))
+    category_id: Mapped[int] = mapped_column(ForeignKey("categories.id", ondelete="CASCADE"))
 
     category = relationship("Category", back_populates="questions")

@@ -6,7 +6,7 @@ class QuestionBase(BaseModel):
 
     question_text: str
     answer_text: str
-    category_id: int
+    category_id: int | None = None
 
 
 class QuestionCreate(QuestionBase):

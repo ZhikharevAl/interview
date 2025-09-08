@@ -97,8 +97,7 @@ def include_object(
     _obj: object,
     name: str,
     type_: str,
-    *,
-    _reflected: bool,
+    _reflected: bool,  # noqa: FBT001
     _compare_to: object,
 ) -> bool:
     """Filtering objects for migrations."""
