@@ -1,5 +1,11 @@
 name: "Run Tests"
 description: "Starts services, runs Pytest with Coverage and Allure, and uploads results"
+
+inputs:
+  codecov-token:
+    description: "Codecov token for uploading reports"
+    required: true
+
 runs:
   using: composite
   steps:
@@ -40,7 +46,7 @@ runs:
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v5
       with:
-        token: ${{ secrets.CODECOV_TOKEN }}
+        token: ${{ inputs.codecov-token }}
         slug: ZhikharevAl/interview
 
     - name: Store Test Results
