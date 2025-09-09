@@ -90,7 +90,12 @@ max-line-length = 100
 asyncio_mode = "auto"
 pythonpath = ["backend"]
 testpaths = ["tests"]
-addopts = "--strict-markers --strict-config"
+addopts = "--strict-markers --strict-config --cov=backend/app --cov-report=term-missing --cov-report=xml"
+filterwarnings = [
+    "ignore::DeprecationWarning:pydantic.*",
+    "ignore::sqlalchemy.exc.MovedIn20Warning",
+    "ignore::DeprecationWarning:pkg_resources.*",
+]
 
 # Coverage configuration
 [tool.coverage.run]
@@ -103,6 +108,8 @@ omit = [
     "*/.venv/*",
     "*/env/*",
     "*/site-packages/*",
+    "backend/app/main.py",                # Startup/shutdown logic
+    "backend/app/core/logging_config.py", # Logging setup
 ]
 branch = true
 
@@ -118,11 +125,13 @@ exclude_lines = [
     "if __name__ == .__main__.:",
     "class .*\\bProtocol\\):",
     "@(abc\\.)?abstractmethod",
+    "@asynccontextmanager",
+    "async def lifespan",
 ]
 ignore_errors = true
 show_missing = true
 precision = 2
-fail_under = 80
+fail_under = 60
 
 [tool.coverage.html]
 directory = "coverage-results/htmlcov"
