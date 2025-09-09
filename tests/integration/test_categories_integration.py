@@ -28,3 +28,10 @@ class TestCategoriesIntegration:
         response2 = client.post("/api/v1/categories/", json=category_data)
         assert response2.status_code == HTTPStatus.BAD_REQUEST
         assert "already exists" in response2.json()["detail"]
+
+    def test_get_nonexistent_category(self, client: TestClient) -> None:
+        """Test getting non-existent category returns 404."""
+        response = client.get("/api/v1/categories/99999")
+
+        assert response.status_code == HTTPStatus.NOT_FOUND
+        assert "Category not found" in response.json()["detail"]
