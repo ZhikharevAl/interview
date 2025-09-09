@@ -44,6 +44,8 @@ jobs:
 
       - name: Run Tests Composite Action
         uses: ./.github/actions/run-tests
+        with:
+          codecov-token: ${{ secrets.CODECOV_TOKEN }}
 
   allure-report:
     runs-on: ubuntu-22.04
