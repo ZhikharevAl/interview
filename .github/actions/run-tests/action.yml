@@ -29,12 +29,10 @@ runs:
     - name: Run Pytest with Coverage inside Docker
       run: |
         docker compose exec -T backend uv run pytest \
-          -v --durations=0 \
-          --cov=app \
-          --cov-report=xml:coverage-results/coverage.xml \
-          --cov-report=html:coverage-results/htmlcov \
-          --cov-report=term-missing \
-          --alluredir=allure-results
+          -v \
+          --cov=backend \
+          --alluredir=allure-results \
+          tests
       shell: bash
       continue-on-error: true
 
