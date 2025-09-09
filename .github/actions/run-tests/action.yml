@@ -31,8 +31,7 @@ runs:
         docker compose exec -T backend uv run pytest \
           -v \
           --cov=backend \
-          --alluredir=allure-results \
-          tests
+          --alluredir=allure-results
       shell: bash
       continue-on-error: true
 
