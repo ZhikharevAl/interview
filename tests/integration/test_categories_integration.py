@@ -35,3 +35,26 @@ class TestCategoriesIntegration:
 
         assert response.status_code == HTTPStatus.NOT_FOUND
         assert "Category not found" in response.json()["detail"]
+
+    def test_update_category(self, client: TestClient, sample_category: dict) -> None:
+        """Test updating a category."""
+        category_id = sample_category["id"]
+        update_data = {"name": "Updated Category Name"}
+
+        response = client.put(f"/api/v1/categories/{category_id}", json=update_data)
+
+        assert response.status_code == HTTPStatus.OK
+        data = response.json()
+        assert data["id"] == category_id
+        assert data["name"] == "Updated Category Name"
+
+    def test_get_category_by_id(self, client: TestClient, sample_category: dict) -> None:
+        """Test getting category by ID."""
+        category_id = sample_category["id"]
+
+        response = client.get(f"/api/v1/categories/{category_id}")
+
+        assert response.status_code == HTTPStatus.OK
+        data = response.json()
+        assert data["id"] == category_id
+        assert data["name"] == sample_category["name"]
