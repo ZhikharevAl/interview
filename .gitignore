@@ -9,7 +9,7 @@ __pycache__/
 # Database
 interview_app.db
 backups
-
+test_integration.db
 # Logs
 logs/
 
@@ -18,3 +18,9 @@ logs/
 
 # Test results
 allure-results
+
+#Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
