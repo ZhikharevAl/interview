@@ -1,24 +1,22 @@
-FROM python:3.13-slim
+FROM python:3.13
 
 WORKDIR /app
 
 RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpq-dev \
     curl \
+    libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
+
 RUN curl -LsSf https://astral.sh/uv/install.sh | sh
-ENV PATH="/root/.local/bin:$PATH"
+ENV PATH="/root/.cargo/bin:$PATH"
 
-COPY pyproject.toml uv.lock* ./
+COPY pyproject.toml uv.lock ./
 
-# Устанавливаем зависимости через uv в глобальное окружение
-RUN uv pip install --system -e . && \
-    uv pip install --system --group dev
+RUN uv pip sync --system --locked
 
-COPY backend/ .
+COPY . .
 
 EXPOSE 8000
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "backend.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
