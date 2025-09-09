@@ -58,3 +58,23 @@ class TestCategoriesIntegration:
         data = response.json()
         assert data["id"] == category_id
         assert data["name"] == sample_category["name"]
+
+    def test_update_nonexistent_category(self, client: TestClient) -> None:
+        """Test updating non-existent category returns 404."""
+        update_data = {"name": "Non-existent"}
+
+        response = client.put("/api/v1/categories/99999", json=update_data)
+
+        assert response.status_code == HTTPStatus.NOT_FOUND
+        assert "Category not found" in response.json()["detail"]
+
+    def test_delete_category(self, client: TestClient, sample_category: dict) -> None:
+        """Test deleting a category."""
+        category_id = sample_category["id"]
+
+        response = client.delete(f"/api/v1/categories/{category_id}")
+
+        assert response.status_code == HTTPStatus.OK
+        data = response.json()
+        assert data["deleted"] is True
+        assert data["id"] == category_id
