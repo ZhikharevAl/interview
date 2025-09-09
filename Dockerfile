@@ -18,6 +18,7 @@ RUN uv pip install --system -e . && \
     uv pip install --system --group dev
 
 COPY backend/ .
+COPY tests/ ./tests/
 
 EXPOSE 8000
 
