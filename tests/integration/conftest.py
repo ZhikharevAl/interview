@@ -1,4 +1,5 @@
 from collections.abc import Generator
+from http import HTTPStatus
 
 import pytest
 from app.core.logging_config import get_logger
@@ -55,3 +56,11 @@ def client() -> Generator[TestClient]:
     with TestClient(app) as test_client:
         yield test_client
     Base.metadata.drop_all(bind=test_engine)
+
+
+@pytest.fixture
+def sample_category(client: TestClient) -> dict:
+    """Create a sample category for tests."""
+    response = client.post("/api/v1/categories/", json={"name": "Test Category"})
+    assert response.status_code == HTTPStatus.CREATED
+    return response.json()
