@@ -3,8 +3,7 @@ from typing import Any
 
 from app.core.config import settings
 from sqlalchemy import MetaData, create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import DeclarativeBase, sessionmaker
 from sqlalchemy.orm.session import Session
 
 naming_convention = {
@@ -24,7 +23,11 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 metadata_obj = MetaData(naming_convention=naming_convention)
 
-Base = declarative_base(metadata=metadata_obj)
+
+class Base(DeclarativeBase):
+    """Base class for all database models."""
+
+    metadata = metadata_obj
 
 
 def get_db() -> Generator[Session, Any]:
