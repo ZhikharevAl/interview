@@ -1,0 +1,11 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"Test for the successful creation of a question.","15","test_create_question","tests.api","Tue Sep 09 01:16:39 GMT 2025","passed","Tue Sep 09 01:16:39 GMT 2025","TestQuestionsAPI","test_questions_api","",""
+"Test that health endpoint returns correct status.","50","test_health_endpoint","tests.api","Tue Sep 09 01:16:39 GMT 2025","passed","Tue Sep 09 01:16:39 GMT 2025","TestHealthCheck","test_health","",""
+"A test for the successful deletion of a category.","115","test_delete_category","tests.api","Tue Sep 09 01:16:39 GMT 2025","passed","Tue Sep 09 01:16:39 GMT 2025","TestCategoriesAPI","test_categories_api","",""
+"
+Test for successful retrieval of a category by ID.
+
+The `managed_category` fixture provides the ID of an already created category.
+","52","test_read_category_by_id","tests.api","Tue Sep 09 01:16:38 GMT 2025","passed","Tue Sep 09 01:16:38 GMT 2025","TestCategoriesAPI","test_categories_api","",""
+"Test for getting 404 errors when requesting a non-existent category.","51","test_read_nonexistent_category","tests.api","Tue Sep 09 01:16:39 GMT 2025","passed","Tue Sep 09 01:16:39 GMT 2025","TestCategoriesAPI","test_categories_api","",""
+"Test that root endpoint is accessible.","9","test_root_endpoint","tests.api","Tue Sep 09 01:16:39 GMT 2025","passed","Tue Sep 09 01:16:39 GMT 2025","TestHealthCheck","test_health","",""
