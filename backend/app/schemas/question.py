@@ -12,6 +12,8 @@ class QuestionBase(BaseModel):
 class QuestionCreate(QuestionBase):
     """Question creation schema."""
 
+    model_config = ConfigDict(from_attributes=True)
+
 
 class QuestionUpdate(BaseModel):
     """Question update schema."""
@@ -19,6 +21,8 @@ class QuestionUpdate(BaseModel):
     question_text: str | None = None
     answer_text: str | None = None
     category_id: int | None = None
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 class Question(QuestionBase):
@@ -34,3 +38,5 @@ class QuestionDelete(BaseModel):
 
     id: int
     deleted: bool
+
+    model_config = ConfigDict(from_attributes=True)

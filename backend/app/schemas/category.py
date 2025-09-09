@@ -10,6 +10,8 @@ class CategoryBase(BaseModel):
 class CategoryCreate(CategoryBase):
     """Category creation schema."""
 
+    model_config = ConfigDict(from_attributes=True)
+
 
 class Category(CategoryBase):
     """Category schema."""
@@ -24,9 +26,13 @@ class CategoryUpdate(BaseModel):
 
     name: str | None = None
 
+    model_config = ConfigDict(from_attributes=True)
+
 
 class CategoryDelete(BaseModel):
     """Schema for delete confirmation."""
 
     id: int
     deleted: bool
+
+    model_config = ConfigDict(from_attributes=True)
