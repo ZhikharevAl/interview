@@ -1,0 +1,6 @@
+2025-09-10 20:35:15 [INFO] tests.utils.http_client:41 - Sending POST to /api/v1/categories
+2025-09-10 20:35:15 [INFO] tests.utils.http_client:49 - Received response 201 from http://localhost:8000/api/v1/categories/
+2025-09-10 20:35:15 [INFO] tests.utils.http_client:25 - Sending GET to /api/v1/categories/1 with params: None
+2025-09-10 20:35:15 [INFO] tests.utils.http_client:29 - Received response 200 from http://localhost:8000/api/v1/categories/1
+2025-09-10 20:35:15 [INFO] tests.utils.http_client:80 - Sending DELETE to /api/v1/categories/1
+2025-09-10 20:35:16 [INFO] tests.utils.http_client:84 - Received response 200 from http://localhost:8000/api/v1/categories/1
