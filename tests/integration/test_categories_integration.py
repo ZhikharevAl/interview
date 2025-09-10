@@ -78,3 +78,6 @@ class TestCategoriesIntegration:
         data = response.json()
         assert data["deleted"] is True
         assert data["id"] == category_id
+
+        get_response = client.get(f"/api/v1/categories/{category_id}")
+        assert get_response.status_code == HTTPStatus.NOT_FOUND
