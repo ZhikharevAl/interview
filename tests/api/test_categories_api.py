@@ -24,10 +24,12 @@ class TestCategoriesAPI:
             response = categories_client.get_by_id(category_id)
 
         with allure.step("Checking that the response data is correct"):
-            assert response.ok
+            assert response.ok, f"Failed to get category by ID. Status: {response.status}"
             data = response.json()
-            assert data["id"] == category_id
-            assert "name" in data
+            assert data["id"] == category_id, (
+                f"Expected category ID {category_id}, but got {data.get('id')}"
+            )
+            assert "name" in data, "The 'name' key is missing from the category data"
 
     @allure.story("Delete Category")
     def test_delete_category(self, categories_client: CategoriesClient) -> None:
@@ -35,21 +37,27 @@ class TestCategoriesAPI:
         category_name = "Category to be deleted"
         with allure.step(f"Creating category '{category_name}' for deletion"):
             create_response = categories_client.create(name=category_name)
-            assert create_response.ok
+            assert create_response.ok, (
+                f"Failed to create category for deletion test. Status: {create_response.status}"
+            )
             category_id = create_response.json()["id"]
 
         with allure.step(f"Deleting category by ID: {category_id}"):
             delete_response = categories_client.delete(category_id)
 
         with allure.step("We check that the deletion was successful."):
-            assert delete_response.ok
-            assert delete_response.json()["deleted"] is True
+            assert delete_response.ok, f"Delete request failed. Status: {delete_response.status}"
+            assert delete_response.json()["deleted"] is True, (
+                "The 'deleted' flag in the response was not True"
+            )
 
         with allure.step(
             "We check that the category has indeed been deleted (we are waiting for 404)"
         ):
             get_response = categories_client.get_by_id(category_id)
-            assert get_response.status == HTTPStatus.NOT_FOUND
+            assert get_response.status == HTTPStatus.NOT_FOUND, (
+                "Category was found after it should have been deleted"
+            )
 
     @allure.story("Get Category by ID")
     def test_read_nonexistent_category(self, categories_client: CategoriesClient) -> None:
@@ -59,4 +67,6 @@ class TestCategoriesAPI:
             response = categories_client.get_by_id(non_existent_id)
 
         with allure.step("Checking that the API returned a 404 Not Found error"):
-            assert response.status == HTTPStatus.NOT_FOUND
+            assert response.status == HTTPStatus.NOT_FOUND, (
+                f"Expected 404 Not Found, but got {response.status}"
+            )
