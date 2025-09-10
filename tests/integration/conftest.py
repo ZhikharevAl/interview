@@ -1,12 +1,15 @@
+import sqlite3
 from collections.abc import Generator
 from http import HTTPStatus
+from typing import Any
 
 import pytest
 from app.core.logging_config import get_logger
 from app.db.database import Base, get_db
 from app.main import app
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
+from sqlalchemy.engine import Engine
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session, sessionmaker
 
@@ -15,6 +18,17 @@ logger = get_logger(__name__)
 SQLALCHEMY_DATABASE_URL = "sqlite:///./test_integration.db"
 test_engine = create_engine(SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False})
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
+
+
+@event.listens_for(Engine, "connect")
+def set_sqlite_pragma(
+    dbapi_connection: sqlite3.Connection,
+    _connection_record: Any,  # noqa: ANN401
+) -> None:
+    """Set PRAGMA foreign_keys=ON for SQLite."""
+    cursor = dbapi_connection.cursor()
+    cursor.execute("PRAGMA foreign_keys=ON")
+    cursor.close()
 
 
 def override_get_db() -> Generator[Session]:
@@ -62,5 +76,18 @@ def client() -> Generator[TestClient]:
 def sample_category(client: TestClient) -> dict:
     """Create a sample category for tests."""
     response = client.post("/api/v1/categories/", json={"name": "Test Category"})
+    assert response.status_code == HTTPStatus.CREATED
+    return response.json()
+
+
+@pytest.fixture
+def sample_question(client: TestClient, sample_category: dict) -> dict:
+    """Create a sample question for tests."""
+    question_data = {
+        "question_text": "What is integration testing?",
+        "answer_text": "Integration testing is testing combined parts of an application.",
+        "category_id": sample_category["id"],
+    }
+    response = client.post("/api/v1/questions/", json=question_data)
     assert response.status_code == HTTPStatus.CREATED
     return response.json()
