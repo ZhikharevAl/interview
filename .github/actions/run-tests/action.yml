@@ -1,5 +1,11 @@
 name: "Run Tests"
-description: "Starts services, runs Pytest with Allure, and uploads results"
+description: "Starts services, runs Pytest with Coverage and Allure, and uploads results"
+
+inputs:
+  codecov-token:
+    description: 'Codecov token for uploading reports'
+    required: true
+
 runs:
   using: composite
   steps:
@@ -20,9 +26,28 @@ runs:
       run: uv run playwright install --with-deps
       shell: bash
 
-    - name: Run Pytest
-      run: uv run pytest --alluredir=allure-results
+    - name: Create directories for results
+      run: |
+        mkdir -p allure-results
+        mkdir -p coverage-results
       shell: bash
+
+    - name: Run Pytest with Coverage
+      run: |
+        uv run pytest \
+          -v --durations=0 \
+          --cov=backend/app \
+          --cov-report=xml:coverage-results/coverage.xml \
+          --cov-report=html:coverage-results/htmlcov \
+          --cov-report=term-missing \
+          --alluredir=allure-results
+      shell: bash
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ inputs.codecov-token }}
+        slug: ZhikharevAl/interview
 
     - name: Store Test Results
       uses: actions/upload-artifact@v4
@@ -30,4 +55,12 @@ runs:
       with:
         name: allure-results
         path: allure-results
+        retention-days: 30
+
+    - name: Store Coverage Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: coverage-results
+        path: coverage-results
         retention-days: 30

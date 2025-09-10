@@ -33,7 +33,7 @@ def read_question(question_id: int, db: Annotated[Session, Depends(get_db)]) -> 
     return Question.model_validate(db_question)
 
 
-@router.post("/")
+@router.post("/", status_code=201)
 def create_question(question: QuestionCreate, db: Annotated[Session, Depends(get_db)]) -> Question:
     """Create a new question."""
     existing = question_service.get_question_by_text_case_insensitive(db, question.question_text)

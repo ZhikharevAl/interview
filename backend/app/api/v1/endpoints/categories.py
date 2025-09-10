@@ -29,7 +29,7 @@ def read_category(category_id: int, db: Annotated[Session, Depends(get_db)]) -> 
     return Category.model_validate(db_category)
 
 
-@router.post("/", response_model=Category)
+@router.post("/", response_model=Category, status_code=201)
 def create_category(
     category: CategoryCreate, db: Annotated[Session, Depends(get_db)]
 ) -> category_service.CategoryModel:

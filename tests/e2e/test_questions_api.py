@@ -22,11 +22,21 @@ class TestQuestionsAPI:
             )
 
         with allure.step("Checking the successful creation of a question"):
-            assert response.ok, f"Error creating question. Response: {response.text()}"
+            assert response.ok, (
+                f"Failed to create question. Status: {response.status}, Body: {response.text()}"
+            )
 
             response_json = response.json()
 
-            assert "id" in response_json, "The response is missing the ID of the created question."
-            assert response_json["question_text"] == question_data.question_text
-            assert response_json["answer_text"] == question_data.answer_text
-            assert response_json["category_id"] == managed_category
+            assert "id" in response_json, (
+                "The 'id' key is missing from the question creation response."
+            )
+            assert response_json["question_text"] == question_data.question_text, (
+                "The 'question_text' in the response does not match the sent data."
+            )
+            assert response_json["answer_text"] == question_data.answer_text, (
+                "The 'answer_text' in the response does not match the sent data."
+            )
+            assert response_json["category_id"] == managed_category, (
+                "The 'category_id' in the response does not match the provided category ID."
+            )
