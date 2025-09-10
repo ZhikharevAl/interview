@@ -1,0 +1,6 @@
+INFO     app.main:main.py:22 Application startup initiated
+INFO     app.main:main.py:26 Database tables created successfully
+INFO     app.main:main.py:31 Application startup completed
+INFO     httpx:_client.py:1025 HTTP Request: POST http://testserver/api/v1/categories/ "HTTP/1.1 201 Created"
+INFO     app.main:main.py:35 Application shutdown initiated
+INFO     app.main:main.py:37 Application shutdown completed
