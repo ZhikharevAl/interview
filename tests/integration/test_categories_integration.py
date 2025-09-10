@@ -81,3 +81,30 @@ class TestCategoriesIntegration:
 
         get_response = client.get(f"/api/v1/categories/{category_id}")
         assert get_response.status_code == HTTPStatus.NOT_FOUND
+
+    def test_delete_nonexistent_category(self, client: TestClient) -> None:
+        """Test deleting non-existent category returns 404."""
+        response = client.delete("/api/v1/categories/99999")
+
+        assert response.status_code == HTTPStatus.NOT_FOUND
+        assert "Category not found" in response.json()["detail"]
+
+    def test_category_cascade_delete_questions(
+        self, client: TestClient, sample_category: dict
+    ) -> None:
+        """Test that deleting category cascades to delete questions."""
+        category_id = sample_category["id"]
+
+        question_data = {
+            "question_text": "Test question?",
+            "answer_text": "Test answer.",
+            "category_id": category_id,
+        }
+        question_response = client.post("/api/v1/questions/", json=question_data)
+        question_id = question_response.json()["id"]
+
+        delete_response = client.delete(f"/api/v1/categories/{category_id}")
+        assert delete_response.status_code == HTTPStatus.OK
+
+        question_get_response = client.get(f"/api/v1/questions/{question_id}")
+        assert question_get_response.status_code == HTTPStatus.NOT_FOUND
