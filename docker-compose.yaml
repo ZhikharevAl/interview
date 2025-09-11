@@ -19,7 +19,7 @@ services:
 
   backend:
     build:
-      context: ./backend
+      context: .
       dockerfile: ../Dockerfile.backend
     environment:
       DATABASE_URL: postgresql://interview_user:interview_password@db:5432/interview_app
