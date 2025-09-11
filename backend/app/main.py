@@ -1,6 +1,5 @@
 from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
-from pathlib import Path
 from typing import Any
 
 from app.api.v1.api import api_router
@@ -9,8 +8,6 @@ from app.core.logging_config import get_logger, setup_logging
 from app.db.database import Base, engine
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
 
 setup_logging(settings.LOG_LEVEL, settings.LOG_FILE)
 logger = get_logger(__name__)
@@ -54,30 +51,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 logger.info("CORS middleware configured")
-
-static_dir = Path("static")
-if static_dir.exists() and static_dir.is_dir():
-    app.mount("/static", StaticFiles(directory=str(static_dir)), name="static")
-    logger.info("Static files mounted from %s", static_dir)
-else:
-    logger.warning("Static directory %s not found", static_dir)
-
-
-@app.get("/", response_model=None)
-def read_root() -> FileResponse | dict[str, Any]:
-    """Root endpoint - serve the main HTML file."""
-    logger.info("Root endpoint accessed")
-    static_file = Path("static/index.html")
-
-    if static_file.exists():
-        logger.debug("Serving static file: %s", static_file)
-        return FileResponse(str(static_file))
-
-    logger.debug("Static file not found, returning JSON response")
-    return {
-        "message": f"Welcome to {settings.APP_NAME}!",
-        "static_available": static_dir.exists(),
-    }
 
 
 @app.get("/health")
