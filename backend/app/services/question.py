@@ -40,20 +40,20 @@ def create_question(db: Session, question: QuestionCreate) -> QuestionModel:
 def update_question(
     db: Session, question_id: int, question: QuestionUpdate
 ) -> QuestionModel | None:
-    """Update a question by ID."""
-    db_question = db.query(QuestionModel).filter(QuestionModel.id == question_id).first()
+    """Updates the question using only the passed fields."""
+    db_question = db.get(QuestionModel, question_id)
     if not db_question:
         return None
 
-    if question.question_text is not None:
-        db_question.question_text = question.question_text
-    if question.answer_text is not None:
-        db_question.answer_text = question.answer_text
-    if question.category_id is not None:
-        db_question.category_id = question.category_id
+    update_data = question.model_dump(exclude_unset=True)
 
-    db.commit()
-    db.refresh(db_question)
+    if update_data:
+        for key, value in update_data.items():
+            setattr(db_question, key, value)
+
+        db.commit()
+        db.refresh(db_question)
+
     return db_question
 
 
