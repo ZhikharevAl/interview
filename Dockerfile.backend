@@ -13,14 +13,13 @@ ENV PATH="/root/.local/bin:$PATH"
 
 COPY pyproject.toml uv.lock* ./
 
-# Устанавливаем зависимости через uv в глобальное окружение
 RUN uv pip install --system -e . && \
     uv pip install --system --group dev
 
-COPY backend/ .
-COPY tests/ ./tests/
-COPY frontend/ ./frontend/
+COPY ./backend/ /app/
+COPY ./tests/ /app/tests/
+COPY ./frontend/ /app/frontend/
 
 EXPOSE 8000
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
