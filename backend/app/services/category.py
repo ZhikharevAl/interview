@@ -33,16 +33,20 @@ def create_category(db: Session, category: CategoryCreate) -> CategoryModel:
 def update_category(
     db: Session, category_id: int, category: CategoryUpdate
 ) -> CategoryModel | None:
-    """Update a category by ID."""
-    db_category = db.query(CategoryModel).filter(CategoryModel.id == category_id).first()
+    """Partially updates the category by ID, changing only the passed fields."""
+    db_category = db.get(CategoryModel, category_id)
     if not db_category:
         return None
 
-    if category.name is not None:
-        db_category.name = category.name
+    update_data = category.model_dump(exclude_unset=True)
 
-    db.commit()
-    db.refresh(db_category)
+    if update_data:
+        for key, value in update_data.items():
+            setattr(db_category, key, value)
+
+        db.commit()
+        db.refresh(db_category)
+
     return db_category
 
 

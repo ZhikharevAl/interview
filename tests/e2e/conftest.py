@@ -5,7 +5,7 @@ from playwright.sync_api import APIRequestContext, Playwright
 
 from tests.api.clients.categories import CategoriesClient
 from tests.api.clients.questions import QuestionsClient
-from tests.config.config import ConfigTests
+from tests.config.config import settings
 from tests.utils.category_model import CategoryData
 from tests.utils.http_client import HTTPClient
 from tests.utils.question_model import QuestionData
@@ -16,7 +16,7 @@ def api_request_context_fixture(
     playwright: Playwright,
 ) -> Generator[APIRequestContext]:
     """Session-scoped fixture to create a Playwright APIRequestContext."""
-    context = playwright.request.new_context(base_url=ConfigTests.APP_URL)
+    context = playwright.request.new_context(base_url=settings.BASE_URL)
     yield context
     context.dispose()
 
