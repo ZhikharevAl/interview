@@ -1,0 +1,8 @@
+2025-09-12 01:44:12 [INFO] app.main:19 - Application startup initiated
+2025-09-12 01:44:12 [INFO] app.main:23 - Database tables created successfully
+2025-09-12 01:44:12 [INFO] app.main:28 - Application startup completed
+2025-09-12 01:44:12 [INFO] httpx:1025 - HTTP Request: POST http://testserver/api/v1/categories/ "HTTP/1.1 201 Created"
+2025-09-12 01:44:12 [INFO] httpx:1025 - HTTP Request: POST http://testserver/api/v1/questions/ "HTTP/1.1 201 Created"
+2025-09-12 01:44:12 [INFO] httpx:1025 - HTTP Request: GET http://testserver/api/v1/questions/1 "HTTP/1.1 200 OK"
+2025-09-12 01:44:12 [INFO] app.main:32 - Application shutdown initiated
+2025-09-12 01:44:12 [INFO] app.main:34 - Application shutdown completed

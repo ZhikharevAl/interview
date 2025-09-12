@@ -1,0 +1,2 @@
+INFO     tests.utils.http_client:http_client.py:25 Sending GET to /health with params: None
+INFO     tests.utils.http_client:http_client.py:29 Received response 200 from http://localhost:8080/health
