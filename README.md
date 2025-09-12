@@ -1,4 +1,9 @@
 [![Python Code Quality Checks](https://github.com/ZhikharevAl/interview/actions/workflows/code-quality.yaml/badge.svg)](https://github.com/ZhikharevAl/interview/actions/workflows/code-quality.yaml)
+[![codecov](https://codecov.io/gh/ZhikharevAl/interview/branch/main/graph/badge.svg?token=bU6zfUsD9Z)](https://codecov.io/gh/ZhikharevAl/interview)
+
+### Code Coverage
+
+![Coverage Grid](https://codecov.io/gh/ZhikharevAl/interview/graphs/sunburst.svg?token=bU6zfUsD9Z)
 
 # Interview Preparation App
 
