@@ -1,0 +1,17 @@
+URL: http://localhost:8080/api/v1/categories/
+Status: 201 Created
+
+Headers:
+{
+    "server": "nginx/1.25.5",
+    "date": "Fri, 12 Sep 2025 02:48:54 GMT",
+    "content-type": "application/json",
+    "content-length": "24",
+    "connection": "keep-alive"
+}
+
+Body:
+{
+    "name": "Expect",
+    "id": 3
+}
