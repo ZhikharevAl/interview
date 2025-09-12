@@ -157,7 +157,7 @@ class TestQuestionsIntegration:
         update_data = {"question_text": "Updated question?", "answer_text": "Updated answer."}
 
         with allure.step(f"Send request to update question with ID {question_id}"):
-            response = client.put(f"/api/v1/questions/{question_id}", json=update_data)
+            response = client.patch(f"/api/v1/questions/{question_id}", json=update_data)
 
         with allure.step("Verify the question was updated successfully"):
             assert response.status_code == HTTPStatus.OK, "Expected 200 OK on question update."
@@ -177,7 +177,7 @@ class TestQuestionsIntegration:
         question_id = sample_question["id"]
         update_data = {"category_id": new_cat_id}
         with allure.step(f"Send request to update category for question ID {question_id}"):
-            response = client.put(f"/api/v1/questions/{question_id}", json=update_data)
+            response = client.patch(f"/api/v1/questions/{question_id}", json=update_data)
 
         with allure.step("Verify the question's category was updated"):
             assert response.status_code == HTTPStatus.OK, "Expected 200 OK when updating category."
@@ -189,7 +189,9 @@ class TestQuestionsIntegration:
     def test_update_nonexistent_question(self, client: TestClient) -> None:
         """Test updating non-existent question returns 404."""
         with allure.step("Send request to update a non-existent question"):
-            response = client.put("/api/v1/questions/99999", json={"question_text": "Non-existent"})
+            response = client.patch(
+                "/api/v1/questions/99999", json={"question_text": "Non-existent"}
+            )
 
         with allure.step("Verify the server returns a 404 Not Found error"):
             assert response.status_code == HTTPStatus.NOT_FOUND, (

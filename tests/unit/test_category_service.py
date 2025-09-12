@@ -172,7 +172,7 @@ class TestCategoryService:
             )
 
         with allure.step("Call update_category with empty update data"):
-            update_data = CategoryUpdate(name=None)  # Simulate no change
+            update_data = CategoryUpdate()
             updated_category = category_service.update_category(
                 db_session, created_category.id, update_data
             )

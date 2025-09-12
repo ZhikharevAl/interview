@@ -74,7 +74,7 @@ class TestCategoriesIntegration:
         update_data = {"name": "Updated Category Name"}
 
         with allure.step(f"Send request to update category with ID {category_id}"):
-            response = client.put(f"/api/v1/categories/{category_id}", json=update_data)
+            response = client.patch(f"/api/v1/categories/{category_id}", json=update_data)
 
         with allure.step("Verify the category was updated successfully"):
             assert response.status_code == HTTPStatus.OK, (
@@ -114,7 +114,7 @@ class TestCategoriesIntegration:
         update_data = {"name": "Non-existent"}
 
         with allure.step("Send request to update a non-existent category"):
-            response = client.put("/api/v1/categories/99999", json=update_data)
+            response = client.patch("/api/v1/categories/99999", json=update_data)
 
         with allure.step("Verify that the server returns a 404 Not Found error"):
             assert response.status_code == HTTPStatus.NOT_FOUND, (
