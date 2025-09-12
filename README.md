@@ -12,9 +12,12 @@ A modern web application for creating and studying interview questions using int
 ## Features
 
 - 📚 **Interactive Flashcards**: Click to flip between questions and answers
+![image](/attachment/frontend/frontend.png)
 - 🏷️ **Category Management**: Organize questions by topics (JavaScript, Python, etc.)
+- 📝 **Question Management**: Add, edit, and delete questions
 - 🔀 **Shuffle Mode**: Randomize question order for better learning
 - ➕ **Content Management**: Add new categories and questions through web interface
+![image](/attachment/frontend/frontend_control.png)
 - 🎨 **Modern UI**: Clean, responsive design with Tailwind CSS
 
 ## Tech Stack
