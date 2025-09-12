@@ -45,7 +45,7 @@ def create_question(question: QuestionCreate, db: Annotated[Session, Depends(get
     return Question.model_validate(db_question)
 
 
-@router.put("/{question_id}", response_model=Question)
+@router.patch("/{question_id}", response_model=Question)
 def update_question(
     question_id: int, question: QuestionUpdate, db: Annotated[Session, Depends(get_db)]
 ) -> question_service.QuestionModel:
