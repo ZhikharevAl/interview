@@ -43,28 +43,28 @@ def create_category(
     return category_service.create_category(db=db, category=category)
 
 
-@router.put("/{category_id}", response_model=Category)
+@router.patch("/{category_id}", response_model=Category)
 def update_category(
     category_id: int, category: CategoryUpdate, db: Annotated[Session, Depends(get_db)]
 ) -> category_service.CategoryModel:
-    """Update a category by ID."""
+    """Partially updates the category by ID."""
     existing_category = category_service.get_category(db, category_id=category_id)
     if not existing_category:
         raise HTTPException(status_code=404, detail="Category not found")
 
     if category.name and category.name.lower() != existing_category.name.lower():
-        existing_name = category_service.get_category_by_name(db, category.name)
-        if existing_name:
+        category_with_same_name = category_service.get_category_by_name(db, name=category.name)
+        if category_with_same_name:
             raise HTTPException(
                 status_code=400,
-                detail=f"Category '{category.name}' already exists (found '{existing_name.name}')",
+                detail=f"Category with name '{category.name}' already exists",
             )
-
     updated_category = category_service.update_category(
         db=db, category_id=category_id, category=category
     )
+
     if not updated_category:
-        raise HTTPException(status_code=404, detail="Category not found")
+        raise HTTPException(status_code=404, detail="Category not found during update")
 
     return updated_category
 
