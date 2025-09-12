@@ -44,7 +44,7 @@ async function addCategoryAPI(name) {
 // Update category
 async function updateCategoryAPI(id, name) {
     const response = await fetch(`${API_BASE}/categories/${id}`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name })
     });
@@ -89,7 +89,7 @@ async function addQuestionAPI(categoryId, questionText, answerText) {
 // Update question
 async function updateQuestionAPI(id, categoryId, questionText, answerText) {
     const response = await fetch(`${API_BASE}/questions/${id}`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             category_id: categoryId,
