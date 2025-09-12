@@ -163,7 +163,7 @@ class TestCategoryService:
             )
 
     @allure.story("Update Category")
-    @allure.title("Test partial update of a category (no change)")
+    @allure.title("Test partial update of a category")
     def test_update_category_partial(self, db_session: Session) -> None:
         """Test partial update of category."""
         with allure.step("Create a category"):
