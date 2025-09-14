@@ -1,0 +1,19 @@
+URL: http://localhost:8080/api/v1/questions/
+Status: 201 Created
+
+Headers:
+{
+    "server": "nginx/1.25.5",
+    "date": "Sun, 14 Sep 2025 17:43:29 GMT",
+    "content-type": "application/json",
+    "content-length": "186",
+    "connection": "keep-alive"
+}
+
+Body:
+{
+    "question_text": "Most save one coach.? 14f4d299-3765-42c9-b9ef-74ea580d1f99",
+    "answer_text": "Couple game age fund. Without season about vote that side condition.",
+    "category_id": 3,
+    "id": 1
+}

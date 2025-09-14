@@ -1,0 +1,2 @@
+2025-09-14 17:43:28 [INFO] tests.utils.http_client:25 - Sending GET to /health with params: None
+2025-09-14 17:43:29 [INFO] tests.utils.http_client:29 - Received response 200 from http://localhost:8080/health
