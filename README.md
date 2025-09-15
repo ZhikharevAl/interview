@@ -159,6 +159,8 @@ Tests use separate configuration via `tests/config/config.py`:
 - **API Clients**: High-level clients for Categories and Questions APIs
 - **Fixtures**: Managed test data with automatic cleanup
 - **Allure Integration**: Detailed test reporting with steps and attachments
+![Allure Report](./attachment/allure/allure%202025-09-15%20071638.png)
+![Allure Report](./attachment/allure/allure%202025-09-15%20071815.png)
 - **Faker**: Random test data generation
 
 ## Development
