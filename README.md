@@ -5,177 +5,180 @@
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/ZhikharevAl/interview)
 ![License](https://img.shields.io/badge/License-MIT-blue.svg)
 
-### Code Coverage
+### Покрытие кода
 
 ![Coverage Grid](https://codecov.io/gh/ZhikharevAl/interview/graphs/sunburst.svg?token=bU6zfUsD9Z)
 
-# Interview Preparation App
+# Приложение для подготовки к собеседованию
 
-A modern web application for creating and studying interview questions using interactive flashcards.
+Современное веб-приложение для создания и изучения вопросов для интервью с использованием интерактивных карточек.
 
-## Features
+## Возможности
 
-- 📚 **Interactive Flashcards**: Click to flip between questions and answers
+- 📚 **Интерактивные карточки**: Нажимайте, чтобы переключаться между вопросами и ответами
 ![image](/attachment/frontend/frontend.png)
-- 🏷️ **Category Management**: Organize questions by topics (JavaScript, Python, etc.)
-- 📝 **Question Management**: Add, edit, and delete questions
-- 🔀 **Shuffle Mode**: Randomize question order for better learning
-- ➕ **Content Management**: Add new categories and questions through web interface
+- 🏷️ **Управление категориями**: Организуйте вопросы по темам (JavaScript, Python и др.)
+- 📝 **Управление вопросами**: Добавляйте, редактируйте и удаляйте вопросы
+- 🔀 **Режим перемешивания**: Рандомизируйте порядок вопросов для лучшего обучения
+- ➕ **Управление контентом**: Добавляйте новые категории и вопросы через веб-интерфейс
 ![image](/attachment/frontend/frontend_control.png)
-- 🎨 **Modern UI**: Clean, responsive design with Tailwind CSS
+- 🎨 **Современный UI**: Чистый, адаптивный дизайн с Tailwind CSS
 
-## Tech Stack
+## Технологический стек
 
 - **Backend**: FastAPI (Python 3.13)
-- **Database**: PostgreSQL with SQLAlchemy ORM
-- **Frontend**: Vanilla JavaScript with Tailwind CSS
-- **Package Management**: UV
-- **Code Quality**: Ruff, Pyright, pre-commit hooks
-- **Deployment**: Docker & Docker Compose
+- **База данных**: PostgreSQL с SQLAlchemy ORM
+- **Frontend**: Vanilla JavaScript с Tailwind CSS
+- **Управление пакетами**: UV
+- **Качество кода**: Ruff, Pyright, pre-commit hooks
+- **Развертывание**: Docker & Docker Compose
 
-## Quick Start
+## Быстрый старт
 
-### Using Docker (Recommended)
+### Используя Docker (Рекомендуется)
 
 ```bash
-# Clone the repository
+# Клонирование репозитория
 git clone https://github.com/ZhikharevAl/interview.git
-cd interview-prep-app
+cd interview
 
-# Start the application
+# Запуск приложения
 docker-compose up -d
 
-# Access the app at http://localhost:8000
+# Доступ к приложению по адресу http://localhost:8080
 ```
 
-### Local Development
+### Локальная разработка
 
 ```bash
-# Install dependencies
+# Установка зависимостей
 uv sync --group dev
 
-# Run the development server
+# Запуск сервера разработки
 cd backend
 uv run uvicorn app.main:app --reload
 
-# Access the app at http://localhost:8000
+# Доступ к приложению по адресу http://localhost:8000
 ```
 
-## Usage
+## Использование
 
-1. **Study Mode**: Select a category and click cards to reveal answers
-2. **Management**: Add new categories and questions via the management tab
-3. **Shuffle**: Randomize question order to test your knowledge
+1. **Режим изучения**: Выберите категорию и нажимайте на карточки, чтобы увидеть ответы
+2. **Управление**: Добавляйте новые категории и вопросы через вкладку управления
+3. **Перемешивание**: Рандомизируйте порядок вопросов для проверки знаний
 
-## API Endpoints
+## API эндпоинты
 
-### Categories
+### Категории
 
-- `GET /api/v1/categories/` - List all categories (with optional `skip` and `limit` parameters)
-- `POST /api/v1/categories/` - Create a new category
-- `GET /api/v1/categories/{category_id}` - Get category by ID
-- `PATCH /api/v1/categories/{category_id}` - Update category by ID
-- `DELETE /api/v1/categories/{category_id}` - Delete category by ID
+- `GET /api/v1/categories/` - Получить список всех категорий (с опциональными параметрами `skip` и `limit`)
+- `POST /api/v1/categories/` - Создать новую категорию
+- `GET /api/v1/categories/{category_id}` - Получить категорию по ID
+- `PATCH /api/v1/categories/{category_id}` - Обновить категорию по ID
+- `DELETE /api/v1/categories/{category_id}` - Удалить категорию по ID
 
-### Questions
+### Вопросы
 
-- `GET /api/v1/questions/` - List all questions (optional `?category_id=X` parameter)
-- `POST /api/v1/questions/` - Create a new question
-- `GET /api/v1/questions/{question_id}` - Get question by ID
-- `PATCH /api/v1/questions/{question_id}` - Update question by ID
-- `DELETE /api/v1/questions/{question_id}` - Delete question by ID
+- `GET /api/v1/questions/` - Получить список всех вопросов (опциональный параметр `?category_id=X`)
+- `POST /api/v1/questions/` - Создать новый вопрос
+- `GET /api/v1/questions/{question_id}` - Получить вопрос по ID
+- `PATCH /api/v1/questions/{question_id}` - Обновить вопрос по ID
+- `DELETE /api/v1/questions/{question_id}` - Удалить вопрос по ID
 
-## Testing
+### Система
 
-The project includes comprehensive test suite with three levels of testing:
+- `GET /health` - Эндпоинт проверки состояния
 
-### Test Structure
+## Тестирование
+
+Проект включает комплексный набор тестов с тремя уровнями тестирования:
+
+### Структура тестов
 
 ```
 tests/
-├── unit/                   # Unit tests for services
-├── integration/            # Integration tests with FastAPI TestClient
-├── e2e/                    # End-to-end tests with Playwright
-├── api/                    # API client classes
-├── utils/                  # Test utilities and models
-└── config/                 # Test configuration
+├── unit/                   # Юнит-тесты для сервисов
+├── integration/            # Интеграционные тесты с FastAPI TestClient
+├── e2e/                    # End-to-end тесты с Playwright
+├── api/                    # Классы API клиентов
+├── utils/                  # Утилиты и модели для тестов
+└── config/                 # Конфигурация тестов
 ```
 
-### Running Tests
+### Запуск тестов
 
 ```bash
-# Run all tests
+# Запуск всех тестов
 uv run pytest
 
-# Run specific test type
-uv run pytest tests/unit/           # Unit tests only
-uv run pytest tests/integration/   # Integration tests only
-uv run pytest tests/e2e/           # E2E tests only
+# Запуск конкретного типа тестов
+uv run pytest tests/unit/           # Только юнит-тесты
+uv run pytest tests/integration/   # Только интеграционные тесты
+uv run pytest tests/e2e/           # Только E2E тесты
 
-# Run with coverage
+# Запуск с покрытием
 uv run pytest --cov=backend/app --cov-report=html
 
-# Run specific test file
+# Запуск конкретного тестового файла
 uv run pytest tests/unit/test_category_service.py
 
-# Run with Allure reporting
+# Запуск с отчетом Allure
 uv run pytest --alluredir=allure-results
 allure serve allure-results
 ```
 
-### Test Types
+### Типы тестов
 
-#### Unit Tests
+#### Юнит-тесты
 
-- Test individual service functions in isolation
-- Use in-memory SQLite database
-- Fast execution, no external dependencies
-- Coverage: `CategoryService`, `QuestionService`
+- Тестируют отдельные функции сервисов в изоляции
+- Используют in-memory SQLite базу данных
+- Быстрое выполнение, без внешних зависимостей
+- Покрытие: `CategoryService`, `QuestionService`
 
-#### Integration Tests
+#### Интеграционные тесты
 
-- Test complete API endpoints with FastAPI TestClient
-- Test database interactions and business logic
-- Validate HTTP status codes and response schemas
-- Coverage: Categories API, Questions API, Health endpoints
+- Тестируют полные API эндпоинты с FastAPI TestClient
+- Тестируют взаимодействия с базой данных и бизнес-логику
+- Проверяют HTTP статус коды и схемы ответов
+- Покрытие: Categories API, Questions API, Health эндпоинты
 
-#### End-to-End Tests
+#### End-to-End тесты
 
-- Test complete user workflows using Playwright
-- Real HTTP requests against running application
-- Test API clients and error handling
-- Coverage: Full API workflow testing
+- Тестируют полные пользовательские сценарии с использованием Playwright
+- Реальные HTTP запросы к работающему приложению
+- Тестируют API клиенты и обработку ошибок
+- Покрытие: Полное тестирование API workflow
 
-### Test Configuration
+### Конфигурация тестов
 
-Tests use separate configuration via `tests/config/config.py`:
+Тесты используют отдельную конфигурацию через `tests/config/config.py`:
 
-- Base URL: `http://localhost:8080` (configurable via `.env.test`)
-- Timeout: 30 seconds
-- Endpoints: `/api/v1/categories`, `/api/v1/questions`
+- Base URL: `http://localhost:8080` (настраивается через `.env.test`)
+- Timeout: 30 секунд
+- Эндпоинты: `/api/v1/categories`, `/api/v1/questions`
 
-### Test Utilities
+### Утилиты для тестов
 
-- **API Clients**: High-level clients for Categories and Questions APIs
-- **Fixtures**: Managed test data with automatic cleanup
-- **Allure Integration**: Detailed test reporting with steps and attachments
+- **API клиенты**: Высокоуровневые клиенты для Categories и Questions API
+- **Фикстуры**: Управляемые тестовые данные с автоматической очисткой
+- **Интеграция с Allure**: Детальные отчеты тестов с шагами и вложениями
 ![Allure Report](./attachment/allure/allure%202025-09-15%20071638.png)
 ![Allure Report](./attachment/allure/allure%202025-09-15%20071815.png)
-- **Faker**: Random test data generation
+- **Faker**: Генерация случайных тестовых данных
 
-## Development
+## Разработка
 
 ```bash
-# Install pre-commit hooks
+# Установка pre-commit hooks
 pre-commit install
 
-# Run linters
+# Запуск линтеров
 uvx ruff check .
 uvx ruff format .
 uv run pyright .
-
 ```
 
-## License
+## Лицензия
 
-MIT License - see [LICENSE](LICENSE) file for details.
+MIT License - смотрите файл [LICENSE](LICENSE) для подробностей.
