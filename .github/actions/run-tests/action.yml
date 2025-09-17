@@ -43,6 +43,7 @@ runs:
         docker buildx bake backend \
         --set "*.cache-from=type=registry,ref=${CACHE_REF}" \
         --set "*.cache-to=type=registry,ref=${CACHE_REF},mode=max" \
+        --set "backend.tags=interview-backend:latest" \
         --load
       shell: bash
 
