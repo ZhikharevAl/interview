@@ -12,15 +12,6 @@ inputs:
     description: "Docker Hub password or access token"
     required: true
 
-# runs:
-#   using: composite
-#   steps:
-#     - name: Setup Python and UV
-#       uses: ./.github/actions/setup
-
-#     - name: Start services with Docker Compose
-#       run: docker compose up -d --build
-#       shell: bash
 runs:
   using: composite
   steps:
