@@ -1,0 +1,19 @@
+URL: http://localhost:8080/health
+Status: 200 OK
+
+Headers:
+{
+    "server": "nginx/1.25.5",
+    "date": "Wed, 17 Sep 2025 20:18:10 GMT",
+    "content-type": "application/json",
+    "content-length": "108",
+    "connection": "keep-alive"
+}
+
+Body:
+{
+    "status": "healthy",
+    "database_url": "postgresql://***@db:5432/interview_app",
+    "debug": false,
+    "version": "0.1.0"
+}
