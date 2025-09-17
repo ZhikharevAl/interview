@@ -38,10 +38,12 @@ runs:
 
     - name: Build and Cache Docker image
       run: |
+        export CACHE_REF=1cylon1/interview:cache
+
         docker buildx bake backend \
-          --set "*.cache-from=type=registry,ref=registry.local/app:cache" \
-          --set "*.cache-to=type=registry,ref=registry.local/app:cache,mode=max" \
-          --load
+        --set "*.cache-from=type=registry,ref=${CACHE_REF}" \
+        --set "*.cache-to=type=registry,ref=${CACHE_REF},mode=max" \
+        --load
       shell: bash
 
     - name: Start services with Docker Compose
