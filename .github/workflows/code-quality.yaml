@@ -46,6 +46,8 @@ jobs:
         uses: ./.github/actions/run-tests
         with:
           codecov-token: ${{ secrets.CODECOV_TOKEN }}
+          docker-username: ${{ secrets.DOCKER_USERNAME }}
+          docker-password: ${{ secrets.DOCKER_PASSWORD }}
 
   allure-report:
     runs-on: ubuntu-22.04
