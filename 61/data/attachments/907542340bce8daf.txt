@@ -1,2 +1,0 @@
-2025-09-10 20:35:16 [INFO] tests.utils.http_client:25 - Sending GET to /api/v1/categories/298 with params: None
-2025-09-10 20:35:16 [INFO] tests.utils.http_client:29 - Received response 404 from http://localhost:8000/api/v1/categories/298
