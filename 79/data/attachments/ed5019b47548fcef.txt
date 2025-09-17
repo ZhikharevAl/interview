@@ -1,0 +1,16 @@
+URL: http://localhost:8080/api/v1/categories/298
+Status: 404 Not Found
+
+Headers:
+{
+    "server": "nginx/1.25.5",
+    "date": "Wed, 17 Sep 2025 18:52:00 GMT",
+    "content-type": "application/json",
+    "content-length": "31",
+    "connection": "keep-alive"
+}
+
+Body:
+{
+    "detail": "Category not found"
+}
