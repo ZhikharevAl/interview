@@ -1,2 +1,0 @@
-INFO     tests.utils.http_client:http_client.py:25 Sending GET to /api/v1/categories/298 with params: None
-INFO     tests.utils.http_client:http_client.py:29 Received response 404 from http://localhost:8000/api/v1/categories/298
