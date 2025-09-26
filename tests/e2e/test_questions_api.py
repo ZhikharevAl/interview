@@ -40,3 +40,24 @@ class TestQuestionsAPI:
             assert response_json["category_id"] == managed_category, (
                 "The 'category_id' in the response does not match the provided category ID."
             )
+
+    @allure.story("Get Question by ID")
+    @allure.severity(allure.severity_level.CRITICAL)
+    def test_read_question_by_id(
+        self, questions_client: QuestionsClient, managed_question: int
+    ) -> None:
+        """Test for successful retrieval of a question by ID."""
+        question_id = managed_question
+
+        with allure.step(f"Requesting question by ID: {question_id}"):
+            response = questions_client.get_by_id(question_id)
+
+        with allure.step("Verifying response data"):
+            assert response.ok, f"Failed to get question by ID. Status: {response.status}"
+            data = response.json()
+            assert data["id"] == question_id, (
+                f"Expected question ID {question_id}, but got {data.get('id')}"
+            )
+            assert "question_text" in data, "The 'question_text' key is missing"
+            assert "answer_text" in data, "The 'answer_text' key is missing"
+            assert "category_id" in data, "The 'category_id' key is missing"
