@@ -64,6 +64,25 @@ class TestQuestionsAPI:
             assert "answer_text" in data, "The 'answer_text' key is missing"
             assert "category_id" in data, "The 'category_id' key is missing"
 
+    @allure.story("Get All Questions")
+    @allure.severity(allure.severity_level.NORMAL)
+    def test_get_all_questions(
+        self, questions_client: QuestionsClient, managed_question: int
+    ) -> None:
+        """Test retrieving all questions without filters."""
+        with allure.step("Getting all questions"):
+            response = questions_client.get_all()
+
+        with allure.step("Verifying response"):
+            assert response.ok, f"Failed to get all questions. Status: {response.status}"
+            questions = response.json()
+            assert isinstance(questions, list), "Response should be a list"
+
+            question_ids = [q["id"] for q in questions]
+            assert managed_question in question_ids, (
+                f"Managed question {managed_question} not found in all questions"
+            )
+
     @allure.story("Delete Question")
     @allure.severity(allure.severity_level.CRITICAL)
     def test_delete_question(
