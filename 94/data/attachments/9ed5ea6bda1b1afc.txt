@@ -1,0 +1,6 @@
+2025-09-29 20:12:47 [INFO] tests.utils.http_client:41 - Sending POST to /api/v1/categories
+2025-09-29 20:12:47 [INFO] tests.utils.http_client:49 - Received response 201 from http://localhost:8080/api/v1/categories/
+2025-09-29 20:12:47 [INFO] tests.utils.http_client:41 - Sending POST to /api/v1/questions
+2025-09-29 20:12:47 [INFO] tests.utils.http_client:49 - Received response 201 from http://localhost:8080/api/v1/questions/
+2025-09-29 20:12:47 [INFO] tests.utils.http_client:80 - Sending DELETE to /api/v1/categories/3
+2025-09-29 20:12:47 [INFO] tests.utils.http_client:84 - Received response 200 from http://localhost:8080/api/v1/categories/3

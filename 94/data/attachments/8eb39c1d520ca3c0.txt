@@ -1,0 +1,19 @@
+URL: http://localhost:8080/api/v1/questions/
+Status: 201 Created
+
+Headers:
+{
+    "server": "nginx/1.25.5",
+    "date": "Mon, 29 Sep 2025 20:12:47 GMT",
+    "content-type": "application/json",
+    "content-length": "191",
+    "connection": "keep-alive"
+}
+
+Body:
+{
+    "question_text": "Price though structure.? 40bd5e31-c6c6-4d5c-82bf-abe51d26878e",
+    "answer_text": "Measure image so western indicate. Try contain health compare concern.",
+    "category_id": 6,
+    "id": 4
+}
