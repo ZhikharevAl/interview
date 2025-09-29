@@ -1,0 +1,17 @@
+URL: http://localhost:8080/api/v1/categories/3
+Status: 200 OK
+
+Headers:
+{
+    "server": "nginx/1.25.5",
+    "date": "Mon, 29 Sep 2025 20:06:49 GMT",
+    "content-type": "application/json",
+    "content-length": "23",
+    "connection": "keep-alive"
+}
+
+Body:
+{
+    "id": 3,
+    "deleted": true
+}
