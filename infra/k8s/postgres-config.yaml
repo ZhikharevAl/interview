@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  namespace: interview
+data:
+  POSTGRES_DB: interview_app
+  POSTGRES_USER: interview_user
+  POSTGRES_PASSWORD: interview_password
