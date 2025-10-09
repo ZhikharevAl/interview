@@ -12,19 +12,16 @@ class Settings(BaseSettings):
     SECRET_KEY: str = Field(
         default="your-secret-key-here", description="Secret key for authentication"
     )
-
     LOG_LEVEL: str = Field(default="INFO", description="Logging level")
     LOG_FILE: str = Field(default="logs/app.log", description="Log file path")
-
     APP_NAME: str = Field(default="Interview Prep App", description="Application name")
     APP_VERSION: str = Field(default="0.1.0", description="Application version")
 
-    class Config:
-        """Pydantic configuration."""
-
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        case_sensitive = True
+    model_config = {
+        "env_file": ".env",
+        "env_file_encoding": "utf-8",
+        "case_sensitive": True,
+    }
 
 
 settings = Settings()
