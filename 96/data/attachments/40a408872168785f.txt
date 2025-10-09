@@ -1,0 +1,14 @@
+URL: http://localhost:8080/api/v1/questions/?category_id=7
+Status: 200 OK
+
+Headers:
+{
+    "server": "nginx/1.25.5",
+    "date": "Thu, 09 Oct 2025 03:59:28 GMT",
+    "content-type": "application/json",
+    "content-length": "2",
+    "connection": "keep-alive"
+}
+
+Body:
+[]

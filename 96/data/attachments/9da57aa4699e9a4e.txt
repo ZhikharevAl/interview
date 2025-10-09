@@ -1,0 +1,21 @@
+URL: http://localhost:8080/api/v1/questions/
+Status: 200 OK
+
+Headers:
+{
+    "server": "nginx/1.25.5",
+    "date": "Thu, 09 Oct 2025 03:59:28 GMT",
+    "content-type": "application/json",
+    "content-length": "202",
+    "connection": "keep-alive"
+}
+
+Body:
+[
+    {
+        "question_text": "Significant happy quickly.? 9b678164-0800-4f6a-8f55-ff7b7e27b319",
+        "answer_text": "Perform add man sign whom two near. Shoulder recognize news bag close whose.",
+        "category_id": 5,
+        "id": 3
+    }
+]

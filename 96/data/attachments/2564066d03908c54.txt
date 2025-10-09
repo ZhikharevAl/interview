@@ -1,0 +1,19 @@
+URL: http://localhost:8080/api/v1/questions/2
+Status: 200 OK
+
+Headers:
+{
+    "server": "nginx/1.25.5",
+    "date": "Thu, 09 Oct 2025 03:59:28 GMT",
+    "content-type": "application/json",
+    "content-length": "198",
+    "connection": "keep-alive"
+}
+
+Body:
+{
+    "question_text": "Southern discussion their describe soon never.? d4fc74d0-1d7d-4b94-b443-9d7c2eb285d3",
+    "answer_text": "Open million when among clearly. Change director much.",
+    "category_id": 4,
+    "id": 2
+}
