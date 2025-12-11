@@ -1,0 +1,2 @@
+2025-12-11 12:14:13 [INFO] tests.utils.http_client:25 - Sending GET to / with params: None
+2025-12-11 12:14:13 [INFO] tests.utils.http_client:29 - Received response 200 from http://localhost:8080/
