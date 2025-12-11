@@ -1,0 +1,17 @@
+URL: http://localhost:8080/api/v1/categories/
+Status: 201 Created
+
+Headers:
+{
+    "server": "nginx/1.25.5",
+    "date": "Thu, 11 Dec 2025 12:21:09 GMT",
+    "content-type": "application/json",
+    "content-length": "23",
+    "connection": "keep-alive"
+}
+
+Body:
+{
+    "name": "Close",
+    "id": 5
+}
